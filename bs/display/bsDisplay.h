@@ -69,7 +69,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     if( [r isKindOfClass:[bsDisplay class]] == NO ) {
         bsException( @"class '%@' is not kind of bsDisplay", className );
     }
-    NSString *displayKey = [NSString stringWithFormat:@"%@-%d", className, key++];
+    NSString *displayKey = [NSString stringWithFormat:@"%@-%lu", className, (unsigned long)key++];
     params = [NSString stringWithFormat:@"key,%@,%@",displayKey, params];
     [r s:params];
     return r;
@@ -226,7 +226,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 -(NSDictionary*)gDic:(NSString*)keys {
     NSArray *keyList = [bsStr col:keys];
     NSMutableDictionary *r = [[NSMutableDictionary alloc] init];
-    for ( int i = 0, j = [keyList count]; i < j; i++ ) {
+    for ( NSInteger i = 0, j = [keyList count]; i < j; i++ ) {
         NSString *k = keyList[i];
         id value = [self g:k];
         if( value ) {
@@ -252,7 +252,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     //BOOL centerChagne = NO;
     //CGPoint c = self.center;
     CGRect f = self.frame;
-    for( int i = 0, j = [p count]; i < j; ) {
+    for( NSInteger i = 0, j = [p count]; i < j; ) {
         NSString *k = [(NSString*)p[i++] lowercaseString];
         NSString *v = (NSString*)p[i++];
         NSInteger num = [[__bsDisplay_keyValues objectForKey:k] integerValue];

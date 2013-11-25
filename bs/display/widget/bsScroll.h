@@ -138,7 +138,7 @@ static NSDictionary* __bsScroll_keyValues = nil;
     CGPoint contentOffset;
     CGRect contentRect;
     float zoomScale;
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsScroll_keyValues objectForKey:k] integerValue];

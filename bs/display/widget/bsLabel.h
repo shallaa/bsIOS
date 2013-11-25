@@ -121,7 +121,7 @@ static NSDictionary* __bsLabel_keyValues = nil;
     CGFloat fontSize = 0;
     BOOL sizeChangeReq = NO;
     NSMutableArray *remain = [NSMutableArray array];
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsLabel_keyValues objectForKey:k] integerValue];

@@ -12,6 +12,6 @@
 
 @interface NSString (HMACSHA1)
 
-+ (NSString *) base64StringFromData:(NSData *)data length:(int)length;
++ (NSString *) base64StringFromData:(NSData *)data length:(NSInteger)length;
 - (NSString *) base64StringWithHMACSHA1Digest:(NSString *)secretKey;
 @end

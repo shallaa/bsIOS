@@ -297,7 +297,7 @@
     return _val;
 }
 -(NSString*)str {
-    return [NSString stringWithFormat:@"%d", _val];
+    return [NSString stringWithFormat:@"%ld", (long)_val];
 }
 -(NSNumber*)number {
     return [NSNumber numberWithInteger:_val];
@@ -329,7 +329,7 @@
     return _val;
 }
 -(NSString*)str {
-    return [NSString stringWithFormat:@"%d", _val];
+    return [NSString stringWithFormat:@"%lu", (unsigned long)_val];
 }
 -(NSNumber*)number {
     return [NSNumber numberWithUnsignedInteger:_val];

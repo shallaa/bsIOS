@@ -50,7 +50,7 @@ static NSDictionary* __bsSpinner_keyValues = nil;
     NSMutableArray *remain = [NSMutableArray array];
     BOOL styleChange = NO;
     BOOL colorChange = NO;
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsSpinner_keyValues objectForKey:k] integerValue];

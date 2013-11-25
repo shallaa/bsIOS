@@ -27,7 +27,7 @@ static BOOL __bsAlert_showing = NO;
     if( [p count] % 2 != 0 ) {
         bsException(@"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
     }
-    for ( int i = 0, j = [p count]; i < j; ) {
+    for ( NSInteger i = 0, j = [p count]; i < j; ) {
         NSString *k = p[i++];
         NSString *v = p[i++];
         if( [k isEqualToString:@"title"] ) title = v;
@@ -71,9 +71,9 @@ static BOOL __bsAlert_showing = NO;
 }
 #pragma mark - delegate
 +(void)alertView:(UIAlertView*) alertView didDismissWithButtonIndex:(NSInteger) buttonIndex {
-    int keyNumber = alertView.tag;
+    NSInteger keyNumber = alertView.tag;
     if( keyNumber != 0 ) {
-        NSString *key = [NSString stringWithFormat:@"%d", keyNumber];
+        NSString *key = [NSString stringWithFormat:@"%ld", (long)keyNumber];
         bsAlertBlock block = __bsAlert_blockDic[key];
         if( buttonIndex == [alertView cancelButtonIndex] ) {
             block( 0, YES );

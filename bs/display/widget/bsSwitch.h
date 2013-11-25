@@ -58,7 +58,7 @@ static NSDictionary* __bsSwitch_keyValues = nil;
     NSMutableArray *remain = [NSMutableArray array];
     BOOL onChange = NO;
     BOOL on;
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsSwitch_keyValues objectForKey:k] integerValue];

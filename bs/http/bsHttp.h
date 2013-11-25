@@ -20,17 +20,17 @@ static NSUInteger __bsHttp_httpKey = 0;
     return nil;
 }
 +(NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file end:(bsCallback*)end {
-    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%d", __bsHttp_httpKey++];
+    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%lu", (unsigned long)__bsHttp_httpKey++];
     [bsHttp sendWithkey:key url:url get:get post:post file:file end:end];
     return key;
 }
 +(NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file endBlock:(bsCallbackBlock)end  {
-    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%d", __bsHttp_httpKey++];
+    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%lu", (unsigned long)__bsHttp_httpKey++];
     [bsHttp sendWithkey:key url:url get:get post:post file:file end:end];
     return key;
 }
 +(NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file target:(id)target selector:(SEL)selector {
-    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%d", __bsHttp_httpKey++];
+    NSString *key = [NSString stringWithFormat:@"bsHttpKey=%lu", (unsigned long)__bsHttp_httpKey++];
     [bsHttp sendWithkey:key url:url get:get post:post file:file target:target selector:selector];
     return key;
 }

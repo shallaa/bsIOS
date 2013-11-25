@@ -94,7 +94,7 @@
             }
             [str appendString:url];
             [str appendString:CGI];
-            __block int i, j;
+            __block NSInteger i, j;
             i = 0;
             j = [get count];
             [get enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, BOOL *stop) {
@@ -176,7 +176,7 @@
         } else if( post != nil ) {
             [request setValue:FORM forHTTPHeaderField:CONTENT_TYPE];
             NSMutableString *bodyStr = [[NSMutableString alloc] init];
-            __block int i, j;
+            __block NSInteger i, j;
             i = 0;
             j = [post count];
             [post enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -193,7 +193,7 @@
             [body appendData:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
         }
         if( file ) [bsHttpFile put:file];
-        [request setValue:[NSString stringWithFormat:@"%d", [body length]] forHTTPHeaderField:CONTENT_LENGTH];
+        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:CONTENT_LENGTH];
         [request setHTTPBody:body];
         returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
         if ( err == nil ) {

@@ -10,7 +10,7 @@
 //키보드 감추기
 +(void)hideKeyboard {
     UIWindow *tempWindow;
-    for (int c = 0, count = [[[UIApplication sharedApplication] windows] count]; c < count; c++) {
+    for (NSInteger c = 0, count = [[[UIApplication sharedApplication] windows] count]; c < count; c++) {
         tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:c];
         for (int i = 0; i < [tempWindow.subviews count]; i++) {
             [self __hideKeyboardRecursion:[tempWindow.subviews objectAtIndex:i]];

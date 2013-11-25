@@ -303,7 +303,7 @@ static NSMutableDictionary *__bsObjectNodeCache;
     if( [t0 count] > 0 ) {
         id t00 = object;
         Ivar ivar = nil;
-        int i = 0, j = [t0 count];
+        NSInteger i = 0, j = [t0 count];
         while( 1 )  {
             ivar = class_getInstanceVariable([t00 class], [[NSString stringWithFormat:@"_%@", t0[i]] UTF8String]);
             if( ++i < j ) {

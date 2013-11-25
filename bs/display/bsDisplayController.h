@@ -66,13 +66,13 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 }
 -(NSString*)blockWillRotate:(bsDisplayControllerWillRotateBlock)willRotateBlock {
     if( willRotateBlock == nil ) bsException(@"willRotateBlock argument is undefined");
-    NSString *k = [NSString stringWithFormat:@"bsDisplayControllerWillRotateBlock-%d", blockKey_++];
+    NSString *k = [NSString stringWithFormat:@"bsDisplayControllerWillRotateBlock-%lu", (unsigned long)blockKey_++];
     willRotateBlockDic_[k] = willRotateBlock;
     return k;
 }
 -(NSString*)blockDidRotate:(bsDisplayControllerDidRotateBlock)didRotateBlock {
     if( didRotateBlock == nil ) bsException(@"didRotateBlock argument is undefined");
-    NSString *k = [NSString stringWithFormat:@"bsDisplayControllerDidRotateBlock-%d", blockKey_++];
+    NSString *k = [NSString stringWithFormat:@"bsDisplayControllerDidRotateBlock-%lu", (unsigned long)blockKey_++];
     didRotateBlockDic_[k] = didRotateBlock;
     return k;
 }

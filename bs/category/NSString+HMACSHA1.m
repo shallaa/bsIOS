@@ -36,7 +36,7 @@ static char base64EncodingTable[64] = {
 	return [NSString base64StringFromData:encryptedStringData length:[encryptedStringData length]];
 }
 
-+ (NSString *) base64StringFromData: (NSData *)data length: (int)length {
++ (NSString *) base64StringFromData: (NSData *)data length: (NSInteger)length {
 	unsigned long ixtext, lentext;
 	long ctremaining;
 	unsigned char input[3], output[4];

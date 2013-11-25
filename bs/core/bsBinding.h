@@ -105,7 +105,7 @@ static dispatch_queue_t __bsBinding_dequeue = NULL;
             NSArray *t = [bsStr split:keyPath seperator:@"." trim:YES];
             if( [t.lastObject isEqualToString:@"*"] ) {
                 NSMutableString *prefix = [[NSMutableString alloc] init];
-                for ( int i = 0, j = [t count] - 1; i < j; i++ ) {
+                for ( NSInteger i = 0, j = [t count] - 1; i < j; i++ ) {
                     [prefix appendString:t[i]];
                     if( i < j - 1 ) [prefix appendString:@"."];
                 }

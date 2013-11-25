@@ -62,9 +62,9 @@ static NSMutableArray *__bsError_pool = nil;
 -(NSString*)str {
     //TODO 보통때는 _func, _line은 표시하지 않는다.
     if( _data ) {
-        return [NSString stringWithFormat:@"(\n\tfunc: %@(%d)\n\tmsg: %@\n\tdata: %@\n)", _func, _line, _msg, _data];
+        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n\tdata: %@\n)", _func, (unsigned long)_line, _msg, _data];
     } else {
-        return [NSString stringWithFormat:@"(\n\tfunc: %@(%d)\n\tmsg: %@\n)", _func, _line, _msg];
+        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n)", _func, (unsigned long)_line, _msg];
     }
 }
 -(NSString*)description {

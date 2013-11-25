@@ -61,7 +61,7 @@ static NSDictionary* __bsSegment_keyValues = nil;
 -(NSArray*)__s:(NSArray*)params {
     NSMutableArray *remain = [NSMutableArray array];
     NSArray *titles = nil;
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsSegment_keyValues objectForKey:k] integerValue];

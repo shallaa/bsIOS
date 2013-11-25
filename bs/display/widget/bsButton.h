@@ -190,7 +190,7 @@ static NSDictionary* __bsButton_keyValues = nil;
     BOOL capInsetsChange = NO;
     UIImage *img = nil;
     NSMutableArray *remain = [NSMutableArray array];
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsButton_keyValues objectForKey:k] integerValue];

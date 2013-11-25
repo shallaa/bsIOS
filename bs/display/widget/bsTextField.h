@@ -238,7 +238,7 @@ static NSDictionary* __bsTextField_keyValues = nil;
     NSMutableArray *remain = [NSMutableArray array];
     NSInteger f0 = 0;
     CGFloat fontSize = 0;
-    for( int i = 0, j = [params count]; i < j; ) {
+    for( NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsTextField_keyValues objectForKey:k] integerValue];

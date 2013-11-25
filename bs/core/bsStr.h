@@ -88,7 +88,7 @@
     NSArray *getArr = [bsStr col:$val];
     NSMutableArray *objs = [[NSMutableArray alloc] init];
     NSMutableArray *keys = [[NSMutableArray alloc] init];
-    for( int i = 0, j = [getArr count]; i < j; ) {
+    for( NSInteger i = 0, j = [getArr count]; i < j; ) {
         [keys addObject:getArr[i++]];
         [objs addObject:getArr[i++]];
     }
