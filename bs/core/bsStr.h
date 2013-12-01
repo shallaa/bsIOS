@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "bsMacro.h"
 #import "bsPrimitive.h"
-#include <arpa/inet.h> //IP Address체크
+#include <arpa/inet.h> // IP address check
 
 #define __bsStr_P0      @"("
 #define __bsStr_P1      @")"
@@ -19,11 +19,15 @@
 @end
 
 @implementation bsStr
--(id)alloc {
++(id)alloc {
     bsException( @"Static class 'bsStr' cannot be instantiated!" );
     return nil;
 }
-//to String
++(id)allocWithZone:(NSZone *)zone {
+    bsException( @"Static class 'bsStr' cannot be instantiated!" );
+    return nil;
+}
+// to String
 +(NSString*)str:(id)val {
     if( val == nil || val == [NSNull null] ) {
         return nil;
@@ -58,7 +62,7 @@
     } else {
         bsException(@"wrong argument");
     }
-    //bsGeometry도 넣어야 할까?
+    // bsGeometry also to be processed?
     return nil;
 }
 //to Another

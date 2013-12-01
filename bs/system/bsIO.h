@@ -10,7 +10,11 @@ static NSString* __bsIO_storagePath = nil;
 static NSString* __bsIO_assetPath = nil;
 static NSString* __bsIO_cachePath = nil;
 static NSFileManager *__bsIO_fm = nil;
--(id)alloc {
++(id)alloc {
+    bsException( @"Static class 'bsIO' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
     bsException( @"Static class 'bsIO' cannot be instantiated!" );
     return nil;
 }

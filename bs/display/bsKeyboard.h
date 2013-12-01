@@ -3,8 +3,12 @@
 @interface bsKeyboard : NSObject
 @end
 @implementation bsKeyboard
--(id)alloc {
-    [NSException raise:NSInvalidArgumentException format:@"%s(%d)Static class 'bsKeyborad' cannot be instantiated!", __FUNCTION__, __LINE__];
++(id)alloc {
+    bsException( @"Static class 'bsKeyboard' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
+    bsException( @"Static class 'bsKeyboard' cannot be instantiated!" );
     return nil;
 }
 //키보드 감추기

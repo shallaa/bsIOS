@@ -7,7 +7,11 @@
 
 @implementation bsSimpleSound
 static NSMutableDictionary* __bsSimpleSound_dic = nil;
--(id)alloc {
++(id)alloc {
+    bsException( @"Static class 'bsSimpleSound' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
     bsException( @"Static class 'bsSimpleSound' cannot be instantiated!" );
     return nil;
 }

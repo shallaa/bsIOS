@@ -15,8 +15,12 @@ typedef void (^bsKeyboradBlock)( NSString *blockKey );
 static NSMutableDictionary* __bsNotification__observers = nil;
 static UIBackgroundTaskIdentifier __bsNotification__backgroundTaskId;
 static BOOL __bsNotification_backgroundSupported;
--(id)alloc {
-    [NSException raise:NSInvalidArgumentException format:@"%s(%d)Static class 'bsNotification' cannot be instantiated!", __FUNCTION__, __LINE__];
++(id)alloc {
+    bsException( @"Static class 'bsNotification' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
+    bsException( @"Static class 'bsNotification' cannot be instantiated!" );
     return nil;
 }
 +(void)onCreate {

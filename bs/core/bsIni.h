@@ -7,8 +7,12 @@
 
 @implementation bsIni
 static NSMutableDictionary* __bsIni_ini = nil;
--(id)alloc {
-    [NSException raise:NSInvalidArgumentException format:@"%s(%d)Static class 'bsIni' cannot be instantiated!", __FUNCTION__, __LINE__];
++(id)alloc {
+    bsException( @"Static class 'bsIni' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
+    bsException( @"Static class 'bsIni' cannot be instantiated!" );
     return nil;
 }
 +(void)onCreate {

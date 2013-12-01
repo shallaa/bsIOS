@@ -15,7 +15,11 @@
 #pragma mark - bsHttp implementation
 static NSUInteger __bsHttp_httpKey = 0;
 @implementation bsHttp
--(id)alloc {
++(id)alloc {
+    bsException( @"Static class 'bsHttp' cannot be instantiated!" );
+    return nil;
+}
++(id)allocWithZone:(NSZone *)zone {
     bsException( @"Static class 'bsHttp' cannot be instantiated!" );
     return nil;
 }
