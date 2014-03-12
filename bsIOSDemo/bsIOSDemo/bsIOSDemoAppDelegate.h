@@ -12,15 +12,18 @@
 @interface bsIOSDemoAppDelegate : bs
 
 @end
+
 @implementation bsIOSDemoAppDelegate
+
 - (void)ready {
+    
     NSLog(@"App Display Name=%@", self.APP_DISPLAY_NAME);
     NSLog(@"Version=%@", self.VERSION);
     NSLog(@"Version=%@", self.BUILD);
     NSLog(@"ID=%@", self.ID);
     NSLog(@"width=%f", self.width);
     NSLog(@"height=%f", self.height);
-    NSLog(@"%@", self.launchOptions);
+    NSLog(@"launchOptions=%@", self.launchOptions);
     NSLog(@"backgroundTaskSupported=%d", self.backgroundTaskSupported);
     [self.app setStatusBarStyle:UIStatusBarStyleLightContent];
 }

@@ -199,7 +199,7 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
                      }];
     
 }
--(void)rotatePortraitUpsideDown {
+- (void)rotatePortraitUpsideDown {
     _rotateAuto = NO;
     [self willRotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown duration:0.8];
     [UIView animateWithDuration:0.8
