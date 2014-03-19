@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "bsStr.h"
 
 typedef void (^bsBlock)( NSString *blockKey );
 typedef void (^bsUserDefaultChangeBlock)( NSString *blockKey, NSUserDefaults *defaults );
@@ -8,208 +7,27 @@ typedef void (^bsBackgroundTaskBlock)( NSString *blockKey, UIBackgroundTaskIdent
 typedef void (^bsLocaleChangeBlock)( NSString *blockKey, NSLocale *currentLocale );
 typedef void (^bsBatteryBlock)( NSString *blockKey, NSString *batteryState, float batteryLevel );
 typedef void (^bsKeyboradBlock)( NSString *blockKey );
+
 @interface bsNotification : NSObject
+
++ (void)onCreate;
++ (void)blockRemove:(NSString *)key;
+
++ (NSString *)blockWillUnactive:(bsBlock)block;
++ (NSString *)blockDidUnactive:(bsBlock)block;
++ (NSString *)blockWillActive:(bsBlock)block;
++ (NSString *)blockDidActive:(bsBlock)block;
++ (NSString *)blockDidMemoryWarning:(bsBlock)block;
++ (NSString *)blockWillTerminate:(bsBlock)block;
++ (NSString *)blockIdleTimeout:(bsBlock)block;
++ (NSString *)blockBackgroundTask:(bsBackgroundTaskBlock)block;
++ (NSString *)blockBattery:(bsBatteryBlock)block;
++ (NSString *)blockLocaleChange:(bsLocaleChangeBlock)block;
++ (NSString *)blockOrientationChange:(bsOrientationChangeBlock)block;
++ (NSString *)blockUserDefaultChange:(bsUserDefaultChangeBlock)block;
++ (NSString *)blockKeyboardWillShow:(bsKeyboradBlock)block;
++ (NSString *)blockKeyboardDidShow:(bsKeyboradBlock)block;
++ (NSString *)blockKeyboardWillHide:(bsKeyboradBlock)block;
++ (NSString *)blockKeyboardDidHide:(bsKeyboradBlock)block;
+
 @end
-
-@implementation bsNotification
-static NSMutableDictionary* __bsNotification__observers = nil;
-static UIBackgroundTaskIdentifier __bsNotification__backgroundTaskId;
-static BOOL __bsNotification_backgroundSupported;
-+(id)alloc {
-    bsException( @"Static class 'bsNotification' cannot be instantiated!" );
-    return nil;
-}
-+(id)allocWithZone:(NSZone *)zone {
-    bsException( @"Static class 'bsNotification' cannot be instantiated!" );
-    return nil;
-}
-+(void)onCreate {
-    if( __bsNotification__observers ) {
-        bsException(@"Wrong call");
-    }
-    __bsNotification__observers = [[NSMutableDictionary alloc]init];
-    __bsNotification__backgroundTaskId = UIBackgroundTaskInvalid;
-    //백그라운드 작업 진행 지원판단
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(isMultitaskingSupported)]){
-        __bsNotification_backgroundSupported = [UIDevice currentDevice].multitaskingSupported;
-    }
-}
-+(void)blockRemove:(NSString*)key {
-    id o = __bsNotification__observers[key];
-    if( o ) {
-        [[NSNotificationCenter defaultCenter] removeObserver:o];
-        [__bsNotification__observers removeObjectForKey:key];
-    }
-}
-+(NSString*)blockWillUnactive:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockDidUnactive:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockWillActive:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillEnterForegroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockDidActive:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockDidMemoryWarning:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockWillTerminate:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockIdleTimeout:(bsBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:@"IdleTimeOut" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockBackgroundTask:(bsBackgroundTaskBlock)block {
-    if( block == nil ) return nil;
-    if( !__bsNotification_backgroundSupported ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        //백그라운드 작업실시. 최대 10분 지원. 저장해야할 데이터가 있거나 할때 쓸 수 있음
-        __bsNotification__backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-            [[UIApplication sharedApplication] endBackgroundTask:__bsNotification__backgroundTaskId];
-            __bsNotification__backgroundTaskId = UIBackgroundTaskInvalid;
-        }];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            block( uuid, &__bsNotification__backgroundTaskId );
-            [[UIApplication sharedApplication] endBackgroundTask:__bsNotification__backgroundTaskId];
-            __bsNotification__backgroundTaskId = UIBackgroundTaskInvalid;
-        });
-    }];
-    //백그라운드 작업을 중지시킨다.
-    [self blockWillActive:^(NSString *blockKey) {
-        __bsNotification__backgroundTaskId = UIBackgroundTaskInvalid;
-        [self blockRemove:blockKey];
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockBattery:(bsBatteryBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceBatteryStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        UIDevice *device = [UIDevice currentDevice];
-        NSString *batteryState;
-        switch(device.batteryState) {
-            case UIDeviceBatteryStateUnplugged: batteryState = @"Unplugged"; break;
-            case UIDeviceBatteryStateCharging: batteryState = @"Charging"; break;
-            case UIDeviceBatteryStateFull: batteryState = @"Full"; break;
-            default: batteryState = @"Unknown"; break;
-        }
-        block( uuid, batteryState, device.batteryLevel/*0~1*/ );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockLocaleChange:(bsLocaleChangeBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:NSCurrentLocaleDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid, [NSLocale currentLocale] );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockOrientationChange:(bsOrientationChangeBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceOrientationDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid, [[UIDevice currentDevice] orientation] );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockUserDefaultChange:(bsUserDefaultChangeBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid, (NSUserDefaults *) [note object] );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockKeyboardWillShow:(bsKeyboradBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillShowNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockKeyboardDidShow:(bsKeyboradBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardDidShowNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockKeyboardWillHide:(bsKeyboradBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillHideNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-+(NSString*)blockKeyboardDidHide:(bsKeyboradBlock)block {
-    if( block == nil ) return nil;
-    NSString *uuid = [bsStr UUID];
-    id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardDidHideNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
-        block( uuid );
-    }];
-    [__bsNotification__observers setObject:o forKey:uuid];
-    return uuid;
-}
-@end
-
-

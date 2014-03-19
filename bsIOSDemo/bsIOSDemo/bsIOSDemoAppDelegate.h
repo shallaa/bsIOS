@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "bs.h"
 
-@interface bsIOSDemoAppDelegate : bs
+@interface bsIOSDemoAppDelegate : bs {
+    
+}
 
 @end
 
