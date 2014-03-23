@@ -3,7 +3,7 @@
 //  bsIOS
 //
 //  Created by Keiichi Sato on 2014/03/14.
-//  Copyright (c) 2014年 ProjectBS. All rights reserved.
+//  Copyright (c) 2014 ProjectBS. All rights reserved.
 //
 
 #import "bsSimpleSound.h"
@@ -12,26 +12,26 @@
 #import "bsMacro.h"
 #import "bsStr.h"
 
-static NSMutableDictionary* __bsSimpleSound_dic = nil;
+static NSMutableDictionary *__bsSimpleSound_dic = nil;
 
 @implementation bsSimpleSound
 
 + (id)alloc {
     
-    bsException( @"Static class 'bsSimpleSound' cannot be instantiated!" );
+    bsException(@"Static class 'bsSimpleSound' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException( @"Static class 'bsSimpleSound' cannot be instantiated!" );
+    bsException(@"Static class 'bsSimpleSound' cannot be instantiated!");
     return nil;
 }
 
 + (BOOL)AWithKey:(NSString *)key fullFileName:(NSString *)fullFileName {
     
-    @synchronized(__bsSimpleSound_dic) {
-        if( __bsSimpleSound_dic == nil ) {
+    @synchronized (__bsSimpleSound_dic) {
+        if (__bsSimpleSound_dic == nil) {
             __bsSimpleSound_dic = [[NSMutableDictionary alloc] init];
         }
     }
@@ -58,7 +58,7 @@ static NSMutableDictionary* __bsSimpleSound_dic = nil;
     
     if (key == nil) return NO;
     if (__bsSimpleSound_dic == nil) return NO;
-    @synchronized(__bsSimpleSound_dic) {
+    @synchronized (__bsSimpleSound_dic) {
         if ([key isEqualToString:@"*"]) {
             NSArray *keyList = [__bsSimpleSound_dic allValues];
             if (keyList != nil) {
@@ -85,7 +85,7 @@ static NSMutableDictionary* __bsSimpleSound_dic = nil;
     
     if (key == nil) return NO;
     if (__bsSimpleSound_dic == nil) return NO;
-    @synchronized(__bsSimpleSound_dic) {
+    @synchronized (__bsSimpleSound_dic) {
         NSNumber *num = (NSNumber *)[__bsSimpleSound_dic objectForKey:key];
         if (num == nil) return NO;
         SystemSoundID soundID = [num unsignedLongValue];
