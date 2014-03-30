@@ -1,21 +1,23 @@
 //
-//  bsIOSDemoAppDelegate.h
+//  BSDemoAppDelegate.m
 //  bsIOSDemo
 //
-//  Created by Keiichi Sato on 2013/11/25.
-//  Copyright (c) 2013 ProjectBS. All rights reserved.
+//  Created by Keiichi Sato on 2014/03/22.
+//  Copyright (c) 2014 ProjectBS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "bs.h"
+#import "BSDemoAppDelegate.h"
 
-@interface bsIOSDemoAppDelegate : bs {
-    
-}
+//#import "BSDemoViewController.h"
+//#import "BSDemoModel.h"
+
+@interface BSDemoAppDelegate ()
+
+//@property (nonatomic, strong) BSDemoViewController *viewController;
 
 @end
 
-@implementation bsIOSDemoAppDelegate
+@implementation BSDemoAppDelegate
 
 - (void)ready {
     
@@ -28,6 +30,8 @@
     NSLog(@"launchOptions=%@", self.launchOptions);
     NSLog(@"backgroundTaskSupported=%d", self.backgroundTaskSupported);
     [self.app setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+//    self.viewController = [BSDemoViewController sharedViewController];
 }
 
 @end

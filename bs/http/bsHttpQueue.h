@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "bsQue.h"
+#import "bsQueue.h"
 
 @class bsHttpFile;
 
@@ -28,18 +28,10 @@
 #define TIMEOUT        10
 */
 
-@interface bsHttpQue : bsQue {
-    
-@private
-    NSString *_url;
-    NSDictionary *_get;
-    NSDictionary *_post;
-    bsHttpFile *_file;
-}
+@interface bsHttpQueue : bsQueue
 
-+ (bsHttpQue *)GWithKey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end;
-- (void)__setWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file;
-- (void)runWithData:(id *)data error:(bsError **)error;
++ (bsHttpQueue *)GWithKey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end;
+- (id)run:(bsError **)error;
 - (void)clear;
 + (NSData *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file error:(bsError **)error;
 

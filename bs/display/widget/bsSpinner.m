@@ -94,16 +94,16 @@ static NSDictionary *__bsSpinner_keyValues = nil;
 }
 
 #pragma mark - override
--(NSString*)create:(NSString*)name params:(NSString*)params { bsException( @"호출금지" ); return nil; }
--(NSString*)create:(NSString*)name params:(NSString*)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString*)createT:(NSString*)key params:(NSString*)params { bsException( @"호출금지" ); return nil; }
--(NSString*)createT:(NSString*)key params:(NSString*)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params { bsException( @"호출금지" ); return nil; }
--(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(bsDisplay*)childG:(NSString*)key { bsException( @"호출금지" ); return nil; }
--(void)childA:(bsDisplay*)child { bsException( @"호출금지" ); }
--(void)childD:(NSString*)key { bsException( @"호출금지" ); }
--(void)childS:(NSString*)key params:(NSString*)params { bsException( @"호출금지" ); }
--(void)childS:(NSString*)key params:(NSString*)params replace:(id)replace{ bsException( @"호출금지" ); }
+-(NSString*)create:(NSString*)name params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(NSString*)create:(NSString*)name params:(NSString*)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(NSString*)createT:(NSString*)key params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(NSString*)createT:(NSString*)key params:(NSString*)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(bsDisplay*)childG:(NSString*)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+-(void)childA:(bsDisplay*)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+-(void)childD:(NSString*)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+-(void)childS:(NSString*)key params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+-(void)childS:(NSString*)key params:(NSString*)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

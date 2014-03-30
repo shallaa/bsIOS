@@ -1,46 +1,50 @@
 //
-//  bsHttpQue.m
+//  bsHttpQueue.m
 //  bsIOS
 //
 //  Created by Keiichi Sato on 2014/03/17.
 //  Copyright (c) 2014 ProjectBS. All rights reserved.
 //
 
-#import "bsHttpQue.h"
+#import "bsHttpQueue.h"
 
 #import "bsError.h"
 #import "bsHttpFile.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
-@implementation bsHttpQue
+@interface bsHttpQueue ()
 
-+ (bsHttpQue *)GWithKey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end {
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSDictionary *get;
+@property (nonatomic, strong) NSDictionary *post;
+@property (nonatomic, strong) bsHttpFile *file;
+
+@end
+
+@implementation bsHttpQueue
+
++ (bsHttpQueue *)GWithKey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end {
     
-    bsHttpQue *que = (bsHttpQue*)[bsQue GWithClassName:@"bsHttpQue" key:key end:end];
-    [que __setWithUrl:url get:get post:post file:file];
-    return que;
+    bsHttpQueue *queue = (bsHttpQueue *)[bsQueue GWithClassName:@"bsHttpQueue" key:key end:end];
+    queue.url = url;
+    queue.get = get;
+    queue.post = post;
+    queue.file = file;
+    return queue;
 }
 
-- (void)__setWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file {
+- (id)run:(bsError **)error {
     
-    _url = url;
-    _get = get;
-    _post = post;
-    _file = file;
-}
-
-- (void)runWithData:(id *)data error:(bsError **)error {
-    
-    *data = [bsHttpQue sendWithUrl:_url get:_get post:_post file:_file error:error];
+    return [bsHttpQueue sendWithUrl:_url get:_get post:_post file:_file error:error];
 }
 
 - (void)clear {
     
-    _url = nil;
-    _get = nil;
-    _post = nil;
-    _file = nil;
+    self.url = nil;
+    self.get = nil;
+    self.post = nil;
+    self.file = nil;
     [super clear];
 }
 
@@ -72,9 +76,9 @@
     NSString *book = nil;
     *error = nil;
     @try {
-        if( get != nil ) {
+        if (get) {
             NSMutableString *str = [[NSMutableString alloc] init];
-            if( [url rangeOfString:BMARK].length > 0 ) {
+            if ([url rangeOfString:BMARK].length > 0) {
                 NSArray *urlMark = [bsStr split:url seperator:BMARK trim:YES];
                 url = urlMark[0];
                 book = urlMark[1];
@@ -87,14 +91,15 @@
             [get enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, BOOL *stop) {
                 [str appendString:[bsStr urlEncode:key]];
                 [str appendString:GLUE0];
-                if( [obj isKindOfClass:[NSString class]] ) {} else {
+                if ([obj isKindOfClass:[NSString class]]) {
+                } else {
                     obj = [bsStr str:obj];
                 }
                 [str appendString:[bsStr urlEncode:obj]];
-                if( i < j - 1 ) [str appendString:GLUE1];
+                if (i < j - 1) [str appendString:GLUE1];
                 i++;
             }];
-            if( book != nil ) {
+            if (book) {
                 [str appendString:BMARK];
                 [str appendString:book];
             }
@@ -105,17 +110,15 @@
         NSMutableURLRequest *request;
         NSData *returnData;
         NSMutableData *body = [NSMutableData data];
-        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                                          cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                      timeoutInterval:TIMEOUT];
+        request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT];
         [request setValue:KEEPALIVE forHTTPHeaderField:CONNECTION];
-        if( post != nil || file != nil ) {
+        if (post || file) {
             [request setHTTPMethod:POST];
         } else {
             [request setHTTPMethod:GET];
         }
         [request setValue:GZIP1 forHTTPHeaderField:GZIP0];
-        if( file && [file c] > 0 ) {
+        if (file && [file c] > 0) {
             [request setValue:[NSString stringWithFormat:@"%@%@", MULTIPART, BOUNDARY] forHTTPHeaderField:CONTENT_TYPE];
             NSData *crlf =[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding];
             NSData *boundary = [[NSString stringWithFormat:@"--%@", BOUNDARY] dataUsingEncoding:NSUTF8StringEncoding];
@@ -123,8 +126,8 @@
             NSData *disp1 = [DISP1 dataUsingEncoding:NSUTF8StringEncoding];
             NSData *disp2 = [DISP2 dataUsingEncoding:NSUTF8StringEncoding];
             NSData *octet = [OCTET dataUsingEncoding:NSUTF8StringEncoding];
-            if( post != nil ) {
-                [post enumerateKeysAndObjectsUsingBlock:^(NSString* key, id obj, BOOL *stop) {
+            if (post) {
+                [post enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
                     [body appendData:boundary];
                     [body appendData:crlf];
                     [body appendData:disp0];
@@ -132,7 +135,7 @@
                     [body appendData:disp2];
                     [body appendData:crlf];
                     [body appendData:crlf];
-                    if( [obj isKindOfClass:[NSString class]] ) {
+                    if ([obj isKindOfClass:[NSString class]]) {
                         [body appendData:[obj dataUsingEncoding:NSUTF8StringEncoding]];
                     } else {
                         [body appendData:[[bsStr str:obj] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -160,7 +163,7 @@
             [body appendData:crlf];
             [body appendData:crlf];
             //NSLog(@"%@", [bsStr str:body]);
-        } else if( post != nil ) {
+        } else if (post) {
             [request setValue:FORM forHTTPHeaderField:CONTENT_TYPE];
             NSMutableString *bodyStr = [[NSMutableString alloc] init];
             __block NSInteger i, j;
@@ -169,21 +172,23 @@
             [post enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 [bodyStr appendString:[bsStr urlEncode:key]];
                 [bodyStr appendString:GLUE0];
-                if( [obj isKindOfClass:[NSString class]] ) {
+                if ([obj isKindOfClass:[NSString class]]) {
                     [bodyStr appendString:[bsStr urlEncode:obj]];
                 } else {
                     [bodyStr appendString:[bsStr urlEncode:[bsStr str:obj]]];
                 }
-                if( i < j - 1 ) [bodyStr appendString:GLUE1];
+                if (i < j - 1) [bodyStr appendString:GLUE1];
                 i++;
             }];
             [body appendData:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
         }
-        if( file ) [bsHttpFile put:file];
+        if (file) {
+            [bsHttpFile put:file];
+        }
         [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[body length]] forHTTPHeaderField:CONTENT_LENGTH];
         [request setHTTPBody:body];
         returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-        if ( err == nil ) {
+        if (!err) {
             return returnData;
         } else {
             *error = [bsError popWithMsg:[NSString stringWithFormat:@"%@", err] data:err.userInfo func:__FUNCTION__ line:__LINE__];

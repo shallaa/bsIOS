@@ -63,7 +63,7 @@
 
 //worker
 #import "bsCallback.h"
-#import "bsQue.h"
+#import "bsQueue.h"
 #import "bsWorker.h"
 
 @interface bs : UIApplication <UIApplicationDelegate>  {

@@ -19,20 +19,20 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (id)alloc {
     
-    bsException(@"Static class 'bsNotification' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsNotification' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException(@"Static class 'bsNotification' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsNotification' cannot be instantiated!");
     return nil;
 }
 
 + (void)onCreate {
     
     if (__bsNotification__observers) {
-        bsException(@"Wrong call");
+        bsException(NSInternalInconsistencyException, @"Wrong call");
     }
     __bsNotification__observers = [[NSMutableDictionary alloc] init];
     __bsNotification__backgroundTaskId = UIBackgroundTaskInvalid;

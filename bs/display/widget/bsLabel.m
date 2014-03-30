@@ -128,8 +128,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
             case kbsLabelTextShadowColor: label_.shadowColor = [bsStr color:v]; break;
             case kbsLabelTextShadowOffset: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 2 ) {
-                    bsException( @"text-shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v );
+                if ([c count] != 2) {
+                    bsException(NSInvalidArgumentException, @"text-shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v);
                 }
                 label_.shadowOffset = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
@@ -146,8 +146,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
             case kbsLabelFontSize: fontSize = [v floatValue]; break;
             case kbsLabelPadding: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 4 ) {
-                    bsException( @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v );
+                if ([c count] != 4) {
+                    bsException(NSInvalidArgumentException, @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v);
                 }
                 //NSString *layout = [bsStr templateSrc:kbsDisplayConstraintPadding replace:@[@"label_", @"labelVertical", c[0],c[1],@"labelHorizontal",c[2],c[3]]];
                 //[self autolayout:layout views:NSDictionaryOfVariableBindings(label_)];
@@ -179,8 +179,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 maxSizeSetting_ = YES;
                 sizeChangeReq = YES;
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 2 ) {
-                    bsException( @"max-size value %@ is invalid. It should be a value of the form maxWidth|maxHeight", v );
+                if ([c count] != 2) {
+                    bsException(NSInvalidArgumentException, @"max-size value %@ is invalid. It should be a value of the form maxWidth|maxHeight", v);
                 }
                 maxSize_ = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
@@ -188,8 +188,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 minSizeSetting_ = YES;
                 sizeChangeReq = YES;
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 2 ) {
-                    bsException( @"min-size value %@ is invalid. It should be a value of the form minWidth|minHeight", v );
+                if ([c count] != 2) {
+                    bsException(NSInvalidArgumentException, @"min-size value %@ is invalid. It should be a value of the form minWidth|minHeight", v);
                 }
                 minSize_ = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
@@ -218,13 +218,13 @@ static NSDictionary* __bsLabel_keyValues = nil;
         }
         label_.font = font;
     }
-    if( text != nil ) {
+    if (text != nil) {
         label_.text = text;
     }
-    if( sizeChangeReq && autoResize_ ) {
+    if (sizeChangeReq && autoResize_) {
         UIFont *font = label_.font;
         CGSize labelSize = [label_.text sizeWithAttributes:@{NSFontAttributeName:font}];
-        if( maxSizeSetting_ || minSizeSetting_ ) {
+        if (maxSizeSetting_ || minSizeSetting_) {
             //UIFont *font = label_.font;
             CGFloat minW, minH, maxW, maxH, w, h;
             CGSize size;
@@ -246,8 +246,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 minW = 0;
                 minH = 0;
             }
-            if( minW > maxW || minH > maxH ) {
-                bsException( @"min-size greater than max-size." );
+            if (minW > maxW || minH > maxH) {
+                bsException(NSInvalidArgumentException, @"min-size greater than max-size.");
             }
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
             paragraphStyle.lineBreakMode = label_.lineBreakMode;
@@ -271,16 +271,16 @@ static NSDictionary* __bsLabel_keyValues = nil;
 }
 
 #pragma mark - override
--(NSString *)create:(NSString *)name params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString *)createT:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(bsDisplay *)childG:(NSString *)key { bsException( @"호출금지" ); return nil; }
--(void)childA:(bsDisplay *)child { bsException( @"호출금지" ); }
--(void)childD:(NSString *)key { bsException( @"호출금지" ); }
--(void)childS:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); }
--(void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException( @"호출금지" ); }
+- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

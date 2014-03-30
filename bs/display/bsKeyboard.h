@@ -2,7 +2,7 @@
 
 @interface bsKeyboard : NSObject
 
-+(void)hideKeyboard;
-+(void)__hideKeyboardRecursion:(UIView *)view;
++ (void)hideKeyboard;
++ (void)__hideKeyboardRecursion:(UIView *)view;
 
 @end

@@ -10,6 +10,15 @@
 
 static NSMutableArray *__bsError_pool = nil;
 
+@interface bsError ()
+
+@property (nonatomic, strong, readwrite) NSString *message;
+@property (nonatomic, strong, readwrite) NSString *functionName;
+@property (nonatomic, strong, readwrite) id data;
+@property (nonatomic, readwrite) NSUInteger line;
+
+@end
+
 @implementation bsError
 
 + (bsError *)popWithMsg:(NSString *)msg data:(id)data func:(const char *)func line:(unsigned int)line {
@@ -31,6 +40,7 @@ static NSMutableArray *__bsError_pool = nil;
 }
 
 + (void)put:(bsError *)error {
+    
     @synchronized( __bsError_pool) {
         if (__bsError_pool == nil) {
             __bsError_pool = [[NSMutableArray alloc] init];
@@ -40,44 +50,24 @@ static NSMutableArray *__bsError_pool = nil;
 }
 
 + (BOOL)isError:(id)data {
-    return [data isKindOfClass:[bsError class]] ? YES : NO;
+    
+    return [data isKindOfClass:[bsError class]];
 }
 
 - (void)setWithMsg:(NSString *)msg data:(id)data func:(const char *)func line:(unsigned int)line {
     
-    _msg = [msg copy];
-    _line = line;
-    _data = data;
-    _func = [NSString stringWithFormat:@"%s", func];
-}
-
-- (NSString *)msg {
-    
-    return _msg;
-}
-
-- (NSString *)func {
-    
-    return _func;
-}
-
-- (NSUInteger)line {
-    
-    return _line;
-}
-
-- (id)data {
-    
-    return _data;
+    self.message = msg;
+    self.line = line;
+    self.data = data;
+    self.functionName = [NSString stringWithFormat:@"%s", func];
 }
 
 - (NSString *)str {
     
-    // TODO: 보통때는 _func, _line은 표시하지 않는다.
     if (_data) {
-        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n\tdata: %@\n)", _func, (unsigned long)_line, _msg, _data];
+        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n\tdata: %@\n)", _functionName, (unsigned long)_line, _message, _data];
     } else {
-        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n)", _func, (unsigned long)_line, _msg];
+        return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n)", _functionName, (unsigned long)_line, _message];
     }
 }
 

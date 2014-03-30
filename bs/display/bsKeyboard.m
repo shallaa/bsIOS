@@ -14,13 +14,13 @@
 
 + (id)alloc {
     
-    bsException( @"Static class 'bsKeyboard' cannot be instantiated!" );
+    bsException(NSInternalInconsistencyException, @"Static class 'bsKeyboard' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException( @"Static class 'bsKeyboard' cannot be instantiated!" );
+    bsException(NSInternalInconsistencyException, @"Static class 'bsKeyboard' cannot be instantiated!");
     return nil;
 }
 

@@ -20,20 +20,20 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (id)alloc {
     
-    bsException(@"Static class 'bsIO' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsIO' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException(@"Static class 'bsIO' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsIO' cannot be instantiated!");
     return nil;
 }
 
 + (void)onCreate {
     
     if (__bsIO_storagePath) {
-        bsException(@"Wrong call");
+        bsException(NSInvalidArgumentException, @"Wrong call");
     }
     __bsIO_storagePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     __bsIO_cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -43,7 +43,7 @@ static NSFileManager *__bsIO_fm = nil;
         NSError *error = nil;
         [__bsIO_fm createDirectoryAtPath:__bsIO_storagePath withIntermediateDirectories:YES attributes:nil error:&error];
         if (error) {
-            bsException(@"A storage creation failded");
+            bsException(NSInternalInconsistencyException, @"A storage creation failded");
         }
     }
 }
@@ -58,12 +58,12 @@ static NSFileManager *__bsIO_fm = nil;
 + (NSData *)assetG:(NSString *)name {
     
     if (name == nil) {
-        bsException( @")A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     NSString *path = [bsIO __assetPath:name];
     NSData *data = [__bsIO_fm contentsAtPath:path];
     if (data == nil) {
-        bsException(@"A filename or a file path is wrong. name=%@", name);
+        bsException(NSInvalidArgumentException, @"A filename or a file path is wrong. name=%@", name);
     }
     return data;
 }
@@ -93,7 +93,7 @@ static NSFileManager *__bsIO_fm = nil;
 + (NSData *)storageG:(NSString *)name {
     
     if (name == nil) {
-        bsException( @"A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     NSString *path = [bsIO __storagePath:name];
     NSData *data = [__bsIO_fm contentsAtPath:path];
@@ -103,7 +103,7 @@ static NSFileManager *__bsIO_fm = nil;
 + (BOOL)storageS:(NSString *)name data:(NSData *)data {
     
     if (name == nil) {
-        bsException( @"A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     if (data == nil) {
         return [self storageD:name];
@@ -119,7 +119,7 @@ static NSFileManager *__bsIO_fm = nil;
 + (BOOL)storageD:(NSString *)name {
     
     if (name == nil) {
-        bsException( @")A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     NSString *path = [bsIO __storagePath:name];
     BOOL success = [__bsIO_fm removeItemAtPath:path error:nil];
@@ -151,7 +151,7 @@ static NSFileManager *__bsIO_fm = nil;
 + (NSData *)cacheG:(NSString *)name {
     
     if (name == nil) {
-        bsException(@"A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     NSString *path = [bsIO __cachePath:name];
     NSData *data = nil;
@@ -164,10 +164,10 @@ static NSFileManager *__bsIO_fm = nil;
 + (BOOL)cacheS:(NSString *)name data:(NSData *)data {
     
     if (name == nil) {
-        bsException(@"A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     if (data == nil) {
-        bsException(@"A data is NULL");
+        bsException(NSInvalidArgumentException, @"A data is NULL");
     }
     if (![bsIO __checkCachePath:name]) {
         return NO;
@@ -180,7 +180,7 @@ static NSFileManager *__bsIO_fm = nil;
 + (BOOL)cacheD:(NSString *)name {
     
     if (name == nil) {
-        bsException(@"A name is NULL");
+        bsException(NSInvalidArgumentException, @"A name is NULL");
     }
     NSString *path = [bsIO __cachePath:name];
     BOOL success = [__bsIO_fm removeItemAtPath:path error:nil];

@@ -161,8 +161,8 @@ static NSDictionary* __bsButton_keyValues = nil;
             case kbsButtonHighlighted: button_.highlighted = [bsStr BOOLEAN:v]; break;
             case kbsButtonLbShadowOffset: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 2 ) {
-                    bsException( @"text-shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v );
+                if ([c count] != 2) {
+                    bsException(NSInvalidArgumentException, @"text-shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v);
                 }
                 button_.titleLabel.shadowOffset = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
@@ -214,8 +214,8 @@ static NSDictionary* __bsButton_keyValues = nil;
             case kbsButtonAutoResize: autoResize_ = [bsStr BOOLEAN:v]; break;
             case kbsButtonCapInset: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 4 ) {
-                    bsException( @"cap-insets value %@ is invalid. It should be a value of the form top|right|bottom|left", v );
+                if ([c count] != 4) {
+                    bsException(NSInvalidArgumentException, @"cap-insets value %@ is invalid. It should be a value of the form top|right|bottom|left", v);
                 }
                 capInsets_.top = [c[0] floatValue];
                 capInsets_.right = [c[1] floatValue];
@@ -293,25 +293,25 @@ static NSDictionary* __bsButton_keyValues = nil;
 
 - (void)blockTouched:(bsButtonTouchedBlock)block {
     
-    //if( objc_getAssociatedObject(self, &blockKey_) ) bsException( @"두 번 정의할 수 없습니다." );
+    //if (objc_getAssociatedObject(self, &blockKey_)) bsException(NSInvalidArgumentException, @"두 번 정의할 수 없습니다.");
     objc_setAssociatedObject(self, &blockKey_, block, OBJC_ASSOCIATION_RETAIN);
-    if( addedTouch_ == NO ) {
+    if (!addedTouch_) {
         addedTouch_ = YES;
         [button_ addTarget:self action:@selector(__touched:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
 #pragma mark - override
-- (NSString *)create:(NSString *)name params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (bsDisplay *)childG:(NSString *)key { bsException( @"호출금지" ); return nil; }
-- (void)childA:(bsDisplay *)child { bsException( @"호출금지" ); }
-- (void)childD:(NSString *)key { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); }
+- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

@@ -24,7 +24,7 @@
 
 - (id)initWithBlock:(bsCallbackBlock)callbackBlock {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         block_ = callbackBlock;
     }
     return self;
@@ -48,16 +48,18 @@
 
 - (void)callbackWithKey:(NSString *)key data:(id)data error:(bsError *)error {
     
-    if (_target && [_target respondsToSelector:_selector]) {
+    if ([_target respondsToSelector:_selector]) {
         if ([_target isKindOfClass:[UIView class]] && ![NSThread isMainThread]) {
-            dispatch_sync( dispatch_get_main_queue(), ^{
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 objc_msgSend(_target, _selector, key, data, error);
             });
         } else {
-            objc_msgSend( _target, _selector, key, data, error );
+            objc_msgSend(_target, _selector, key, data, error);
         }
     } else {
-        if (block_) block_(key, data, error);
+        if (block_) {
+            block_(key, data, error);
+        }
     }
 }
 

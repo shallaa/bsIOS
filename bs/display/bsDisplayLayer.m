@@ -29,7 +29,9 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 - (id)init {
     
     if (self = [super init]) {
-        if (__bsDisplayLayer) bsException(@"bsDisplayLayer은 두 번 이상 초기화 될 수 없습니다.");
+        if (__bsDisplayLayer) {
+            bsException(NSInternalInconsistencyException, @"bsDisplayLayer은 두 번 이상 초기화 될 수 없습니다.");
+        }
         @synchronized(parents_) {
             if (parents_ == nil) {
                 parents_ = [[NSMutableDictionary alloc]init];
@@ -41,41 +43,61 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (void)parentA:(bsDisplay *)parent parentName:(NSString *)parentName {
     
-    if (parent == nil) bsException(@"parent view should be not nil");
-    if (parentName == nil) bsException(@"parent name should be not nil");
-    if (![parent isMemberOfClass:[bsDisplay class]]) bsException(@"parent should be a member of bsDisplay");
+    if (parent == nil) {
+        bsException(NSInvalidArgumentException, @"parent view should be not nil");
+    }
+    if (parentName == nil) {
+        bsException(NSInvalidArgumentException, @"parent name should be not nil");
+    }
+    if (![parent isMemberOfClass:[bsDisplay class]]) {
+        bsException(NSInvalidArgumentException, @"parent should be a member of bsDisplay");
+    }
     @synchronized(parents_) {
         if (parents_[parentName] || [[parents_ allKeysForObject:parent] count] > 0) {
-            bsException(@"already has parent(=%@) or parent view(=%@)", parentName, parent);
+            bsException(NSInvalidArgumentException, @"already has parent(=%@) or parent view(=%@)", parentName, parent);
         } else {
             parents_[parentName] = [[NSMutableDictionary alloc] initWithObjectsAndKeys:parent, @"parent", [[NSMutableDictionary alloc] init], @"layers" ,nil];
         }
     }
     parent.clipsToBounds = NO;
 }
--(void)parentD:(NSString*)parentName {
+
+- (void)parentD:(NSString *)parentName {
+    
     [parents_ removeObjectForKey:parentName];
 }
--(bsDisplay*)parentG:(NSString*)parentName {
+
+- (bsDisplay *)parentG:(NSString *)parentName {
+    
     NSDictionary *parent = parents_[parentName];
-    if( parent == nil ) {
-        bsException( @"parent(=%@) is none.", parentName );
+    if (parent == nil) {
+        bsException(NSInvalidArgumentException, @"parent(=%@) is none.", parentName);
     }
     return parent[@"parent"];
 }
--(void)parentS:(NSString*)parentName params:(NSString*)params {
+
+- (void)parentS:(NSString *)parentName params:(NSString *)params {
+    
     bsDisplay *parent = [self parentG:parentName];
     [parent s:params];
 }
--(void)parentS:(NSString *)parentName params:(NSString *)params replace:(id)replace {
+
+- (void)parentS:(NSString *)parentName params:(NSString *)params replace:(id)replace {
+    
     bsDisplay *parent = [self parentG:parentName];
     [parent s:params replace:replace];
 }
--(bsDisplay*)layerG:(NSString*)layerName parentName:(NSString*)parentName {
+
+- (bsDisplay *)layerG:(NSString *)layerName parentName:(NSString *)parentName {
+    
     NSDictionary *dic = parents_[parentName];
-    if( dic == nil ) bsException( @"parent(=%@) is not exist", parentName );
+    if (dic == nil) {
+        bsException(NSInvalidArgumentException, @"parent(=%@) is not exist", parentName );
+    }
     bsDisplay *layer = dic[@"layers"][layerName];
-    if( layer == nil ) bsException( @"layer(=%@) is not exist", layerName );
+    if (layer == nil) {
+        bsException(NSInvalidArgumentException, @"layer(=%@) is not exist", layerName );
+    }
     return layer;
 }
 
@@ -92,10 +114,14 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 - (bsDisplay *)layerA:(NSString *)layerName hidden:(BOOL)hidden parentName:(NSString *)parentName {
     
     NSDictionary *dic = parents_[parentName];
-    if( dic == nil ) bsException( @"parent(=%@) is not exist", parentName );
+    if (dic == nil) {
+        bsException(NSInvalidArgumentException, @"parent(=%@) is not exist", parentName);
+    }
     bsDisplay *parent = dic[@"parent"];
     bsDisplay *layer = dic[@"layers"][layerName];
-    if( layer ) bsException( @"already has layer(=%@) in parent(=%@)", layerName, parentName );
+    if (layer) {
+        bsException(NSInvalidArgumentException, @"already has layer(=%@) in parent(=%@)", layerName, parentName);
+    }
     layer = [bsDisplay G:@"display" params:@"key,@@0,x,0,y,0,w,@@1,h,@@2,hidden,@@3,bg,#0000" replace:@[layerName, @0, @0, @(hidden)]];
     layer.clipsToBounds = NO;
     [parent addSubview:layer];
@@ -119,10 +145,16 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 - (bsDisplay *)layerD:(NSString *)layerName parentName:(NSString *)parentName {
     
     NSDictionary *dic = parents_[parentName];
-    if (dic == nil) bsException( @"parent(=%@) is not exist", parentName );
+    if (dic == nil) {
+        bsException(NSInvalidArgumentException, @"parent(=%@) is not exist", parentName);
+    }
     bsDisplay *layer = dic[@"layers"][layerName];
-    if( !layer ) bsException( @"layer(=%@) is not defined in parent(=%@)", layerName, parentName );
-    if( [layer superview] ) [layer removeFromSuperview];
+    if (!layer) {
+        bsException(NSInvalidArgumentException, @"layer(=%@) is not defined in parent(=%@)", layerName, parentName );
+    }
+    if ([layer superview]) {
+        [layer removeFromSuperview];
+    }
     [(NSMutableDictionary*)dic[@"layers"] removeObjectForKey:layerName];
     return layer;
 }

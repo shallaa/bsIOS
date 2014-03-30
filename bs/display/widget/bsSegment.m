@@ -100,30 +100,32 @@ static NSDictionary* __bsSegment_keyValues = nil;
 - (void)__valueChanged:(UISegmentedControl *)seg {
     
     bsSegmentValueChangedBlock block = objc_getAssociatedObject(self, &blockKey_);
-    if (block) block(self, seg.selectedSegmentIndex);
+    if (block) {
+        block(self, seg.selectedSegmentIndex);
+    }
 }
 
 - (void)blockValueChanged:(bsSegmentValueChangedBlock)block {
     
-    //if( objc_getAssociatedObject(self, &blockKey_) ) bsException( @"두 번 정의할 수 없습니다." );
+    //if( objc_getAssociatedObject(self, &blockKey_) ) bsException(NSInvalidArgumentException, @"두 번 정의할 수 없습니다.");
     objc_setAssociatedObject(self, &blockKey_, block, OBJC_ASSOCIATION_RETAIN);
-    if( addedValueChanged_ == NO ) {
+    if (!addedValueChanged_) {
         addedValueChanged_ = YES;
         [segment_ addTarget:self action:@selector(__valueChanged:) forControlEvents:UIControlEventValueChanged];
     }
 }
 
 #pragma mark - override
-- (NSString *)create:(NSString *)name params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (bsDisplay *)childG:(NSString *)key { bsException( @"호출금지" ); return nil; }
-- (void)childA:(bsDisplay *)child { bsException( @"호출금지" ); }
-- (void)childD:(NSString *)key { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException( @"호출금지" ); }
+- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

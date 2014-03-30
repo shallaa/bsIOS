@@ -10,19 +10,19 @@
 
 @implementation bsDoc
 
-+(id)G:(bsDisplay*)parent query:(id)query {
++ (id)G:(bsDisplay*)parent query:(id)query {
     return nil;
 }
 
-+(void)S:(bsDisplay*)parent query:(id)query params:(id)params {
++ (void)S:(bsDisplay*)parent query:(id)query params:(id)params {
 
 }
 
-+(void)D:(bsDisplay*)parent query:(id)query {
++ (void)D:(bsDisplay*)parent query:(id)query {
 
 }
 
-+(void)A:(bsDisplay*)parent child:(id)child params:(id)params {
++ (void)A:(bsDisplay*)parent child:(id)child params:(id)params {
     
 }
 

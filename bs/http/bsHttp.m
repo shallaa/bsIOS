@@ -13,25 +13,31 @@
 #import "bsWorker.h"
 #import "bsError.h"
 #import "bsHttpFile.h"
-#import "bsHttpQue.h"
+#import "bsHttpQueue.h"
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
 static NSUInteger __bsHttp_httpKey = 0;
 
+@interface bsHttp () {
+//    NSUInteger __bsHttp_httpKey;
+}
+
+@end
+
 @implementation bsHttp
 
-+ (id)alloc {
++ (id)sharedObject {
     
-    bsException( @"Static class 'bsHttp' cannot be instantiated!" );
-    return nil;
+    static bsHttp *sharedObject = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedObject = [[bsHttp alloc] init];
+    });
+    return sharedObject;
 }
 
-+ (id)allocWithZone:(NSZone *)zone {
-    
-    bsException( @"Static class 'bsHttp' cannot be instantiated!" );
-    return nil;
-}
+//- (NSString *)sendRequestWithURLString
 
 + (NSString *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end {
     
@@ -56,22 +62,22 @@ static NSUInteger __bsHttp_httpKey = 0;
 
 + (void)sendWithkey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end {
     
-    [bsWorker A:[bsHttpQue GWithKey:key url:url get:get post:post file:file end:end]];
+    [bsWorker A:[bsHttpQueue GWithKey:key url:url get:get post:post file:file end:end]];
 }
 
 + (void)sendWithkey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file endBlock:(bsCallbackBlock)end {
     
-    [bsWorker A:[bsHttpQue GWithKey:key url:url get:get post:post file:file end:[bsCallback GWithBlock:end]]];
+    [bsWorker A:[bsHttpQueue GWithKey:key url:url get:get post:post file:file end:[bsCallback GWithBlock:end]]];
 }
 
 + (void)sendWithkey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file target:(id)target selector:(SEL)selector {
     
-    [bsWorker A:[bsHttpQue GWithKey:key url:url get:get post:post file:file end:[bsCallback GWithTarget:target selector:selector]]];
+    [bsWorker A:[bsHttpQueue GWithKey:key url:url get:get post:post file:file end:[bsCallback GWithTarget:target selector:selector]]];
 }
 
-+ (NSData*)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file error:(bsError **)error {
++ (NSData *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file error:(bsError **)error {
     
-    return [bsHttpQue sendWithUrl:url get:get post:post file:file error:error];
+    return [bsHttpQueue sendWithUrl:url get:get post:post file:file error:error];
 }
 
 + (void)cancel:(NSString *)key {

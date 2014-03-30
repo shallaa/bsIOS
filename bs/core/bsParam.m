@@ -17,27 +17,28 @@ static NSMutableDictionary *__bsParam_dic = nil;
 + (NSString *)G:(NSString *)key {
     
     if (__bsParam_dic == nil) {
-        bsException(@"key(=%@) is undefined", key);
+        bsException(NSInternalInconsistencyException, @"key(=%@) is undefined", key);
     }
     @synchronized( __bsParam_dic ) {
         NSString *params = __bsParam_dic[key];
         if (params == nil) {
-            bsException(@"key(=%@) is undefined", key);
+            bsException(NSInvalidArgumentException, @"key(=%@) is undefined", key);
         }
         return params;
     }
 }
 
 + (void)A:(NSString *)key params:(NSString *)params {
-    if( key == nil || params == nil ) {
-        bsException( @"key or params is null" );
+    
+    if (key == nil || params == nil) {
+        bsException(NSInvalidArgumentException, @"key or params is null" );
     }
-    @synchronized( __bsParam_dic ) {
-        if( __bsParam_dic == nil ) {
-            __bsParam_dic = [[NSMutableDictionary alloc]init];
+    @synchronized (__bsParam_dic) {
+        if (__bsParam_dic == nil) {
+            __bsParam_dic = [[NSMutableDictionary alloc] init];
         }
-        if( __bsParam_dic[key] ) {
-            bsException( @"Already this key(=%@) is defined", key );
+        if (__bsParam_dic[key]) {
+            bsException(NSInvalidArgumentException, @"Already this key(=%@) is defined", key);
         }
         __bsParam_dic[key] = params;
     }

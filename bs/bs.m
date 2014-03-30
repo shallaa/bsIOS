@@ -22,8 +22,10 @@ static bs *__bs_SELF = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    if( __bs_SELF != nil ) {
-        bsException( @"bs cannot create twice!" );
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (__bs_SELF) {
+        bsException(NSInternalInconsistencyException, @"bs cannot create twice!");
     }
     __bs_SELF = self;
     
@@ -79,10 +81,12 @@ static bs *__bs_SELF = nil;
 }
 
 - (bsDisplay *)_getRoot {
+    
     return (bsDisplay*)self.window.rootViewController.view;
 }
 
 - (bsDisplayController *)_getRootController {
+    
     return (bsDisplayController *)self.window.rootViewController;
 }
 
@@ -131,7 +135,9 @@ static bs *__bs_SELF = nil;
 
 - (void)__resetIdleTimer {
     
-    if (idleTimer_ == nil) return;
+    if (idleTimer_ == nil) {
+        return;
+    }
     if (idleTimer_.isValid) {
         [idleTimer_ invalidate];
     }
@@ -275,34 +281,34 @@ static bs *__bs_SELF = nil;
 + (NSString*)ipAddr { return [bsHttp ipAddr]; }
 
 #pragma mark - display
-+ (bsDisplay*)displayG:(NSString*)name params:(NSString*)params { return [bsDisplay G:name params:params]; }
-+ (bsDisplay*)displayG:(NSString*)name params:(NSString*)params replace:(id)replace { return [bsDisplay G:name params:params replace:replace]; }
-+ (bsDisplay*)displayGT:(NSString*)key params:(NSString*)params { return [bsDisplay GT:key params:params]; }
-+ (bsDisplay*)displayGT:(NSString*)key params:(NSString*)params replace:(id)replace { return [bsDisplay GT:key params:params replace:replace]; }
-+ (bsDisplay*)displayG:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params { return [bsDisplay G:name styleNames:styleNames params:params]; }
-+ (bsDisplay*)displayG:(NSString*)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { return [bsDisplay G:name styleNames:styleNames params:params replace:replace]; }
-+ (void)displayAT:(NSString*)key name:(NSString*)name params:(NSString*)params { [bsDisplay AT:key name:name params:params]; }
-+ (void)displayAS:(NSString*)styleName params:(NSString*)params { [bsDisplay AS:styleName params:params]; }
++ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params { return [bsDisplay G:name params:params]; }
++ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params replace:(id)replace { return [bsDisplay G:name params:params replace:replace]; }
++ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params { return [bsDisplay GT:key params:params]; }
++ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params replace:(id)replace { return [bsDisplay GT:key params:params replace:replace]; }
++ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params { return [bsDisplay G:name styleNames:styleNames params:params]; }
++ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { return [bsDisplay G:name styleNames:styleNames params:params replace:replace]; }
++ (void)displayAT:(NSString *)key name:(NSString *)name params:(NSString *)params { [bsDisplay AT:key name:name params:params]; }
++ (void)displayAS:(NSString *)styleName params:(NSString *)params { [bsDisplay AS:styleName params:params]; }
 
 #pragma mark - alert
-+ (void)alert:(NSString*)params block:(bsAlertBlock)block { [bsAlert alert:params block:block]; }
-+ (void)alert:(NSString*)params replace:(id)replace block:(bsAlertBlock)block { [bsAlert alert:params replace:replace block:block]; }
++ (void)alert:(NSString *)params block:(bsAlertBlock)block { [bsAlert alert:params block:block]; }
++ (void)alert:(NSString *)params replace:(id)replace block:(bsAlertBlock)block { [bsAlert alert:params replace:replace block:block]; }
 
 #pragma mark - display layer
-+ (void)layerParentA:(bsDisplay*)parent parentName:(NSString*)parentName { [[bsDisplayLayer center] parentA:parent parentName:parentName]; }
-+ (void)layerParentD:(NSString*)parentName { [[bsDisplayLayer center] parentD:parentName]; }
-+ (bsDisplay*)layerParentG:(NSString*)parentName { return [[bsDisplayLayer center] parentG:parentName]; }
-+ (void)layerParentS:(NSString*)parentName params:(NSString*)params { [[bsDisplayLayer center] parentS:parentName params:params]; }
++ (void)layerParentA:(bsDisplay *)parent parentName:(NSString *)parentName { [[bsDisplayLayer center] parentA:parent parentName:parentName]; }
++ (void)layerParentD:(NSString *)parentName { [[bsDisplayLayer center] parentD:parentName]; }
++ (bsDisplay *)layerParentG:(NSString *)parentName { return [[bsDisplayLayer center] parentG:parentName]; }
++ (void)layerParentS:(NSString *)parentName params:(NSString *)params { [[bsDisplayLayer center] parentS:parentName params:params]; }
 + (void)layerParentS:(NSString *)parentName params:(NSString *)params replace:(id)replace { [[bsDisplayLayer center] parentS:parentName params:params replace:replace]; }
-+ (bsDisplay*)layerG:(NSString*)layerName parentName:(NSString*)parentName { return [[bsDisplayLayer center] layerG:layerName parentName:parentName]; }
-+ (NSArray*)layersG:(NSString*)layerNames parentName:(NSString*)parentName { return [[bsDisplayLayer center] layersG:layerNames parentName:parentName]; }
-+ (bsDisplay*)layerA:(NSString*)layerName hidden:(BOOL)hidden parentName:(NSString*)parentName { return [[bsDisplayLayer center] layerA:layerName hidden:hidden parentName:parentName]; }
-+ (NSArray*)layersA:(NSString*)layerNames hidden:(BOOL)hidden parentName:(NSString*)parentName { return [[bsDisplayLayer center] layersA:layerNames hidden:hidden parentName:parentName]; }
-+ (bsDisplay*)layerD:(NSString*)layerName parentName:(NSString*)parentName { return [[bsDisplayLayer center] layerD:layerName parentName:parentName]; }
-+ (NSArray*)layersD:(NSString*)layerNames parentName:(NSString*)parentName { return [[bsDisplayLayer center] layersD:layerNames parentName:parentName]; }
-+ (void)layerS:(NSString*)layerName parentName:(NSString*)parentName params:(NSString*)params { [[bsDisplayLayer center] layerS:layerName parentName:parentName params:params]; }
-+ (void)layerS:(NSString*)layerName parentName:(NSString*)parentName params:(NSString*)params replace:(id)replace { [[bsDisplayLayer center] layerS:layerName parentName:parentName params:params replace:replace]; }
-+ (void)layerChildD:(NSString*)layerName parentName:(NSString *)parentName childKeys:(NSString*)childKeys { [[bsDisplayLayer center] layerChildD:layerName parentName:parentName childKeys:childKeys]; }
++ (bsDisplay *)layerG:(NSString *)layerName parentName:(NSString *)parentName { return [[bsDisplayLayer center] layerG:layerName parentName:parentName]; }
++ (NSArray *)layersG:(NSString *)layerNames parentName:(NSString *)parentName { return [[bsDisplayLayer center] layersG:layerNames parentName:parentName]; }
++ (bsDisplay *)layerA:(NSString *)layerName hidden:(BOOL)hidden parentName:(NSString *)parentName { return [[bsDisplayLayer center] layerA:layerName hidden:hidden parentName:parentName]; }
++ (NSArray *)layersA:(NSString *)layerNames hidden:(BOOL)hidden parentName:(NSString *)parentName { return [[bsDisplayLayer center] layersA:layerNames hidden:hidden parentName:parentName]; }
++ (bsDisplay *)layerD:(NSString *)layerName parentName:(NSString *)parentName { return [[bsDisplayLayer center] layerD:layerName parentName:parentName]; }
++ (NSArray *)layersD:(NSString *)layerNames parentName:(NSString *)parentName { return [[bsDisplayLayer center] layersD:layerNames parentName:parentName]; }
++ (void)layerS:(NSString *)layerName parentName:(NSString *)parentName params:(NSString *)params { [[bsDisplayLayer center] layerS:layerName parentName:parentName params:params]; }
++ (void)layerS:(NSString *)layerName parentName:(NSString *)parentName params:(NSString *)params replace:(id)replace { [[bsDisplayLayer center] layerS:layerName parentName:parentName params:params replace:replace]; }
++ (void)layerChildD:(NSString *)layerName parentName:(NSString *)parentName childKeys:(NSString *)childKeys { [[bsDisplayLayer center] layerChildD:layerName parentName:parentName childKeys:childKeys]; }
 
 #pragma mark - sound
 + (BOOL)soundA:(NSString *)key fullFileName:(NSString *)fullFileName { return [bsSimpleSound AWithKey:key fullFileName:fullFileName]; }

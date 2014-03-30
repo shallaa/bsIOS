@@ -18,19 +18,21 @@ static NSMutableDictionary *__bsIni_ini = nil;
 
 + (id)alloc {
     
-    bsException(@"Static class 'bsIni' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsIni' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException(@"Static class 'bsIni' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsIni' cannot be instantiated!");
     return nil;
 }
 
 + (void)onCreate {
     
-    if (__bsIni_ini) bsException(@"Wrong call");
+    if (__bsIni_ini) {
+        bsException(NSInvalidArgumentException, @"Wrong call");
+    }
     __bsIni_ini = [[NSMutableDictionary alloc] init];
     @try {
         NSArray *lines = [bsStr row:[bsStr str:[bsIO assetG:@"bs.ini"]]];

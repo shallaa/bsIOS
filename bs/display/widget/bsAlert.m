@@ -25,7 +25,7 @@ static BOOL __bsAlert_showing = NO;
     if( __bsAlert_reserve == nil ) {
         __bsAlert_reserve = [NSMutableArray array];
     }
-    if( __bsAlert_showing == YES && reserved == NO ) {
+    if (__bsAlert_showing && !reserved) {
         [__bsAlert_reserve addObject:@{@"params":params, @"block":block==nil?[NSNull null]:[block copy]}];
         return;
     }
@@ -33,8 +33,8 @@ static BOOL __bsAlert_showing = NO;
     NSArray *p = [bsStr col:params];
     NSString *title = nil, *message = nil, *cancelTitle = nil;
     NSArray *otherTitles = nil;
-    if( [p count] % 2 != 0 ) {
-        bsException(@"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
+    if ([p count] % 2) {
+        bsException(NSInvalidArgumentException, @"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
     }
     for ( NSInteger i = 0, j = [p count]; i < j; ) {
         NSString *k = p[i++];

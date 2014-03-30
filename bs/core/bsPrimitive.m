@@ -10,22 +10,22 @@
 
 @implementation bsPrimitive
 
--(NSString*)str {
+- (NSString *)str {
     
     return nil;
 }
 
--(NSString*)description {
+-(NSString *)description {
     
     return [self str];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return nil;
 }
 
--(id)clone {
+- (id)clone {
     
     return nil;
 }
@@ -35,34 +35,35 @@
 
 @implementation bsInt
 
-+(bsInt*)G:(int)val {
++ (bsInt *)G:(int)val {
     
     return [[bsInt alloc] initWithValue:val];
 }
 
--(id)initWithValue:(int)val {
-    if( self = [super init] ) {
+- (id)initWithValue:(int)val {
+    
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(int)g {
+- (int)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%d", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithInt:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsInt G:_val];
 }
@@ -72,35 +73,35 @@
 
 @implementation bsUInt
 
-+(bsUInt*)G:(unsigned int)val {
++ (bsUInt *)G:(unsigned int)val {
     
     return [[bsUInt alloc] initWithValue:val];
 }
 
--(id)initWithValue:(unsigned int)val {
+- (id)initWithValue:(unsigned int)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(unsigned int)g {
+- (unsigned int)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%u", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedInt:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsUInt G:_val];
 }
@@ -110,35 +111,35 @@
 
 @implementation bsShort
 
-+(bsShort*)G:(short)val {
++ (bsShort *)G:(short)val {
     
     return [[bsShort alloc] initWithValue:val];
 }
 
--(id)initWithValue:(short)val {
+- (id)initWithValue:(short)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(short)g {
+- (short)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%d", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithShort:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsShort G:_val];
 }
@@ -148,35 +149,35 @@
 
 @implementation bsUShort
 
-+(bsUShort*)G:(unsigned short)val {
++ (bsUShort *)G:(unsigned short)val {
     
     return [[bsUShort alloc] initWithValue:val];
 }
 
--(id)initWithValue:(unsigned short)val {
+- (id)initWithValue:(unsigned short)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(unsigned short)g {
+- (unsigned short)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%d", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedShort:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsUShort G:_val];
 }
@@ -186,35 +187,35 @@
 
 @implementation bsBool
 
-+(bsBool*)G:(BOOL)val {
++ (bsBool *)G:(BOOL)val {
     
     return [[bsBool alloc] initWithValue:val];
 }
 
--(id)initWithValue:(BOOL)val {
+- (id)initWithValue:(BOOL)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(BOOL)g {
+- (BOOL)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return _val ? @"true" : @"false";
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithBool:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsBool G:_val];
 }
@@ -224,35 +225,35 @@
 
 @implementation bsChar
 
-+(bsChar*)G:(char)val {
++ (bsChar *)G:(char)val {
     
     return [[bsChar alloc] initWithValue:val];
 }
 
--(id)initWithValue:(char)val {
+- (id)initWithValue:(char)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(char)g {
+- (char)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%c", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithChar:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsChar G:_val];
 }
@@ -262,35 +263,35 @@
 
 @implementation bsUChar
 
-+(bsUChar*)G:(unsigned char)val {
++ (bsUChar *)G:(unsigned char)val {
     
     return [[bsUChar alloc] initWithValue:val];
 }
 
--(id)initWithValue:(unsigned char)val {
+- (id)initWithValue:(unsigned char)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(unsigned char)g {
+- (unsigned char)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%c", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedChar:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsUChar G:_val];
 }
@@ -300,30 +301,30 @@
 
 @implementation bsInteger
 
-+(bsInteger*)G:(NSInteger)val {
++ (bsInteger *)G:(NSInteger)val {
     
     return [[bsInteger alloc] initWithValue:val];
 }
 
--(id)initWithValue:(NSInteger)val {
+- (id)initWithValue:(NSInteger)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(NSInteger)g {
+- (NSInteger)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%ld", (long)_val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithInteger:_val];
 }
@@ -338,35 +339,35 @@
 
 @implementation bsUInteger
 
-+(bsUInteger*)G:(NSUInteger)val {
++ (bsUInteger *)G:(NSUInteger)val {
     
     return [[bsUInteger alloc] initWithValue:val];
 }
 
--(id)initWithValue:(NSUInteger)val {
+- (id)initWithValue:(NSUInteger)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(NSUInteger)g {
+- (NSUInteger)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%lu", (unsigned long)_val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedInteger:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsUInteger G:_val];
 }
@@ -376,35 +377,35 @@
 
 @implementation bsFloat
 
-+(bsFloat*)G:(float)val {
++ (bsFloat *)G:(float)val {
     
     return [[bsFloat alloc] initWithValue:val];
 }
 
--(id)initWithValue:(float)val {
+- (id)initWithValue:(float)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(float)g {
+- (float)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%f", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithFloat:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsFloat G:_val];
 }
@@ -414,35 +415,35 @@
 
 @implementation bsDouble
 
-+(bsDouble*)G:(double)val {
++ (bsDouble *)G:(double)val {
     
     return [[bsDouble alloc] initWithValue:val];
 }
 
--(id)initWithValue:(double)val {
+- (id)initWithValue:(double)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(double)g {
+- (double)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%lf", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithDouble:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsDouble G:_val];
 }

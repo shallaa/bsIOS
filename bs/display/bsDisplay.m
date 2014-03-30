@@ -8,7 +8,6 @@
 
 #import "bsDisplay.h"
 
-//static NSString *__bsDisplay_key;
 static NSDictionary *__bsDisplay_keyValues;
 static NSMutableDictionary *__bsDisplay_templates;
 static NSMutableDictionary *__bsDisplay_styles;
@@ -26,14 +25,14 @@ static NSMutableDictionary *__bsDisplay_styles;
     if (clazz == NULL) {
         clazz = NSClassFromString(name);
         if (clazz == NULL) {
-            bsException(@"class name '%@' is undefined", name);
+            bsException(NSInvalidArgumentException, @"class name '%@' is undefined", name);
         } else {
             className = name;
         }
     }
     bsDisplay *r = [[clazz alloc] init];
-    if ([r isKindOfClass:[bsDisplay class]] == NO) {
-        bsException( @"class '%@' is not kind of bsDisplay", className );
+    if (![r isKindOfClass:[bsDisplay class]]) {
+        bsException(NSInvalidArgumentException, @"class '%@' is not kind of bsDisplay", className);
     }
     NSString *displayKey = [NSString stringWithFormat:@"%@-%lu", className, (unsigned long)key++];
     params = [NSString stringWithFormat:@"key,%@,%@", displayKey, params];
@@ -52,7 +51,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 + (bsDisplay *)GT:(NSString *)key params:(NSString*)params {
     
     if (__bsDisplay_templates[key] == nil) {
-        bsException(@"key(=%@) is undefined", key );
+        bsException(NSInvalidArgumentException, @"key(=%@) is undefined", key);
     }
     NSDictionary *dic = __bsDisplay_templates[key];
     params = [NSString stringWithFormat:@"%@,%@", dic[@"params"], params];
@@ -60,8 +59,9 @@ static NSMutableDictionary *__bsDisplay_styles;
     return r;
 }
 
-+(bsDisplay*)GT:(NSString*)key params:(NSString*)params replace:(id)replace {
-    if( params == nil ) params = @"";
++ (bsDisplay *)GT:(NSString *)key params:(NSString *)params replace:(id)replace {
+    
+    if (params == nil) params = @"";
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
     return [bsDisplay GT:key params:params];
 }
@@ -73,7 +73,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     if (styleNames && __bsDisplay_styles) {
         NSArray *s = [bsStr col:styleNames];
         __block NSString *p = params;
-        [s enumerateObjectsUsingBlock:^(NSString* styleName, NSUInteger idx, BOOL *stop) {
+        [s enumerateObjectsUsingBlock:^(NSString *styleName, NSUInteger idx, BOOL *stop) {
             if ( __bsDisplay_styles[styleName]) {
                 p = [NSString stringWithFormat:@"%@,%@", __bsDisplay_styles[styleName], params];
             }
@@ -95,45 +95,45 @@ static NSMutableDictionary *__bsDisplay_styles;
 + (void)AT:(NSString *)key name:(NSString *)name params:(NSString *)params {
     
     if (params == nil) {
-        bsException(@"params should be not null");
+        bsException(NSInvalidArgumentException, @"params should be not null");
     }
     if (key == nil) {
-        bsException(@"key should be not null");
+        bsException(NSInvalidArgumentException, @"key should be not null");
     }
     NSString *className = [NSString stringWithFormat:@"bs%@", [name capitalizedString]];
     Class clazz = NSClassFromString(className);
     if (clazz == NULL) {
-        bsException(@"class name '%@' is undefined", className);
+        bsException(NSInvalidArgumentException, @"class name '%@' is undefined", className);
     }
     if ( __bsDisplay_templates == nil) {
         __bsDisplay_templates = [[NSMutableDictionary alloc] init];
     }
     if ( __bsDisplay_templates[key]) {
-        bsException( @"Already template is existed. key=%@", key);
+        bsException(NSInvalidArgumentException, @"Already template is existed. key=%@", key);
     }
     NSArray *p = [bsStr col:params];
-    if ([p count] % 2 != 0) {
-        bsException(@"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
+    if ([p count] % 2) {
+        bsException(NSInvalidArgumentException, @"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
     }
     __bsDisplay_templates[key] = @{@"name":name, @"params": params};
 }
 
 //Style 추가
-+ (void)AS:(NSString*)styleName params:(NSString *)params {
++ (void)AS:(NSString *)styleName params:(NSString *)params {
     
-    if( styleName == nil || params == nil ) {
-        bsException( @"styleName or params is null" );
+    if (styleName == nil || params == nil) {
+        bsException(NSInvalidArgumentException, @"styleName or params is null");
     }
-    @synchronized( __bsDisplay_styles ) {
-        if( __bsDisplay_styles == nil ) {
-            __bsDisplay_styles = [[NSMutableDictionary alloc]init];
+    @synchronized( __bsDisplay_styles) {
+        if (__bsDisplay_styles == nil) {
+            __bsDisplay_styles = [[NSMutableDictionary alloc] init];
         }
-        if( __bsDisplay_styles[styleName] ) {
-            bsException( @"Already this styleName(=%@) is defined", styleName );
+        if (__bsDisplay_styles[styleName]) {
+            bsException(NSInvalidArgumentException, @"Already this styleName(=%@) is defined", styleName);
         }
         NSArray *p = [bsStr col:params];
-        if( [p count] % 2 != 0 ) {
-            bsException(@"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
+        if ([p count] % 2) {
+            bsException(NSInvalidArgumentException, @"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
         }
         __bsDisplay_styles[styleName] = params;
     }
@@ -209,7 +209,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     return value;
 }
 
-- (NSDictionary *)gDic:(NSString*)keys {
+- (NSDictionary *)gDic:(NSString *)keys {
     
     NSArray *keyList = [bsStr col:keys];
     NSMutableDictionary *r = [[NSMutableDictionary alloc] init];
@@ -234,8 +234,8 @@ static NSMutableDictionary *__bsDisplay_styles;
     NSArray *p = [bsStr col:params];
     if ([p count] == 1) return;
     NSMutableArray *remain = [NSMutableArray array];
-    if ([p count] % 2 != 0) {
-        bsException(@"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
+    if ([p count] % 2) {
+        bsException(NSInvalidArgumentException, @"A count of params should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", params);
     }
     BOOL frameChange = NO;
     BOOL borderChange = NO;
@@ -267,7 +267,7 @@ static NSMutableDictionary *__bsDisplay_styles;
             case kbsDisplayShadowOffset: {
                 NSArray *c = [bsStr arg:v];
                 if ([c count] != 2) {
-                    bsException(@"shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v);
+                    bsException(NSInvalidArgumentException, @"shadow-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v);
                 }
                 shadowOffset_ = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
@@ -319,7 +319,7 @@ static NSMutableDictionary *__bsDisplay_styles;
  -(void)autolayout:(NSString *)formats views:(NSDictionary *)views options:(NSLayoutFormatOptions)opts {
  NSArray *f = [bsStr col:formats];
  if( [f count] % 2 != 0 ) {
- bsException(@"A count of formats should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", formats);
+ bsException(NSInvalidArgumentException, @"A count of formats should be even. a split string of params is ',' and pattern is 'k, v, k, v, k, v...'. params=%@", formats);
  }
  [views enumerateKeysAndObjectsUsingBlock:^(id key, UIView* view, BOOL *stop) {
  view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -339,39 +339,41 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 #pragma mark - child
 
-- (NSString *)create:(NSString*)name params:(NSString *)params {
+- (NSString *)create:(NSString *)name params:(NSString *)params {
     
     bsDisplay *o = [bsDisplay G:name params:params];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString*)name params:(NSString *)params replace:(id)replace {
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace {
     
     bsDisplay *o = [bsDisplay G:name params:params replace:replace];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString*)key params:(NSString *)params {
+- (NSString *)createT:(NSString *)key params:(NSString *)params {
     
     bsDisplay *o = [bsDisplay GT:key params:params];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString*)key params:(NSString *)params replace:(id)replace {
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace {
     
     bsDisplay *o = [bsDisplay GT:key params:params replace:replace];
     [self addSubview:o];
     return o.key;
 }
+
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
     
     bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params];
     [self addSubview:o];
     return o.key;
 }
+
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
     
     bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params replace:replace];
@@ -383,7 +385,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     
     __block bsDisplay *c = nil;
     [self.subviews enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
-        if( [obj isKindOfClass:[bsDisplay class]] && [((bsDisplay *)obj).key isEqualToString:key] ) {
+        if ([obj isKindOfClass:[bsDisplay class]] && [((bsDisplay *)obj).key isEqualToString:key]) {
             c = (bsDisplay *)obj;
             *stop = YES;
         }
@@ -405,7 +407,9 @@ static NSMutableDictionary *__bsDisplay_styles;
         }];
     } else {
         bsDisplay *child = [self childG:key];
-        if (child) [child removeFromSuperview];
+        if (child) {
+            [child removeFromSuperview];
+        }
     }
 }
 
@@ -418,6 +422,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 }
 
 - (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace {
+    
     bsDisplay *child = [self childG:key];
     if (child) {
         [child s:params replace:replace];

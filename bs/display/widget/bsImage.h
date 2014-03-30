@@ -1,6 +1,6 @@
 #import "bsDisplay.h"
 #import "bsWorker.h"
-#import "bsImageQue.h"
+#import "bsImageQueue.h"
 #import "bsDisplayUtil.h"
 
 #define kbsImageSrc             100201

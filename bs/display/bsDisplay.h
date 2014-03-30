@@ -48,15 +48,15 @@
 
 + (bsDisplay *)G:(NSString *)name params:(NSString *)params;
 + (bsDisplay *)G:(NSString *)name params:(NSString *)params replace:(id)replace;
-//Template로부터 객체생성
+// Create object from template
 + (bsDisplay *)GT:(NSString *)key params:(NSString*)params;
-+(bsDisplay*)GT:(NSString*)key params:(NSString*)params replace:(id)replace;
-//Style로부터 객체생성
++ (bsDisplay*)GT:(NSString*)key params:(NSString*)params replace:(id)replace;
+// Create object from style
 + (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params;
 + (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace;
-//Template 추가
+// Add template
 + (void)AT:(NSString *)key name:(NSString *)name params:(NSString *)params;
-//Style 추가
+// Add style
 + (void)AS:(NSString*)styleName params:(NSString *)params;
 - (void)ready;
 - (id)g:(NSString *)key;
@@ -70,10 +70,10 @@
 //- (void)autolayout:(NSString *)formats views:(NSDictionary *)views options:(NSLayoutFormatOptions)opts;
 
 #pragma mark - child
-- (NSString *)create:(NSString*)name params:(NSString *)params;
-- (NSString *)create:(NSString*)name params:(NSString *)params replace:(id)replace;
-- (NSString *)createT:(NSString*)key params:(NSString *)params;
-- (NSString *)createT:(NSString*)key params:(NSString *)params replace:(id)replace;
+- (NSString *)create:(NSString *)name params:(NSString *)params;
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace;
+- (NSString *)createT:(NSString *)key params:(NSString *)params;
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace;
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params;
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace;
 - (bsDisplay *)childG:(NSString *)key;

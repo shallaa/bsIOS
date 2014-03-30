@@ -134,15 +134,15 @@ static NSDictionary *__bsScroll_keyValues = nil;
             case kbsScrollDirectionalLock: scrollView_.directionalLockEnabled = [bsStr BOOLEAN:v]; break;
             case kbsScrollContentSize: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 2 ) {
-                    bsException( @"content-size value %@ is invalid. It should be a value of the form sizeWidth|sizeHeight", v );
+                if ([c count] != 2) {
+                    bsException(NSInvalidArgumentException, @"content-size value %@ is invalid. It should be a value of the form sizeWidth|sizeHeight", v);
                 }
                 scrollView_.contentSize = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
             case kbsScrollContentOffset: {
                 NSArray *c = [bsStr arg:v];
                 if( [c count] != 2 ) {
-                    bsException( @"content-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v );
+                    bsException(NSInvalidArgumentException, @"content-offset value %@ is invalid. It should be a value of the form offsetX|offsetY", v);
                 }
                 contentOffsetChange = YES;
                 contentOffset = CGPointMake( [c[0] floatValue], [c[1] floatValue] );
@@ -150,14 +150,14 @@ static NSDictionary *__bsScroll_keyValues = nil;
             case kbsScrollContentInset: {
                 NSArray *c = [bsStr arg:v];
                 if( [c count] != 4 ) {
-                    bsException( @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v );
+                    bsException(NSInvalidArgumentException, @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v);
                 }
                 scrollView_.contentInset = UIEdgeInsetsMake( [c[0] floatValue], [c[3] floatValue], [c[2] floatValue], [c[1] floatValue] );
             } break;
             case kbsScrollContentRect: {
                 NSArray *c = [bsStr arg:v];
                 if( [c count] != 4 ) {
-                    bsException( @"content-rect value %@ is invalid. It should be a value of the form x|y|w|z", v );
+                    bsException(NSInvalidArgumentException, @"content-rect value %@ is invalid. It should be a value of the form x|y|w|z", v);
                 }
                 contentRectChange = YES;
                 contentRect = CGRectMake( [c[0] floatValue], [c[1] floatValue], [c[2] floatValue], [c[3] floatValue] );
@@ -270,20 +270,28 @@ static NSDictionary *__bsScroll_keyValues = nil;
 
 - (void)blockZoom:(bsScrollZoomBlock)block zoomView:(UIView *)zoomView {
     
-    if( !zoomView ) bsException( @"zoomView is nil" );
-    if( scrollView_.delegate == nil ) scrollView_.delegate = self;
+    if (!zoomView) {
+        bsException(NSInvalidArgumentException, @"zoomView is nil" );
+    }
+    if (scrollView_.delegate == nil) {
+        scrollView_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyZoom_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockPan:(bsScrollPanBlock)block {
     
-    if( scrollView_.delegate == nil ) scrollView_.delegate = self;
+    if (scrollView_.delegate == nil) {
+        scrollView_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyPan_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockAnimateEnd:(bsScrollAnimateEndBlock)block {
     
-    if( scrollView_.delegate == nil ) scrollView_.delegate = self;
+    if (scrollView_.delegate == nil) {
+        scrollView_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyAnimateEnd_, block, OBJC_ASSOCIATION_RETAIN);
 }
 

@@ -18,13 +18,13 @@ static NSArray *__bsStr_template = nil;
 
 + (id)alloc {
     
-    bsException(@"Static class 'bsStr' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsStr' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException(@"Static class 'bsStr' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsStr' cannot be instantiated!");
     return nil;
 }
 
@@ -37,10 +37,10 @@ static NSArray *__bsStr_template = nil;
     if ([val isKindOfClass:[NSString class]]) {
         return val;
     } else if ([val isKindOfClass:[NSData class]]) {
-        NSString *s = [[NSString alloc] initWithData:(NSData*)val encoding:NSUTF8StringEncoding];
+        NSString *s = [[NSString alloc] initWithData:(NSData *)val encoding:NSUTF8StringEncoding];
         return [bsStr trim:s ? s : @""];
     } else if ([val isKindOfClass:[NSNumber class]]) {
-        if (strcmp( [val objCType], @encode(BOOL) ) == 0) {
+        if (strcmp([val objCType], @encode(BOOL)) == 0) {
             return [val boolValue] ? @"true" : @"false";
         } else {
             return [val stringValue];
@@ -49,20 +49,20 @@ static NSArray *__bsStr_template = nil;
         return [[val valueForKey:@"description"] componentsJoinedByString:__bsStr_COMMA];
     } else if ([val isKindOfClass:[NSDictionary class]]) {
         NSMutableString *s = [[NSMutableString alloc] init];
-        [(NSDictionary*)val enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [(NSDictionary *)val enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [s appendFormat:@"%@,%@,", key, obj];
         }];
-        [s deleteCharactersInRange:NSMakeRange( [s length] - 1, 1 )];
+        [s deleteCharactersInRange:NSMakeRange([s length] - 1, 1)];
         return [NSString stringWithString:s];
     } else if ([val isKindOfClass:[bsPrimitive class]]) {
         return [val str];
     } else if ([val isKindOfClass:[UIColor class]]) {
         CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-        UIColor *color = (UIColor*)val;
+        UIColor *color = (UIColor *)val;
         [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        return [NSString stringWithFormat:@"#%02X%02X%02X%02X",(int)(255 * alpha),(int)(255 * red),(int)(255 * green),(int)(255 * blue)];
+        return [NSString stringWithFormat:@"#%02X%02X%02X%02X", (int)(255 * alpha), (int)(255 * red), (int)(255 * green), (int)(255 * blue)];
     } else {
-        bsException(@"wrong argument");
+        bsException(NSInvalidArgumentException, @"wrong argument");
     }
     // bsGeometry also to be processed?
     return nil;
@@ -155,7 +155,7 @@ static NSArray *__bsStr_template = nil;
                 blue  = [self __colorComponentFrom:colorString start:6 length:2];
                 break;
             default:
-                bsException( @"Color value %@ is invalid.  It should be a hex value of the form #RBG, #ARGB, #RRGGBB, or #AARRGGBB", val );
+                bsException(NSInvalidArgumentException, @"Color value %@ is invalid.  It should be a hex value of the form #RBG, #ARGB, #RRGGBB, or #AARRGGBB", val);
                 break;
         }
         return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
@@ -176,26 +176,26 @@ static NSArray *__bsStr_template = nil;
                 blue = [colors[3] floatValue]/255.0;
                 break;
             default:
-                bsException( @"Color value %@ is invalid.  It should be a value of the form R|G|B or A|R|G|B. A,R,G,B should be a number value.", val );
+                bsException(NSInvalidArgumentException, @"Color value %@ is invalid.  It should be a value of the form R|G|B or A|R|G|B. A,R,G,B should be a number value.", val);
                 break;
         }
-        return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
+        return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
     }
 }
 
 //util
 + (id)trim:(id)val {
     
-    if( [val isKindOfClass:[NSString class]] ) {
+    if ([val isKindOfClass:[NSString class]]) {
         return [val stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    } else if( [val isKindOfClass:[NSArray class]] ) {
+    } else if( [val isKindOfClass:[NSArray class]]) {
         NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:[val count]];
         [val enumerateObjectsUsingBlock:^(id str, NSUInteger idx, BOOL *stop) {
             [result addObject:[bsStr trim:str]];
         }];
         return result;
     } else {
-        //bsException( @"argument is nil or wrong type." );
+//        bsException(NSInvalidArgumentException, @"argument is nil or wrong type.");
         return @"";
     }
 }
@@ -243,17 +243,20 @@ static NSArray *__bsStr_template = nil;
     }
 }
 
-+(NSString*)templateSrc:(NSString*)source replace:(id)replace {
-    if( source == nil || replace == nil ) return source;
++ (NSString *)templateSrc:(NSString*)source replace:(id)replace {
+    
+    if (source == nil || replace == nil) {
+        return source;
+    }
     NSArray *replaceArray = nil;
-    if( [replace isKindOfClass:[NSString class]] ) {
+    if ([replace isKindOfClass:[NSString class]]) {
         replaceArray = [replace componentsSeparatedByString:__bsStr_VBAR];
-    } else if( [replace isKindOfClass:[NSArray class]] ) {
+    } else if ([replace isKindOfClass:[NSArray class]]) {
         replaceArray = (NSArray*)replace;
     } else {
-        bsException( @"a value of replace parameter should be string(type of a|b|c|d) or array" );
+        bsException(NSInvalidArgumentException, @"a value of replace parameter should be string(type of a|b|c|d) or array");
     }
-    if( __bsStr_template == nil ) {
+    if (__bsStr_template == nil) {
         __bsStr_template =
         @[@"@@0", @"@@1", @"@@2", @"@@3", @"@@4", @"@@5", @"@@6", @"@@7", @"@@8", @"@@9",
           @"@@10", @"@@11", @"@@12", @"@@13", @"@@14", @"@@15", @"@@16", @"@@17", @"@@18", @"@@19",
@@ -264,7 +267,7 @@ static NSArray *__bsStr_template = nil;
     }
     NSMutableString *result = [[NSMutableString alloc] initWithString:source];
     [replaceArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if( [obj isKindOfClass:[NSString class]] == NO ) {
+        if (![obj isKindOfClass:[NSString class]]) {
             obj = [bsStr str:obj];
         }
         NSString* t = (NSString*)__bsStr_template[idx];
@@ -272,36 +275,42 @@ static NSArray *__bsStr_template = nil;
     }];
     return [NSString stringWithString:result];;
 }
-+(BOOL)isUrl:(NSString*)url {
-    if( [[url substringToIndex:4] caseInsensitiveCompare:@"http"] == NSOrderedSame ) {
+
++ (BOOL)isUrl:(NSString *)url {
+    
+    if ([[url substringToIndex:4] caseInsensitiveCompare:@"http"] == NSOrderedSame) {
         return YES;
     } else {
         return NO;
     }
 }
-+(NSString*)urlEncode:(NSString*)string {
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                 NULL,
+
++ (NSString *)urlEncode:(NSString *)string {
+    
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
                                                                                  (CFStringRef)string,
                                                                                  NULL,
                                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                 kCFStringEncodingUTF8 ));
+                                                                                 kCFStringEncodingUTF8));
 }
-+(NSString*)urlDecode:(NSString*)string {
+
++ (NSString *)urlDecode:(NSString*)string {
+    
     return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL,
-                                                                                                 (CFStringRef) string,
+                                                                                                 (CFStringRef)string,
                                                                                                  CFSTR(""),
                                                                                                  kCFStringEncodingUTF8));
 }
 //------------------------------------------------------------------------------------------------------------------------------
-+(NSArray*)split:(NSString*)string seperator:(NSString*)seperator trim:(BOOL)isTrim {
++ (NSArray *)split:(NSString *)string seperator:(NSString *)seperator trim:(BOOL)isTrim {
+    
     static NSString *boundary = @"__!@#$%^&*()__";
     NSString *escape = [NSString stringWithFormat:@"\\%@", seperator];
     string = [string stringByReplacingOccurrencesOfString:escape withString:boundary];
     NSArray *splits = [string componentsSeparatedByString:seperator];
-    if( YES == isTrim ) {
+    if (isTrim) {
         NSMutableArray *result = [[NSMutableArray alloc] init];
-        [splits enumerateObjectsUsingBlock:^(NSString* str, NSUInteger idx, BOOL *stop) {
+        [splits enumerateObjectsUsingBlock:^(NSString *str, NSUInteger idx, BOOL *stop) {
             str = [str stringByReplacingOccurrencesOfString:boundary withString:seperator];
             [result addObject:[bsStr trim:str]];
         }];
@@ -310,38 +319,50 @@ static NSArray *__bsStr_template = nil;
         return splits;
     }
 }
-+(NSArray*)row:(NSString*)string {
+
++ (NSArray *)row:(NSString *)string {
+    
     NSRange range;
     NSString *row;
     range = [string rangeOfString:__bsStr_row1];
-    if( range.location != NSNotFound ) {
+    if (range.location != NSNotFound) {
         row = __bsStr_row1;
     } else {
         row = __bsStr_row0;
     }
     return [bsStr split:string seperator:row trim:NO];
 }
-+(NSArray*)col:(NSString*)string {
+
++ (NSArray *)col:(NSString *)string {
+    
     return [bsStr split:string seperator:__bsStr_COMMA trim:YES];
 }
-+(NSArray*)arg:(NSString*)string {
+
++ (NSArray *)arg:(NSString *)string {
+    
     return [bsStr split:string seperator:__bsStr_VBAR trim:YES];
 }
-+(NSArray*)tag:(NSString*)string {
+
++ (NSArray *)tag:(NSString*)string {
+    
     return [bsStr split:string seperator:__bsStr_UNDER trim:YES];
 }
+
 //------------------------------------------------------------------------------------------------------------------------------
-+(NSString*)jsonEncode:(id)obj {
++ (NSString *)jsonEncode:(id)obj {
+    
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
-    if( error ) return nil;
+    if (error) return nil;
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
-+(id)jsonDecode:(id)json {
+
++ (id)jsonDecode:(id)json {
+    
     NSString *t;
-    if( [json isKindOfClass:[NSData class]] ) {
+    if ([json isKindOfClass:[NSData class]]) {
         t = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
-    } else if( [json isKindOfClass:[NSString class]] ) {
+    } else if ([json isKindOfClass:[NSString class]]) {
         t = (NSString*)json;
     } else {
         return nil;
@@ -352,13 +373,14 @@ static NSArray *__bsStr_template = nil;
     return error ? nil : obj;
 }
 //------------------------------------------------------------------------------------------------------------------------------
-+(NSString*)UUID {
++ (NSString *)UUID {
     CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
-    NSString *uuid = (NSString*)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uuidRef));
+    NSString *uuid = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uuidRef));
     return uuid;
 }
 //------------------------------------------------------------------------------------------------------------------------------
-+(BOOL)isIpAddress:(NSString*)ipAddr {
++ (BOOL)isIpAddress:(NSString *)ipAddr {
+    
     const char *utf8 = [ipAddr UTF8String];
     int success;
     struct in_addr dst;
@@ -367,16 +389,19 @@ static NSArray *__bsStr_template = nil;
         struct in6_addr dst6;
         success = inet_pton(AF_INET6, utf8, &dst6);
     }
-    return (success == 1 ? TRUE : FALSE);
+    return (success == 1);
 }
 //------------------------------------------------------------------------------------------------------------------------------
-+(NSString*)addSlashes:(NSString*)str {
++ (NSString *)addSlashes:(NSString *)str {
+    
     return [str stringByReplacingOccurrencesOfString:@"," withString:@"\\,"];
 }
-+(BOOL)regExpTestWithPattern:(NSString*)pattern value:(NSString*)value {
+
++ (BOOL)regExpTestWithPattern:(NSString *)pattern value:(NSString *)value {
+    
     NSError *error = nil;
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-    if( error ) {
+    if (error) {
         [NSException raise:NSInvalidArgumentException format:@"%s(%d)정규식에 오류가 있습니다. pattern = %@", __FUNCTION__, __LINE__, pattern];
     }
     NSTextCheckingResult *match = [regExp firstMatchInString:value options:0 range:NSMakeRange(0, [value length])];

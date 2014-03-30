@@ -148,8 +148,8 @@ static NSDictionary* __bsImage_keyValues = nil;
             case kbsImageSpinColor: spinColor_ = [bsStr color:v]; spinColorChange_ = YES; break;
             case kbsImagePadding: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 4 ) {
-                    bsException( @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v );
+                if ([c count] != 4) {
+                    bsException(NSInvalidArgumentException, @"padding value %@ is invalid. It should be a value of the form top|right|bottom|left", v);
                 }
                 //NSString *layout = [bsStr templateSrc:kbsDisplayConstraintPadding replace:@[@"imageView_", @"imageViewVertical", c[0],c[1],@"imageViewHorizontal",c[2],c[3]]];
                 //[self autolayout:layout views:NSDictionaryOfVariableBindings(imageView_)];
@@ -161,8 +161,8 @@ static NSDictionary* __bsImage_keyValues = nil;
             } break;
             case kbsImageCapInset: {
                 NSArray *c = [bsStr arg:v];
-                if( [c count] != 4 ) {
-                    bsException( @"cap-insets value %@ is invalid. It should be a value of the form top|right|bottom|left", v );
+                if ([c count] != 4) {
+                    bsException(NSInvalidArgumentException, @"cap-insets value %@ is invalid. It should be a value of the form top|right|bottom|left", v);
                 }
                 capInsets_.top = [c[0] floatValue];
                 capInsets_.right = [c[1] floatValue];
@@ -231,7 +231,7 @@ static NSDictionary* __bsImage_keyValues = nil;
         };
         if( [src_ hasPrefix:@"http://"] || [src_ hasPrefix:@"https://"] || [src_ hasPrefix:@"assets://"] || [src_ hasPrefix:@"asset://"] || [src_ hasPrefix:@"a://"] || [src_ hasPrefix:@"storage://"] || [src_ hasPrefix:@"s://"] ) {
             queKeyString_ = [NSString stringWithFormat:@"bsImageQueKey=%d",queKey++];
-            [bsWorker A:[bsImageQue GWithKey:queKeyString_ src:src_ cacheSize:cacheSize end:block]];
+            [bsWorker A:[bsImageQueue GWithKey:queKeyString_ src:src_ cacheSize:cacheSize end:block]];
         } else {
             block( nil, [UIImage imageNamed:src_], nil );
         }
@@ -246,19 +246,19 @@ static NSDictionary* __bsImage_keyValues = nil;
 
 -(void)__showDefaultImage {
     
-    if( defaultChange_ == NO ) return;
+    if (!defaultChange_) return;
     defaultChange_ = NO;
-    if( loadStatus_ != -1 ) return;
-    if( defaultSrc_ ) {
+    if (loadStatus_ != -1) return;
+    if (defaultSrc_) {
         [imageView_ setImage:[UIImage imageNamed:defaultSrc_]];
-    } else if( defaultColor_ ) {
+    } else if (defaultColor_) {
         [imageView_ setImage:[bsDisplayUtil image1x1WithColor:defaultColor_]];
     }
 }
 
 - (void)__showFailImage {
     
-    if( failChange_ == NO ) return;
+    if (!failChange_) return;
     failChange_ = NO;
     if( loadStatus_ != -3 ) return;
     if( failSrc_ ) {
@@ -270,15 +270,15 @@ static NSDictionary* __bsImage_keyValues = nil;
 
 - (void)__showSpinner {
     
-    if( spinStyleChange_ == NO && spinColorChange_ == NO ) return;
-    if( [spinStyle_ isEqualToString:kbsImageSpinStyleNone] || loadStatus_ < 0 ) {
-        if( spinner_ ) {
+    if (!spinStyleChange_ && !spinColorChange_) return;
+    if ([spinStyle_ isEqualToString:kbsImageSpinStyleNone] || loadStatus_ < 0) {
+        if (spinner_) {
             [spinner_ stopAnimating];
             [spinner_ setHidden:YES];
         }
         return;
     }
-    if( spinner_ == nil ) {
+    if (spinner_ == nil) {
         spinner_ = [[UIActivityIndicatorView alloc]init];
         [self addSubview:spinner_];
         [self setNeedsLayout];
@@ -298,16 +298,16 @@ static NSDictionary* __bsImage_keyValues = nil;
 }
 
 #pragma mark - override
-- (NSString *)create:(NSString *)name params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException( @"호출금지" ); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
-- (bsDisplay *)childG:(NSString *)key { bsException( @"호출금지" ); return nil; }
-- (void)childA:(bsDisplay *)child { bsException( @"호출금지" ); }
-- (void)childD:(NSString *)key { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); }
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException( @"호출금지" ); }
+- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

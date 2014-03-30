@@ -18,13 +18,13 @@ static NSMutableDictionary *__bsSimpleSound_dic = nil;
 
 + (id)alloc {
     
-    bsException(@"Static class 'bsSimpleSound' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsSimpleSound' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
-    bsException(@"Static class 'bsSimpleSound' cannot be instantiated!");
+    bsException(NSInternalInconsistencyException, @"Static class 'bsSimpleSound' cannot be instantiated!");
     return nil;
 }
 

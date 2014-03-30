@@ -198,31 +198,31 @@ static NSMutableDictionary *__bsObjectNodeCache;
 @interface bsRuntime : NSObject
 
 //클래스로부터 클래스 이름을 가져온다.
-+(NSString*)stringFromClass:(Class)clazz;
++ (NSString *)stringFromClass:(Class)clazz;
 //클래스 이름으로부터 클래스를 가져온다.
-+(Class)classFromString:(NSString*)className;
++ (Class)classFromString:(NSString *)className;
 //객체로부터 클래스를 가져온다.
-+(Class)classFromObject:(id)object;
++ (Class)classFromObject:(id)object;
 //객체로부터 클래스 이름을 가져온다.
-+(NSString*)classNameFromObject:(id)object;
++ (NSString *)classNameFromObject:(id)object;
 //객체의 프로퍼티의 클래스를 가져온다.
-+(Class)getPropClassOfObject:(id)object key:(NSString*)key;
++ (Class)getPropClassOfObject:(id)object key:(NSString *)key;
 //클래스의 프로퍼티의 클래스를 가져온다.
-+(Class)getPropClassOfClass:(Class)clazz key:(NSString*)key;
++ (Class)getPropClassOfClass:(Class)clazz key:(NSString *)key;
 //기반객체로부터 keyPath에 해당하는 속성의 클래스를 얻어온다.
-+(Class)getPropClassOfRootObject:(id)object keyPath:(NSString*)keyPath;
++ (Class)getPropClassOfRootObject:(id)object keyPath:(NSString *)keyPath;
 //기반클래스로부터 keyPath에 해당하는 속성의 클래스를 얻어온다.
-+(Class)getPropClassOfRootClass:(Class)clazz keyPath:(NSString*)keyPath;
++ (Class)getPropClassOfRootClass:(Class)clazz keyPath:(NSString *)keyPath;
 //클래스의 프로퍼티 이름을 배열로 가져온다. superInquiry는 해당클래스의 부모클래스 프로퍼티도 탐색할 것인지 결정하는 플래그다.
-+(NSArray*)getPropNamesOfClass:(Class)clazz superInquiry:(BOOL)superInquiry;
++ (NSArray *)getPropNamesOfClass:(Class)clazz superInquiry:(BOOL)superInquiry;
 //객체에서 주어진 이름을 가진 프로퍼티의 값을 가져온다.
-+(id)getPropValueOfObject:(id)object keyPath:(NSString*)keyPath;
++ (id)getPropValueOfObject:(id)object keyPath:(NSString*)keyPath;
 //객체에서 주어진 이름을 가진 프로퍼티의 값을 셋팅한다.(KVO, KVC에 적용안됨)
-+(void)setPropValueOfObject:(id)object keyPath:(NSString*)keyPath value:(id)value;
++ (void)setPropValueOfObject:(id)object keyPath:(NSString *)keyPath value:(id)value;
 //객체에서 주어진 이름의 프로퍼티를 가지고 있는가?
-+(BOOL)hasPropAtObject:(id)object keyPath:(NSString*)keyPath;
++ (BOOL)hasPropAtObject:(id)object keyPath:(NSString *)keyPath;
 //클래스에서 주어진 이름의 프로퍼티를 가지고 있는가?
-+(BOOL)hasPropAtClass:(Class)clazz keyPath:(NSString*)keyPath;
++ (BOOL)hasPropAtClass:(Class)clazz keyPath:(NSString *)keyPath;
 
 //+(id)execCommandWithRoot:(id)root commands:(NSArray*)commands getKey:(NSString*)key;
 @end

@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "bsIOSDemoAppDelegate.h"
+#import "BSDemoAppDelegate.h"
 
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, NSStringFromClass([bsIOSDemoAppDelegate class]), NSStringFromClass([bsIOSDemoAppDelegate class]));
+        return UIApplicationMain(argc, argv, NSStringFromClass([BSDemoAppDelegate class]), NSStringFromClass([BSDemoAppDelegate class]));
     }
 }

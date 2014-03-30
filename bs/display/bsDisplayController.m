@@ -36,7 +36,7 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 - (void)loadView {
     
     if (__bsDisplayController_singleton) {
-        bsException(@"bsDisplayController can not create directly.");
+        bsException(NSInternalInconsistencyException, @"bsDisplayController can not create directly.");
     }
     self.view = [bsDisplay G:@"display" params:@"key,root,x,0,y,0,bg,#000"];
     __bsDisplayController_singleton = self;
@@ -65,14 +65,15 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (NSString *)blockWillRotate:(bsDisplayControllerWillRotateBlock)willRotateBlock {
     
-    if (willRotateBlock == nil) bsException(@"willRotateBlock argument is undefined");
+    if (willRotateBlock == nil) bsException(NSInvalidArgumentException, @"willRotateBlock argument is undefined");
     NSString *k = [NSString stringWithFormat:@"bsDisplayControllerWillRotateBlock-%lu", (unsigned long)blockKey_++];
     willRotateBlockDic_[k] = willRotateBlock;
     return k;
 }
 
 - (NSString *)blockDidRotate:(bsDisplayControllerDidRotateBlock)didRotateBlock {
-    if( didRotateBlock == nil ) bsException(@"didRotateBlock argument is undefined");
+    
+    if (didRotateBlock == nil) bsException(NSInvalidArgumentException, @"didRotateBlock argument is undefined");
     NSString *k = [NSString stringWithFormat:@"bsDisplayControllerDidRotateBlock-%lu", (unsigned long)blockKey_++];
     didRotateBlockDic_[k] = didRotateBlock;
     return k;

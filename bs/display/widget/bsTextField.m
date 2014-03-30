@@ -295,20 +295,20 @@ static NSDictionary *__bsTextField_keyValues = nil;
                 }
             } break;
             case kbsTextFieldInputView: {
-                Class clazz = NSClassFromString( v );
-                if( !clazz ) {
-                    bsException( @"Class name(=%@) for inputView is undefined", v );
+                Class clazz = NSClassFromString(v);
+                if (!clazz) {
+                    bsException(NSInvalidArgumentException, @"Class name(=%@) for inputView is undefined", v);
                 }
                 UIView *view = [[clazz alloc] performSelector:@selector(initWithTextField:) withObject:textField_];
                 if( ![view conformsToProtocol:@protocol(UITextInputTraits)] ) {
-                    bsException( @"Class name(=%@) is not implement UITextInputTraits", v );
+                    bsException(NSInvalidArgumentException, @"Class name(=%@) is not implement UITextInputTraits", v);
                 }
                 textField_.inputView = view;
             } break;
             case kbsTextFieldInputAccessoryView: {
-                Class clazz = NSClassFromString( v );
-                if( !clazz ) {
-                    bsException( @"Class name(=%@) for inputAccessoryView is undefined", v );
+                Class clazz = NSClassFromString(v);
+                if (!clazz) {
+                    bsException(NSInvalidArgumentException, @"Class name(=%@) for inputAccessoryView is undefined", v);
                 }
                 UIView *view = [[clazz alloc] performSelector:@selector(initWithTextField:) withObject:textField_];
                 textField_.inputAccessoryView = view;
@@ -316,7 +316,7 @@ static NSDictionary *__bsTextField_keyValues = nil;
             default: [remain addObject:k]; [remain addObject:v]; break;
         }
     }
-    if( f0 > 0 || fontSize > 0 ) {
+    if(f0 > 0 || fontSize > 0) {
         UIFont *font;
         if( f0 == 0 ) {
             if( [fontName_ hasPrefix:@"system"] ) {
@@ -401,45 +401,53 @@ static NSDictionary *__bsTextField_keyValues = nil;
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     
     BOOL allowEdit = YES;
-    bsTextFieldWillBeginEditBlock block = objc_getAssociatedObject( self, &blockKeyWillBeginEdit_ );
-    if( block ) block(self, &allowEdit );
+    bsTextFieldWillBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyWillBeginEdit_);
+    if (block) {
+        block(self, &allowEdit);
+    }
     return allowEdit;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
-    bsTextFieldDidBeginEditBlock block = objc_getAssociatedObject( self, &blockKeyDidBeginEdit_ );
-    if( block ) block( self );
+    bsTextFieldDidBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyDidBeginEdit_);
+    if (block) {
+        block(self);
+    }
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     
     BOOL stopEdit = YES;
-    bsTextFieldWillEndEditBlock block = objc_getAssociatedObject( self, &blockKeyWillEndEdit_ );
-    if( block ) block( self, &stopEdit );
+    bsTextFieldWillEndEditBlock block = objc_getAssociatedObject( self, &blockKeyWillEndEdit_);
+    if (block) {
+        block(self, &stopEdit);
+    }
     return stopEdit;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
-    bsTextFieldDidEndEditBlock block = objc_getAssociatedObject( self, &blockKeyDidEndEdit_ );
-    if( block ) block( self );
+    bsTextFieldDidEndEditBlock block = objc_getAssociatedObject(self, &blockKeyDidEndEdit_);
+    if (block) {
+        block(self);
+    }
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     {
-        bsTextFieldChangeCharBlock block = objc_getAssociatedObject( self, &blockKeyChangeChar_ );
-        if( block ) {
+        bsTextFieldChangeCharBlock block = objc_getAssociatedObject(self, &blockKeyChangeChar_);
+        if (block) {
             BOOL allowChange = YES;
-            block( self, range, string, &allowChange );
+            block(self, range, string, &allowChange);
             return allowChange;
         }
     }
     {
         //한글은 문제있음
-        bsTextFieldChangeCharWithFullStringBlock block = objc_getAssociatedObject( self, &blockKeyChangeCharWithFullString_ );
-        if( block ) {
+        bsTextFieldChangeCharWithFullStringBlock block = objc_getAssociatedObject(self, &blockKeyChangeCharWithFullString_);
+        if (block) {
             BOOL allowChange = YES;
             NSString *tmpStr;
             tmpStr = textField.text;
@@ -456,12 +464,12 @@ static NSDictionary *__bsTextField_keyValues = nil;
     }
     {
         bsTextFieldChangePhoneBlock block = objc_getAssociatedObject( self, &blockKeyChangePhone_ );
-        if( block ) {
+        if (block) {
             //int length = [self getLength:textField.text];
             NSString *text;
             BOOL textChanged = NO;
             NSUInteger length;
-            if( [string length] == 0 ) { //backspace
+            if ([string length] == 0) { //backspace
                 text = [textField.text stringByReplacingCharactersInRange:range withString:@""];
                 text = [text stringByReplacingOccurrencesOfString:@"-" withString:@""];
                 length = text.length;
@@ -525,7 +533,7 @@ static NSDictionary *__bsTextField_keyValues = nil;
                 }
                 textField.text = text;
             }
-            block( self, textField.text );
+            block(self, textField.text);
             return NO;
         }
     }
@@ -536,7 +544,9 @@ static NSDictionary *__bsTextField_keyValues = nil;
     
     BOOL allowClear = YES;
     bsTextFieldClearBlock block = objc_getAssociatedObject(self, &blockKeyClear_);
-    if (block) block(self, &allowClear);
+    if (block) {
+        block(self, &allowClear);
+    }
     return allowClear;
 }
 
@@ -544,21 +554,23 @@ static NSDictionary *__bsTextField_keyValues = nil;
     
     BOOL allowReturn = YES;
     bsTextFieldReturnBlock block = objc_getAssociatedObject(self, &blockKeyReturn_);
-    if (block) block(self, &allowReturn);
+    if (block) {
+        block(self, &allowReturn);
+    }
     return allowReturn;
 }
 
 #pragma mark - override
--(NSString *)create:(NSString *)name params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString *)createT:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException( @"호출금지" ); return nil; }
--(NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException( @"호출금지" ); return nil; }
--(bsDisplay *)childG:(NSString *)key { bsException( @"호출금지" ); return nil; }
--(void)childA:(bsDisplay *)child { bsException( @"호출금지" ); }
--(void)childD:(NSString *)key { bsException( @"호출금지" ); }
--(void)childS:(NSString *)key params:(NSString *)params { bsException( @"호출금지" ); }
--(void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException( @"호출금지" ); }
+- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end
