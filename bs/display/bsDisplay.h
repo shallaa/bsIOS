@@ -6,6 +6,7 @@
 #import "bsGeometry.h"
 #import "bsParam.h"
 #import "bsMacro.h"
+#import "bsLog.h"
 
 //#define kbsDisplayConstraintDefault @"@@1, V:|-0-[@@0]-0-|, @@2, H:|-0-[@@0]-0-|"
 //#define kbsDisplayConstraintPadding @"@@1, V:|-@@2-[@@0]-@@3-|, @@4, H:|-@@5-[@@0]-@@6-|"

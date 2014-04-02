@@ -8,6 +8,8 @@
 
 #import "bsError.h"
 
+#import "bsLog.h"
+
 static NSMutableArray *__bsError_pool = nil;
 
 @interface bsError ()
@@ -22,6 +24,8 @@ static NSMutableArray *__bsError_pool = nil;
 @implementation bsError
 
 + (bsError *)popWithMsg:(NSString *)msg data:(id)data func:(const char *)func line:(unsigned int)line {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized(__bsError_pool) {
         if (__bsError_pool == nil) {
@@ -41,6 +45,8 @@ static NSMutableArray *__bsError_pool = nil;
 
 + (void)put:(bsError *)error {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     @synchronized( __bsError_pool) {
         if (__bsError_pool == nil) {
             __bsError_pool = [[NSMutableArray alloc] init];
@@ -51,10 +57,14 @@ static NSMutableArray *__bsError_pool = nil;
 
 + (BOOL)isError:(id)data {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [data isKindOfClass:[bsError class]];
 }
 
 - (void)setWithMsg:(NSString *)msg data:(id)data func:(const char *)func line:(unsigned int)line {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     self.message = msg;
     self.line = line;
@@ -64,6 +74,8 @@ static NSMutableArray *__bsError_pool = nil;
 
 - (NSString *)str {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (_data) {
         return [NSString stringWithFormat:@"(\n\tfunc: %@(%lu)\n\tmsg: %@\n\tdata: %@\n)", _functionName, (unsigned long)_line, _message, _data];
     } else {
@@ -72,6 +84,8 @@ static NSMutableArray *__bsError_pool = nil;
 }
 
 - (NSString *)description {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return [self str];
 }

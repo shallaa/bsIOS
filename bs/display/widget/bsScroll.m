@@ -63,7 +63,7 @@ static NSDictionary *__bsScroll_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsScroll dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     objc_removeAssociatedObjects( self );
 }
 

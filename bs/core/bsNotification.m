@@ -8,6 +8,7 @@
 
 #import "bsNotification.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -19,17 +20,23 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (id)alloc {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsException(NSInternalInconsistencyException, @"Static class 'bsNotification' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsException(NSInternalInconsistencyException, @"Static class 'bsNotification' cannot be instantiated!");
     return nil;
 }
 
 + (void)onCreate {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (__bsNotification__observers) {
         bsException(NSInternalInconsistencyException, @"Wrong call");
@@ -44,6 +51,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (void)blockRemove:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     id o = __bsNotification__observers[key];
     if (o) {
         [[NSNotificationCenter defaultCenter] removeObserver:o];
@@ -52,6 +61,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockWillUnactive:(bsBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -64,6 +75,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockDidUnactive:(bsBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -74,6 +87,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockWillActive:(bsBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -86,6 +101,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockDidActive:(bsBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -96,6 +113,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockDidMemoryWarning:(bsBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -108,6 +127,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockWillTerminate:(bsBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -116,7 +137,10 @@ static BOOL __bsNotification_backgroundSupported;
     [__bsNotification__observers setObject:o forKey:uuid];
     return uuid;
 }
+
 + (NSString *)blockIdleTimeout:(bsBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -128,6 +152,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockBackgroundTask:(bsBackgroundTaskBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     if (!__bsNotification_backgroundSupported) return nil;
@@ -155,6 +181,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockBattery:(bsBatteryBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIDeviceBatteryStateDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -174,6 +202,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockLocaleChange:(bsLocaleChangeBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:NSCurrentLocaleDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -184,6 +214,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockOrientationChange:(bsOrientationChangeBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -197,6 +229,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockUserDefaultChange:(bsUserDefaultChangeBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -209,6 +243,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockKeyboardWillShow:(bsKeyboradBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillShowNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -219,6 +255,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockKeyboardDidShow:(bsKeyboradBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
@@ -231,6 +269,8 @@ static BOOL __bsNotification_backgroundSupported;
 
 + (NSString *)blockKeyboardWillHide:(bsKeyboradBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];
     id o = [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillHideNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
@@ -241,6 +281,8 @@ static BOOL __bsNotification_backgroundSupported;
 }
 
 + (NSString *)blockKeyboardDidHide:(bsKeyboradBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (block == nil) return nil;
     NSString *uuid = [bsStr UUID];

@@ -8,6 +8,7 @@
 
 #import "bsHttpFile.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 
 static NSMutableArray *__bsHttpFile_pool = nil;
@@ -15,6 +16,8 @@ static NSMutableArray *__bsHttpFile_pool = nil;
 @implementation bsHttpFile
 
 + (bsHttpFile *)pop {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized (__bsHttpFile_pool) {
         if (__bsHttpFile_pool == nil) {
@@ -31,9 +34,13 @@ static NSMutableArray *__bsHttpFile_pool = nil;
     }
 }
 
-+ (void)put:(bsHttpFile*)httpFiles {
++ (void)put:(bsHttpFile *)httpFiles {
     
-    if (httpFiles == nil) return;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (httpFiles == nil) {
+        return;
+    }
     @synchronized ( __bsHttpFile_pool) {
         if (__bsHttpFile_pool == nil) {
             __bsHttpFile_pool = [[NSMutableArray alloc] init];
@@ -44,6 +51,8 @@ static NSMutableArray *__bsHttpFile_pool = nil;
 }
 
 - (void)sWithKey:(NSString *)key name:(NSString *)name data:(NSData *)data {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (key == nil) bsException(NSInvalidArgumentException, @"key is nil");
     if (name == nil) bsException(NSInvalidArgumentException, @"name is nil");
@@ -58,6 +67,8 @@ static NSMutableArray *__bsHttpFile_pool = nil;
 
 - (void)loop:(void (^)(NSString *key, NSString *name, NSData *data))block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     @synchronized (_files) {
         [_files enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if(block) block(key, obj[@"name"], obj[@"data"]);
@@ -66,6 +77,8 @@ static NSMutableArray *__bsHttpFile_pool = nil;
 }
 
 - (NSUInteger)c {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized (_files) {
         if (_files) {
@@ -76,6 +89,8 @@ static NSMutableArray *__bsHttpFile_pool = nil;
 }
 
 - (void)d {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized (_files) {
         [_files removeAllObjects];

@@ -10,7 +10,7 @@
 
 #import "bsError.h"
 #import "bsHttpFile.h"
-#import "bsMacro.h"
+#import "bsLog.h"
 #import "bsStr.h"
 
 @interface bsHttpQueue ()
@@ -26,6 +26,8 @@
 
 + (bsHttpQueue *)GWithKey:(NSString *)key url:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsHttpQueue *queue = (bsHttpQueue *)[bsQueue GWithClassName:@"bsHttpQueue" key:key end:end];
     queue.url = url;
     queue.get = get;
@@ -36,10 +38,14 @@
 
 - (id)run:(bsError **)error {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [bsHttpQueue sendWithUrl:_url get:_get post:_post file:_file error:error];
 }
 
 - (void)clear {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     self.url = nil;
     self.get = nil;
@@ -49,6 +55,8 @@
 }
 
 + (NSData *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file error:(bsError **)error {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     static NSString *const BOUNDARY =      @"-----------------bs-----";
     //static NSString *const UTF8 =          @"UTF-8";

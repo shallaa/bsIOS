@@ -8,17 +8,20 @@
 
 #import "bsButton.h"
 
-static NSDictionary* __bsButton_keyValues = nil;
+static NSDictionary *__bsButton_keyValues = nil;
 
 @implementation bsButton
 
 - (void)ready {
-    if( button_ == nil ) {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (button_ == nil) {
         button_ = [UIButton buttonWithType:UIButtonTypeCustom];
         [self addSubview:button_];
         //[self autolayout:[bsStr templateSrc:kbsDisplayConstraintDefault replace:@[@"button_", @"buttonVertical", @"buttonHorizontal"]] views:NSDictionaryOfVariableBindings(button_)];
     }
-    if( __bsButton_keyValues == nil ) {
+    if (__bsButton_keyValues == nil) {
         __bsButton_keyValues =
         @{ @"enabled": @kbsButtonEnabled, @"selected": @kbsButtonSelected, @"highlighted": @kbsButtonHighlighted, @"text-shadow-offset": @kbsButtonLbShadowOffset,
            @"align": @kbsButtonLbAlign, @"font-name": @kbsButtonLbFontName, @"font-size": @kbsButtonLbFontSize, @"auto-resize": @kbsButtonAutoResize,
@@ -81,38 +84,44 @@ static NSDictionary* __bsButton_keyValues = nil;
 }
 
 - (void)dealloc {
-    NSLog(@"bsButton dealloc");
-    objc_removeAssociatedObjects( self );
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    objc_removeAssociatedObjects(self);
 }
 
 - (void)layoutSubviews {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     [super layoutSubviews];
     button_.frame = self.bounds;
 }
 
 - (id)__g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger num = [[__bsButton_keyValues objectForKey:key] integerValue];
     id value = nil;
-    switch ( num ) {
+    switch (num) {
         case kbsButtonEnabled: value = @(button_.enabled); break;
         case kbsButtonSelected: value = @(button_.selected); break;
         case kbsButtonHighlighted: value = @(button_.highlighted); break;
         case kbsButtonLbShadowOffset: value = [bsSize G:button_.titleLabel.shadowOffset]; break;
         case kbsButtonLbAlign: {
-            if( button_.titleLabel.textAlignment == NSTextAlignmentLeft ) value = @"left";
-            else if( button_.titleLabel.textAlignment == NSTextAlignmentRight ) value = @"right";
-            else if( button_.titleLabel.textAlignment == NSTextAlignmentCenter ) value = @"center";
+            if (button_.titleLabel.textAlignment == NSTextAlignmentLeft) value = @"left";
+            else if (button_.titleLabel.textAlignment == NSTextAlignmentRight) value = @"right";
+            else if (button_.titleLabel.textAlignment == NSTextAlignmentCenter) value = @"center";
         } break;
         case kbsButtonLbFontName: value = fontName_; break;
         case kbsButtonLbFontSize: value = @(button_.titleLabel.font.pointSize); break;
         case kbsButtonLbLineBreak: {
-            if( button_.titleLabel.lineBreakMode == NSLineBreakByClipping ) value = @"clip";
-            else if( button_.titleLabel.lineBreakMode == NSLineBreakByWordWrapping ) value = @"word-wrap";
-            else if( button_.titleLabel.lineBreakMode == NSLineBreakByCharWrapping ) value = @"char-wrap";
-            else if( button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingHead ) value = @"head";
-            else if( button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingMiddle ) value = @"middle";
-            else if( button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingTail ) value = @"tail";
+            if (button_.titleLabel.lineBreakMode == NSLineBreakByClipping ) value = @"clip";
+            else if (button_.titleLabel.lineBreakMode == NSLineBreakByWordWrapping) value = @"word-wrap";
+            else if (button_.titleLabel.lineBreakMode == NSLineBreakByCharWrapping) value = @"char-wrap";
+            else if (button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingHead) value = @"head";
+            else if (button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingMiddle) value = @"middle";
+            else if (button_.titleLabel.lineBreakMode == NSLineBreakByTruncatingTail) value = @"tail";
         } break;
         case kbsButtonLbLines: value = @(button_.titleLabel.numberOfLines); break;
         case kbsButtonBtnImg: value = img_; break;
@@ -142,6 +151,8 @@ static NSDictionary* __bsButton_keyValues = nil;
 
 - (NSArray *)__s:(NSArray *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger f0 = 0;
     CGFloat fontSize = 0;
     BOOL imgChange = NO;
@@ -151,11 +162,11 @@ static NSDictionary* __bsButton_keyValues = nil;
     BOOL capInsetsChange = NO;
     UIImage *img = nil;
     NSMutableArray *remain = [NSMutableArray array];
-    for( NSInteger i = 0, j = [params count]; i < j; ) {
+    for (NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsButton_keyValues objectForKey:k] integerValue];
-        switch ( num ) {
+        switch (num) {
             case kbsButtonEnabled: button_.enabled = [bsStr BOOLEAN:v]; break;
             case kbsButtonSelected: button_.selected = [bsStr BOOLEAN:v]; break;
             case kbsButtonHighlighted: button_.highlighted = [bsStr BOOLEAN:v]; break;
@@ -167,14 +178,14 @@ static NSDictionary* __bsButton_keyValues = nil;
                 button_.titleLabel.shadowOffset = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
             case kbsButtonLbAlign: {
-                if( [v isEqualToString:@"left"] ) button_.titleLabel.textAlignment = NSTextAlignmentLeft;
-                else if( [v isEqualToString:@"center"] ) button_.titleLabel.textAlignment = NSTextAlignmentCenter;
-                else if( [v isEqualToString:@"right"] ) button_.titleLabel.textAlignment = NSTextAlignmentRight;
+                if ([v isEqualToString:@"left"]) button_.titleLabel.textAlignment = NSTextAlignmentLeft;
+                else if ([v isEqualToString:@"center"]) button_.titleLabel.textAlignment = NSTextAlignmentCenter;
+                else if ([v isEqualToString:@"right"]) button_.titleLabel.textAlignment = NSTextAlignmentRight;
             } break;
             case kbsButtonLbFontName: {
-                if( [v isEqualToString:@"system-bold"] || [v isEqualToString:@"bold"] ) { f0 = 1; fontName_ = @"system-bold"; }
-                else if( [v isEqualToString:@"system-italic"] || [v isEqualToString:@"italic"] ) { f0 = 2; fontName_ = @"system-italic"; }
-                else if( [v isEqualToString:@"system"] ) { f0 = 3; fontName_=@"system"; }
+                if ([v isEqualToString:@"system-bold"] || [v isEqualToString:@"bold"]) { f0 = 1; fontName_ = @"system-bold"; }
+                else if ([v isEqualToString:@"system-italic"] || [v isEqualToString:@"italic"]) { f0 = 2; fontName_ = @"system-italic"; }
+                else if ([v isEqualToString:@"system"]) { f0 = 3; fontName_=@"system"; }
                 else {
                     f0 = 4;
                     fontName_ = v; //http://iphonedevsdk.com/forum/iphone-sdk-development/6000-list-uifonts-available.html
@@ -182,12 +193,12 @@ static NSDictionary* __bsButton_keyValues = nil;
             } break;
             case kbsButtonLbFontSize: fontSize = [v floatValue]; break;
             case kbsButtonLbLineBreak: {
-                if( [v isEqualToString:@"clip"]) button_.titleLabel.lineBreakMode = NSLineBreakByClipping;
-                else if( [v isEqualToString:@"wordwrap"] || [v isEqualToString:@"word-wrap"]) button_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                else if( [v isEqualToString:@"charwrap"] || [v isEqualToString:@"char-wrap"]) button_.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
-                else if( [v isEqualToString:@"head"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingHead;
-                else if( [v isEqualToString:@"middle"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
-                else if( [v isEqualToString:@"tail"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+                if ([v isEqualToString:@"clip"]) button_.titleLabel.lineBreakMode = NSLineBreakByClipping;
+                else if ([v isEqualToString:@"wordwrap"] || [v isEqualToString:@"word-wrap"]) button_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                else if ([v isEqualToString:@"charwrap"] || [v isEqualToString:@"char-wrap"]) button_.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+                else if ([v isEqualToString:@"head"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingHead;
+                else if ([v isEqualToString:@"middle"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+                else if ([v isEqualToString:@"tail"]) button_.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
             } break;
             case kbsButtonLbLines: button_.titleLabel.numberOfLines = [bsStr INTEGER:v]; break;
                 
@@ -226,23 +237,23 @@ static NSDictionary* __bsButton_keyValues = nil;
             default: [remain addObject:k]; [remain addObject:v]; break;
         }
     }
-    if( imgChange || capInsetsChange ) {
+    if (imgChange || capInsetsChange) {
         img = [UIImage imageNamed:img_];
-        if( capInsets_.top == 0 && capInsets_.bottom == 0 && capInsets_.left == 0 && capInsets_.right == 0 ) {
+        if (UIEdgeInsetsEqualToEdgeInsets(capInsets_, UIEdgeInsetsZero)) {
             [button_ setBackgroundImage:img forState:UIControlStateNormal];
         } else {
             [button_ setBackgroundImage:[img resizableImageWithCapInsets:capInsets_] forState:UIControlStateNormal];
         }
     }
-    if( imgHighlightChange || capInsetsChange ) {
+    if (imgHighlightChange || capInsetsChange) {
         img = [UIImage imageNamed:imgH_];
-        if( capInsets_.top == 0 && capInsets_.bottom == 0 && capInsets_.left == 0 && capInsets_.right == 0 ) {
+        if (UIEdgeInsetsEqualToEdgeInsets(capInsets_, UIEdgeInsetsZero)) {
             [button_ setBackgroundImage:img forState:UIControlStateHighlighted];
         } else {
             [button_ setBackgroundImage:[img resizableImageWithCapInsets:capInsets_] forState:UIControlStateHighlighted];
         }
     }
-    if( imgDisabledChange || capInsetsChange ) {
+    if (imgDisabledChange || capInsetsChange) {
         img = [UIImage imageNamed:imgD_];
         if( capInsets_.top == 0 && capInsets_.bottom == 0 && capInsets_.left == 0 && capInsets_.right == 0 ) {
             [button_ setBackgroundImage:img forState:UIControlStateDisabled];
@@ -250,18 +261,17 @@ static NSDictionary* __bsButton_keyValues = nil;
             [button_ setBackgroundImage:[img resizableImageWithCapInsets:capInsets_] forState:UIControlStateDisabled];
         }
     }
-    if( imgSelectedChange || capInsetsChange ) {
+    if (imgSelectedChange || capInsetsChange) {
         img = [UIImage imageNamed:imgS_];
-        if( capInsets_.top == 0 && capInsets_.bottom == 0 && capInsets_.left == 0 && capInsets_.right == 0 ) {
+        if (UIEdgeInsetsEqualToEdgeInsets(capInsets_, UIEdgeInsetsZero)) {
             [button_ setBackgroundImage:img forState:UIControlStateSelected];
         } else {
             [button_ setBackgroundImage:[img resizableImageWithCapInsets:capInsets_] forState:UIControlStateSelected];
         }
     }
-    if( f0 > 0 || fontSize > 0 ) {
-        UIFont *font;
-        if( f0 == 0 ) {
-            if( [fontName_ hasPrefix:@"system"] ) {
+    if (f0 > 0 || fontSize > 0) {
+        if (f0 == 0) {
+            if ([fontName_ hasPrefix:@"system"]) {
                 if( [fontName_ isEqualToString:@"system-bold"]) f0 = 1;
                 else if( [fontName_ isEqualToString:@"system-italic"]) f0 = 2;
                 else f0 = 3;
@@ -269,9 +279,12 @@ static NSDictionary* __bsButton_keyValues = nil;
                 f0 = 4;
             }
         } else {
-            if( fontSize == 0 ) fontSize = button_.titleLabel.font.pointSize;
+            if (fontSize == 0) {
+                fontSize = button_.titleLabel.font.pointSize;
+            }
         }
-        switch ( f0 ) {
+        UIFont *font;
+        switch (f0) {
             case 1: font = [UIFont boldSystemFontOfSize:fontSize]; break;
             case 2: font = [UIFont italicSystemFontOfSize:fontSize]; break;
             case 3: font = [UIFont systemFontOfSize:fontSize]; break;
@@ -279,7 +292,7 @@ static NSDictionary* __bsButton_keyValues = nil;
         }
         button_.titleLabel.font = font;
     }
-    if( imgChange && autoResize_ ) {
+    if (imgChange && autoResize_) {
         self.frame = CGRectMake( self.frame.origin.x, self.frame.origin.y, img.size.width, img.size.height ); //이미지에 따른 크기 조절은 Normal상태 기준임
     }
     return remain;
@@ -287,11 +300,17 @@ static NSDictionary* __bsButton_keyValues = nil;
 
 - (void)__touched:(id)sender {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsButtonTouchedBlock block = objc_getAssociatedObject(self, &blockKey_);
-    if( block ) block( self );
+    if (block) {
+        block(self);
+    }
 }
 
 - (void)blockTouched:(bsButtonTouchedBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     //if (objc_getAssociatedObject(self, &blockKey_)) bsException(NSInvalidArgumentException, @"두 번 정의할 수 없습니다.");
     objc_setAssociatedObject(self, &blockKey_, block, OBJC_ASSOCIATION_RETAIN);

@@ -8,6 +8,8 @@
 
 #import "bsActionSheet.h"
 
+#import "bsLog.h"
+
 @implementation bsActionSheet
 
 + (void)showRect:(CGRect)rect
@@ -20,6 +22,8 @@ destructiveTitle:(NSString *)destructiveTitle
         onCancel:(bsActionSheetCancelBlock) cancelled
        onDismiss:(bsActionSheetDismissBlock) dismissed {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:title
                                                        delegate:(id<UIActionSheetDelegate>)self
                                               cancelButtonTitle:cancelTitle
@@ -31,8 +35,12 @@ destructiveTitle:(NSString *)destructiveTitle
 
 + (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
 }
+
 + (void)actionSheetCancel:(UIActionSheet *)actionSheet {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
 }
+
 @end

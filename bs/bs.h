@@ -21,6 +21,7 @@
 #import "bsStr.h"
 #import "bsError.h"
 #import "bsMacro.h"
+#import "bsLog.h"
 #import "bsRuntime.h"
 #import "bsBinding.h"
 #import "bsNotification.h"

@@ -8,12 +8,12 @@
 
 #import "BSDemoAppDelegate.h"
 
-//#import "BSDemoViewController.h"
-//#import "BSDemoModel.h"
+#import "BSDemoViewController.h"
+#import "BSDemoModel.h"
 
 @interface BSDemoAppDelegate ()
 
-//@property (nonatomic, strong) BSDemoViewController *viewController;
+@property (nonatomic, strong) BSDemoViewController *viewController;
 
 @end
 
@@ -31,7 +31,7 @@
     NSLog(@"backgroundTaskSupported=%d", self.backgroundTaskSupported);
     [self.app setStatusBarStyle:UIStatusBarStyleLightContent];
     
-//    self.viewController = [BSDemoViewController sharedViewController];
+    self.viewController = [BSDemoViewController sharedViewController];
 }
 
 @end

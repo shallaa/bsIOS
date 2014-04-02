@@ -13,6 +13,7 @@ static bs *__bs_SELF = nil;
 @implementation bs
 
 + (bs *)SELF {
+    
     return __bs_SELF;
 }
 
@@ -61,8 +62,7 @@ static bs *__bs_SELF = nil;
         _backgroundTaskSupported = [UIDevice currentDevice].multitaskingSupported;
     }
     // Create controller
-    bsDisplayController *controller;
-    controller = [[bsDisplayController alloc] initWithLoadBlock:^(bsDisplayController *controller) {
+    bsDisplayController *controller = [[bsDisplayController alloc] initWithLoadBlock:^(bsDisplayController *controller) {
         // Start
         _isReady = YES;
         [self ready];
@@ -82,7 +82,7 @@ static bs *__bs_SELF = nil;
 
 - (bsDisplay *)_getRoot {
     
-    return (bsDisplay*)self.window.rootViewController.view;
+    return (bsDisplay *)self.window.rootViewController.view;
 }
 
 - (bsDisplayController *)_getRootController {
@@ -264,21 +264,21 @@ static bs *__bs_SELF = nil;
 + (BOOL)strRegExpTestWithPattern:(NSString*)pattern value:(NSString*)value { return [bsStr regExpTestWithPattern:pattern value:value]; }
 
 #pragma mark - Binding
-+ (NSString*)bindStart:(id)rootObject keyPathes:(NSArray*)keyPathes block:(bsBindingBlock)block { return [bsBinding bind:rootObject keyPathes:keyPathes block:block]; }
-+ (void)bindEndWithUniqueId:(NSString*)uniqueId { [bsBinding unbindWithUniqueId:uniqueId]; }
-+ (void)bindInvoke:(NSString*)uniqueId { [bsBinding invoke:uniqueId]; }
++ (NSString *)bindStart:(id)rootObject keyPathes:(NSArray *)keyPathes block:(bsBindingBlock)block { return [bsBinding bind:rootObject keyPathes:keyPathes block:block]; }
++ (void)bindEndWithUniqueId:(NSString *)uniqueId { [bsBinding unbindWithUniqueId:uniqueId]; }
++ (void)bindInvoke:(NSString *)uniqueId { [bsBinding invoke:uniqueId]; }
 
 #pragma mark - Param
-+ (NSString*)paramG:(NSString*)key { return [bsParam G:key]; }
-+ (void)paramsA:(NSString*)key params:(NSString*)params { [bsParam A:key params:params]; }
++ (NSString *)paramG:(NSString *)key { return [bsParam G:key]; }
++ (void)paramsA:(NSString *)key params:(NSString *)params { [bsParam A:key params:params]; }
 
 #pragma mark - HTTP
-+ (NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file end:(bsCallback*)end { return [bsHttp sendWithUrl:url get:get post:post file:file end:end]; }
-+ (NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file endBlock:(bsCallbackBlock)end { return [bsHttp sendWithUrl:url get:get post:post file:file endBlock:end]; }
-+ (NSString*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file target:(id)target selector:(SEL)selector { return [bsHttp sendWithUrl:url get:get post:post file:file target:target selector:selector]; }
-+ (NSData*)sendWithUrl:(NSString*)url get:(NSDictionary*)get post:(NSDictionary*)post file:(bsHttpFile*)file error:(bsError**)error { return [bsHttp sendWithUrl:url get:get post:post file:file error:error]; }
-+ (void)cancel:(NSString*)key { [bsHttp cancel:key]; }
-+ (NSString*)ipAddr { return [bsHttp ipAddr]; }
++ (NSString *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file end:(bsCallback *)end { return [bsHttp sendWithUrl:url get:get post:post file:file end:end]; }
++ (NSString *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file endBlock:(bsCallbackBlock)end { return [bsHttp sendWithUrl:url get:get post:post file:file endBlock:end]; }
++ (NSString *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file target:(id)target selector:(SEL)selector { return [bsHttp sendWithUrl:url get:get post:post file:file target:target selector:selector]; }
++ (NSData *)sendWithUrl:(NSString *)url get:(NSDictionary *)get post:(NSDictionary *)post file:(bsHttpFile *)file error:(bsError **)error { return [bsHttp sendWithUrl:url get:get post:post file:file error:error]; }
++ (void)cancel:(NSString *)key { [bsHttp cancel:key]; }
++ (NSString *)ipAddr { return [bsHttp ipAddr]; }
 
 #pragma mark - display
 + (bsDisplay *)displayG:(NSString *)name params:(NSString *)params { return [bsDisplay G:name params:params]; }

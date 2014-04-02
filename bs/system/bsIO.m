@@ -8,6 +8,7 @@
 
 #import "bsIO.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -32,6 +33,8 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (void)onCreate {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (__bsIO_storagePath) {
         bsException(NSInvalidArgumentException, @"Wrong call");
     }
@@ -52,10 +55,14 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (NSString *)__assetPath:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [NSString stringWithFormat:@"%@/%@", __bsIO_assetPath, name];
 }
 
 + (NSData *)assetG:(NSString *)name {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
@@ -72,10 +79,14 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (NSString *)__storagePath:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [NSString stringWithFormat:@"%@/%@", __bsIO_storagePath, name];
 }
 
 + (BOOL)__checkStoragePath:(NSString *)name {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSArray *names = [bsStr split:name seperator:@"/" trim:NO];
     BOOL success = YES;
@@ -92,6 +103,8 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (NSData *)storageG:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
     }
@@ -101,6 +114,8 @@ static NSFileManager *__bsIO_fm = nil;
 }
 
 + (BOOL)storageS:(NSString *)name data:(NSData *)data {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
@@ -118,6 +133,8 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (BOOL)storageD:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
     }
@@ -130,10 +147,14 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (NSString *)__cachePath:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [NSString stringWithFormat:@"%@/%@", __bsIO_cachePath, name];
 }
 
 + (BOOL)__checkCachePath:(NSString *)name {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSArray *names = [bsStr split:name seperator:@"/" trim:NO];
     BOOL success = YES;
@@ -150,6 +171,8 @@ static NSFileManager *__bsIO_fm = nil;
 
 + (NSData *)cacheG:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
     }
@@ -162,6 +185,8 @@ static NSFileManager *__bsIO_fm = nil;
 }
 
 + (BOOL)cacheS:(NSString *)name data:(NSData *)data {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");
@@ -178,6 +203,8 @@ static NSFileManager *__bsIO_fm = nil;
 }
 
 + (BOOL)cacheD:(NSString *)name {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (name == nil) {
         bsException(NSInvalidArgumentException, @"A name is NULL");

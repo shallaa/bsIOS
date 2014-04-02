@@ -8,6 +8,7 @@
 
 #import "bsStr.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsPrimitive.h"
 #include <arpa/inet.h> // IP address check
@@ -30,6 +31,8 @@ static NSArray *__bsStr_template = nil;
 
 // to String
 + (NSString *)str:(id)val {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (val == nil || val == [NSNull null]) {
         return nil;
@@ -71,31 +74,37 @@ static NSArray *__bsStr_template = nil;
 //to Another
 + (NSInteger)INTEGER:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [val integerValue];
 }
 
 + (int)INT:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [val intValue];
 }
 
 + (long long)LONGLONG:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [val longLongValue];
 }
 
 + (float)FLOAT:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [val floatValue];
 }
 
 + (double)DOUBLE:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [val doubleValue];
 }
 
 + (BOOL)BOOLEAN:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     if ([val caseInsensitiveCompare:@"true"] == NSOrderedSame || [val isEqualToString:@"1"]) {
         return YES;
     } else {
@@ -105,6 +114,7 @@ static NSArray *__bsStr_template = nil;
 
 + (NSDictionary *)DIC:(NSString *)$val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     NSArray *getArr = [bsStr col:$val];
     NSMutableArray *objs = [[NSMutableArray alloc] init];
     NSMutableArray *keys = [[NSMutableArray alloc] init];
@@ -117,6 +127,8 @@ static NSArray *__bsStr_template = nil;
 
 + (CGFloat)__colorComponentFrom:(NSString *)string start:(NSUInteger)start length:(NSUInteger)length {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSString *substring = [string substringWithRange:NSMakeRange(start, length)];
     NSString *fullHex = length == 2 ? substring : [NSString stringWithFormat: @"%@%@", substring, substring];
     unsigned hexComponent;
@@ -126,9 +138,11 @@ static NSArray *__bsStr_template = nil;
 
 + (UIColor *)color:(NSString *)val {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if ([val hasPrefix:@"#"]) {
         NSString *colorString = [[val stringByReplacingOccurrencesOfString:@"#" withString: @""] uppercaseString];
-        CGFloat alpha, red, blue, green;
+        CGFloat alpha = 0.0, red = 0.0, blue = 0.0, green = 0.0;
         switch ([colorString length]) {
             case 3: // #RGB
                 alpha = 1.0f;
@@ -161,30 +175,32 @@ static NSArray *__bsStr_template = nil;
         return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
     } else {
         NSArray *colors = [bsStr arg:val];
-        CGFloat alpha, red, blue, green;
+        CGFloat alpha = 0.0, red = 0.0, blue = 0.0, green = 0.0;
         switch ([colors count]) {
             case 3:
                 alpha = 1.0f;
                 red = [colors[0] floatValue]/255.0;
                 green = [colors[1] floatValue]/255.0;
                 blue = [colors[2] floatValue]/255.0;
-                break;
+                return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
             case 4:
                 alpha = [colors[0] floatValue];
                 red = [colors[1] floatValue]/255.0;
                 green = [colors[2] floatValue]/255.0;
                 blue = [colors[3] floatValue]/255.0;
-                break;
+                return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
             default:
                 bsException(NSInvalidArgumentException, @"Color value %@ is invalid.  It should be a value of the form R|G|B or A|R|G|B. A,R,G,B should be a number value.", val);
                 break;
         }
-        return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+        return nil;
     }
 }
 
 //util
 + (id)trim:(id)val {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if ([val isKindOfClass:[NSString class]]) {
         return [val stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -201,6 +217,8 @@ static NSArray *__bsStr_template = nil;
 }
 
 + (NSString *)substrForPrintKoreanWithString:(NSString *)str length:(NSUInteger)length { //한글은 2글자취급, 영문은 1글자 취급해서 잘라온다.
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSInteger i;
     NSString *returned;
@@ -225,6 +243,8 @@ static NSArray *__bsStr_template = nil;
 
 + (NSString *)replace:(NSString *)source search:(id)search dest:(NSString *)dest {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (source == nil || search == nil || dest == nil ) return source;
     if ([search isKindOfClass:[NSString class]]) {
         return [source stringByReplacingOccurrencesOfString:(NSString*)search withString:dest];
@@ -244,6 +264,8 @@ static NSArray *__bsStr_template = nil;
 }
 
 + (NSString *)templateSrc:(NSString*)source replace:(id)replace {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (source == nil || replace == nil) {
         return source;
@@ -278,6 +300,8 @@ static NSArray *__bsStr_template = nil;
 
 + (BOOL)isUrl:(NSString *)url {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if ([[url substringToIndex:4] caseInsensitiveCompare:@"http"] == NSOrderedSame) {
         return YES;
     } else {
@@ -286,6 +310,8 @@ static NSArray *__bsStr_template = nil;
 }
 
 + (NSString *)urlEncode:(NSString *)string {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
                                                                                  (CFStringRef)string,
@@ -296,6 +322,8 @@ static NSArray *__bsStr_template = nil;
 
 + (NSString *)urlDecode:(NSString*)string {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL,
                                                                                                  (CFStringRef)string,
                                                                                                  CFSTR(""),
@@ -303,6 +331,8 @@ static NSArray *__bsStr_template = nil;
 }
 //------------------------------------------------------------------------------------------------------------------------------
 + (NSArray *)split:(NSString *)string seperator:(NSString *)seperator trim:(BOOL)isTrim {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     static NSString *boundary = @"__!@#$%^&*()__";
     NSString *escape = [NSString stringWithFormat:@"\\%@", seperator];
@@ -322,9 +352,10 @@ static NSArray *__bsStr_template = nil;
 
 + (NSArray *)row:(NSString *)string {
     
-    NSRange range;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    NSRange range = [string rangeOfString:__bsStr_row1];
     NSString *row;
-    range = [string rangeOfString:__bsStr_row1];
     if (range.location != NSNotFound) {
         row = __bsStr_row1;
     } else {
@@ -335,15 +366,21 @@ static NSArray *__bsStr_template = nil;
 
 + (NSArray *)col:(NSString *)string {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [bsStr split:string seperator:__bsStr_COMMA trim:YES];
 }
 
 + (NSArray *)arg:(NSString *)string {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [bsStr split:string seperator:__bsStr_VBAR trim:YES];
 }
 
-+ (NSArray *)tag:(NSString*)string {
++ (NSArray *)tag:(NSString *)string {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return [bsStr split:string seperator:__bsStr_UNDER trim:YES];
 }
@@ -351,13 +388,19 @@ static NSArray *__bsStr_template = nil;
 //------------------------------------------------------------------------------------------------------------------------------
 + (NSString *)jsonEncode:(id)obj {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
-    if (error) return nil;
+    if (error) {
+        return nil;
+    }
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 + (id)jsonDecode:(id)json {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSString *t;
     if ([json isKindOfClass:[NSData class]]) {
@@ -374,12 +417,17 @@ static NSArray *__bsStr_template = nil;
 }
 //------------------------------------------------------------------------------------------------------------------------------
 + (NSString *)UUID {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
     NSString *uuid = (NSString *)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uuidRef));
     return uuid;
 }
 //------------------------------------------------------------------------------------------------------------------------------
 + (BOOL)isIpAddress:(NSString *)ipAddr {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     const char *utf8 = [ipAddr UTF8String];
     int success;
@@ -394,15 +442,19 @@ static NSArray *__bsStr_template = nil;
 //------------------------------------------------------------------------------------------------------------------------------
 + (NSString *)addSlashes:(NSString *)str {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [str stringByReplacingOccurrencesOfString:@"," withString:@"\\,"];
 }
 
 + (BOOL)regExpTestWithPattern:(NSString *)pattern value:(NSString *)value {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSError *error = nil;
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
     if (error) {
-        [NSException raise:NSInvalidArgumentException format:@"%s(%d)정규식에 오류가 있습니다. pattern = %@", __FUNCTION__, __LINE__, pattern];
+        [NSException raise:NSInvalidArgumentException format:@"%s(%d) Error in regular expression. pattern = %@", __FUNCTION__, __LINE__, pattern];
     }
     NSTextCheckingResult *match = [regExp firstMatchInString:value options:0 range:NSMakeRange(0, [value length])];
     return match ? YES : NO;

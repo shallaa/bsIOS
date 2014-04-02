@@ -9,7 +9,7 @@
 #import "bsTextField.h"
 
 #import "bsStr.h"
-#import "bsMacro.h"
+#import "bsLog.h"
 
 NSString * const kbsTextBorderStyleNone = @"none";
 NSString * const kbsTextBorderStyleLine = @"line";
@@ -63,6 +63,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (void)ready {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (textField_ == nil) {
         textField_ = [[UITextField alloc] initWithFrame:self.frame];
         [self addSubview:textField_];
@@ -105,21 +107,24 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsTextField dealloc");
-    objc_removeAssociatedObjects( self );
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    objc_removeAssociatedObjects(self);
 }
 
 - (void)layoutSubviews {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     [super layoutSubviews];
     textField_.frame = self.bounds;
 }
 
 - (id)__g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger num = [[__bsTextField_keyValues objectForKey:key] integerValue];
     id value = nil;
-    switch ( num ) {
+    switch (num) {
         case kbsTextFieldText: value = textField_.text; break;
         case kbsTextFieldTextColor: value = textField_.textColor; break;
         case kbsTextFieldFontName: value = fontName_; break;
@@ -199,6 +204,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (NSArray *)__s:(NSArray *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSMutableArray *remain = [NSMutableArray array];
     NSInteger f0 = 0;
     CGFloat fontSize = 0;
@@ -206,7 +213,7 @@ static NSDictionary *__bsTextField_keyValues = nil;
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsTextField_keyValues objectForKey:k] integerValue];
-        switch ( num ) {
+        switch (num) {
             case kbsTextFieldText: textField_.text = v; break;
             case kbsTextFieldTextColor: textField_.textColor = [bsStr color:v]; break;
             case kbsTextFieldFontName: {
@@ -300,7 +307,7 @@ static NSDictionary *__bsTextField_keyValues = nil;
                     bsException(NSInvalidArgumentException, @"Class name(=%@) for inputView is undefined", v);
                 }
                 UIView *view = [[clazz alloc] performSelector:@selector(initWithTextField:) withObject:textField_];
-                if( ![view conformsToProtocol:@protocol(UITextInputTraits)] ) {
+                if (![view conformsToProtocol:@protocol(UITextInputTraits)]) {
                     bsException(NSInvalidArgumentException, @"Class name(=%@) is not implement UITextInputTraits", v);
                 }
                 textField_.inputView = view;
@@ -316,9 +323,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
             default: [remain addObject:k]; [remain addObject:v]; break;
         }
     }
-    if(f0 > 0 || fontSize > 0) {
-        UIFont *font;
-        if( f0 == 0 ) {
+    if (f0 > 0 || fontSize > 0) {
+        if (f0 == 0 ) {
             if( [fontName_ hasPrefix:@"system"] ) {
                 if( [fontName_ isEqualToString:@"system-bold"]) f0 = 1;
                 else if( [fontName_ isEqualToString:@"system-italic"]) f0 = 2;
@@ -329,7 +335,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
         } else {
             if( fontSize == 0 ) fontSize = textField_.font.pointSize;
         }
-        switch ( f0 ) {
+        UIFont *font;
+        switch (f0) {
             case 1: font = [UIFont boldSystemFontOfSize:fontSize]; break;
             case 2: font = [UIFont italicSystemFontOfSize:fontSize]; break;
             case 3: font = [UIFont systemFontOfSize:fontSize]; break;
@@ -344,61 +351,99 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (void)blockEditWillBegin:(bsTextFieldWillBeginEditBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyWillBeginEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockEditDidBegin:(bsTextFieldDidBeginEditBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidBeginEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockEditWillEnd:(bsTextFieldWillEndEditBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyWillEndEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockEditDidEnd:(bsTextFieldDidEndEditBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidEndEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockChangeChar:(bsTextFieldChangeCharBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyChangeChar_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockChangeCharWithFullString:(bsTextFieldChangeCharWithFullStringBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyChangeCharWithFullString_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockChangeCharPhone:(bsTextFieldChangePhoneBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyChangePhone_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
--(void)blockClear:(bsTextFieldClearBlock)block {
+- (void)blockClear:(bsTextFieldClearBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyClear_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
--(void)blockReturn:(bsTextFieldReturnBlock)block {
+- (void)blockReturn:(bsTextFieldReturnBlock)block {
     
-    if( textField_.delegate == nil ) textField_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (textField_.delegate == nil) {
+        textField_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyReturn_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 #pragma mark - delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     BOOL allowEdit = YES;
     bsTextFieldWillBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyWillBeginEdit_);
@@ -410,6 +455,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsTextFieldDidBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyDidBeginEdit_);
     if (block) {
         block(self);
@@ -417,6 +464,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     BOOL stopEdit = YES;
     bsTextFieldWillEndEditBlock block = objc_getAssociatedObject( self, &blockKeyWillEndEdit_);
@@ -428,6 +477,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsTextFieldDidEndEditBlock block = objc_getAssociatedObject(self, &blockKeyDidEndEdit_);
     if (block) {
         block(self);
@@ -435,6 +486,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     {
         bsTextFieldChangeCharBlock block = objc_getAssociatedObject(self, &blockKeyChangeChar_);
@@ -542,6 +595,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     BOOL allowClear = YES;
     bsTextFieldClearBlock block = objc_getAssociatedObject(self, &blockKeyClear_);
     if (block) {
@@ -551,6 +606,8 @@ static NSDictionary *__bsTextField_keyValues = nil;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     BOOL allowReturn = YES;
     bsTextFieldReturnBlock block = objc_getAssociatedObject(self, &blockKeyReturn_);

@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "bsMacro.h"
+#import "bsLog.h"
 #import "bsRuntime.h"
 
 @class bsBindingChange;

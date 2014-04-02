@@ -93,15 +93,15 @@ static dispatch_queue_t __bsBinding_dequeue = NULL;
 + (NSString *)bind:(id)rootObject keyPathes:(NSArray *)keyPathes block:(bsBindingBlock)block {
     
     if (rootObject == nil) {
-        NSLog(@"Invalid argument");
+        bsLog(nil, bsLogLevelError, @"Invalid argument");
         return nil;
     }
     if (keyPathes == nil || [keyPathes count] == 0) {
-        NSLog(@"Invalid argument");
+        bsLog(nil, bsLogLevelError, @"Invalid argument");
         return nil;
     }
     if (block == nil) {
-        NSLog(@"Invalid argument");
+        bsLog(nil, bsLogLevelError, @"Invalid argument");
         return nil;
     }
     if (__bsBinding_dequeue == NULL) {

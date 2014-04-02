@@ -16,6 +16,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (id)initWithLoadBlock:(bsDisplayControllerLoadBlock)loadBlock {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (self = [super init]) {
         blockKey_ = 0;
         loadBlock_ = loadBlock;
@@ -35,6 +37,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (void)loadView {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (__bsDisplayController_singleton) {
         bsException(NSInternalInconsistencyException, @"bsDisplayController can not create directly.");
     }
@@ -44,16 +48,24 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
     
-    if (loadBlock_) loadBlock_( self );
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (loadBlock_) {
+        loadBlock_(self);
+    }
     [super viewWillAppear:animated];
 }
 
 - (BOOL)shouldAutorotate {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return self.rotateAuto;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSUInteger r = 0;
     if (self.rotateAutoAllowLandLeft) r |= UIInterfaceOrientationMaskLandscapeLeft;
@@ -65,7 +77,11 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (NSString *)blockWillRotate:(bsDisplayControllerWillRotateBlock)willRotateBlock {
     
-    if (willRotateBlock == nil) bsException(NSInvalidArgumentException, @"willRotateBlock argument is undefined");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (willRotateBlock == nil) {
+        bsException(NSInvalidArgumentException, @"willRotateBlock argument is undefined");
+    }
     NSString *k = [NSString stringWithFormat:@"bsDisplayControllerWillRotateBlock-%lu", (unsigned long)blockKey_++];
     willRotateBlockDic_[k] = willRotateBlock;
     return k;
@@ -73,7 +89,11 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (NSString *)blockDidRotate:(bsDisplayControllerDidRotateBlock)didRotateBlock {
     
-    if (didRotateBlock == nil) bsException(NSInvalidArgumentException, @"didRotateBlock argument is undefined");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (didRotateBlock == nil) {
+        bsException(NSInvalidArgumentException, @"didRotateBlock argument is undefined");
+    }
     NSString *k = [NSString stringWithFormat:@"bsDisplayControllerDidRotateBlock-%lu", (unsigned long)blockKey_++];
     didRotateBlockDic_[k] = didRotateBlock;
     return k;
@@ -81,14 +101,18 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (void)blockRemove:(NSString *)blockKey {
     
-    if( willRotateBlockDic_[blockKey] ) {
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (willRotateBlockDic_[blockKey]) {
         [willRotateBlockDic_ removeObjectForKey:blockKey];
-    } else if( didRotateBlockDic_[blockKey] ) {
+    } else if (didRotateBlockDic_[blockKey]) {
         [didRotateBlockDic_ removeObjectForKey:blockKey];
     }
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (self.rotateAuto) {
         currentOrientation_ = self.interfaceOrientation;
@@ -100,6 +124,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (self.rotateAuto) {
         currentOrientation_ = self.interfaceOrientation;
@@ -115,6 +141,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
                            portrait:(BOOL)portrait
                  portraitUpsideDown:(BOOL)portraitUpsideDown {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     _rotateAutoAllowLandLeft = landLeft;
     _rotateAutoAllowLandRight = landRight;
     _rotateAutoAllowPortrait = portrait;
@@ -123,6 +151,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 }
 
 - (void)rotateAutoOn {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     //원래상태로 수동으로 복원!
     switch (self.interfaceOrientation) {
@@ -137,6 +167,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 }
 
 - (void)rotateLandRight {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     _rotateAuto = NO;
     [self willRotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight duration:0.8];
@@ -164,6 +196,9 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 }
 
 - (void)rotateLandLeft {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     _rotateAuto = NO;
     [self willRotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft duration:0.8];
     [UIView animateWithDuration:0.8
@@ -191,6 +226,8 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
 
 - (void)rotatePortrait {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     _rotateAuto = NO;
     [self willRotateToInterfaceOrientation:UIInterfaceOrientationPortrait duration:0.8];
     [UIView animateWithDuration:0.8
@@ -199,14 +236,14 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
                          int w = screenBounds.size.width;
                          int h = screenBounds.size.height;
                          int sh;
-                         if( [UIApplication sharedApplication].statusBarHidden ) {
+                         if ([UIApplication sharedApplication].statusBarHidden) {
                              sh = 0;
                              [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
                          } else {
                              sh = 20;
                              [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:YES];
                          }
-                         self.view.transform = CGAffineTransformMakeRotation( 0 );
+                         self.view.transform = CGAffineTransformMakeRotation(0);
                          self.view.frame =  CGRectMake(0, sh, w, h - sh);
                          self.view.bounds = CGRectMake(0, 0, w, h - sh);
                      } completion:^(BOOL finished) {
@@ -214,10 +251,11 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
                          currentOrientation_ = UIInterfaceOrientationPortrait;
                          [self didRotateFromInterfaceOrientation:fromOrientation];
                      }];
-    
 }
 
 - (void)rotatePortraitUpsideDown {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     _rotateAuto = NO;
     [self willRotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown duration:0.8];
@@ -227,14 +265,14 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
                          int w = screenBounds.size.width;
                          int h = screenBounds.size.height;
                          int sh;
-                         if( [UIApplication sharedApplication].statusBarHidden ) {
+                         if ([UIApplication sharedApplication].statusBarHidden) {
                              sh = 0;
                              [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortraitUpsideDown animated:NO];
                          } else {
                              sh = 20;
                              [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortraitUpsideDown animated:YES];
                          }
-                         self.view.transform = CGAffineTransformMakeRotation( M_PI );
+                         self.view.transform = CGAffineTransformMakeRotation(M_PI);
                          self.view.frame =  CGRectMake(0, 0, w, h - sh);
                          self.view.bounds = CGRectMake(0, 0, w, h - sh);
                      } completion:^(BOOL finished) {

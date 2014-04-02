@@ -8,6 +8,7 @@
 
 #import "bsKeyboard.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 
 @implementation bsKeyboard
@@ -27,8 +28,11 @@
 //키보드 감추기
 + (void)hideKeyboard {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     UIWindow *tempWindow;
-    for (NSInteger c = 0, count = [[[UIApplication sharedApplication] windows] count]; c < count; c++) {
+    NSInteger count = [[[UIApplication sharedApplication] windows] count];
+    for (NSInteger c = 0; c < count; c++) {
         tempWindow = [[[UIApplication sharedApplication] windows] objectAtIndex:c];
         for (int i = 0; i < [tempWindow.subviews count]; i++) {
             [self __hideKeyboardRecursion:[tempWindow.subviews objectAtIndex:i]];
@@ -60,10 +64,12 @@
 //키보드를 사라지게 하기 위해 사용하는 재귀함수
 + (void)__hideKeyboardRecursion:(UIView *)view {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
 	if ([view conformsToProtocol:@protocol(UITextInputTraits)]) {
 		[view resignFirstResponder];
 	}
-	if ([view.subviews count]>0) {
+	if ([view.subviews count] > 0) {
 		for (int i = 0; i < [view.subviews count]; i++) {
 			[self __hideKeyboardRecursion:[view.subviews objectAtIndex:i]];
 		}

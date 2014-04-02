@@ -8,12 +8,16 @@
 
 #import "bsObj.h"
 
+#import "bsLog.h"
+
 static NSMutableArray *__bsObj_pool = nil;
 static NSMutableArray *__bsObj_poolSync = nil;
 
 @implementation bsObj
 
 + (bsObj *)pop:(BOOL)isSync {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (isSync) {
         @synchronized( __bsObj_poolSync) {
@@ -44,7 +48,9 @@ static NSMutableArray *__bsObj_poolSync = nil;
     }
 }
 
-+ (void)put:(bsObj*)target {
++ (void)put:(bsObj *)target {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [target d];
     if ([target isMemberOfClass:[bsObjSync class]]) {
@@ -66,6 +72,8 @@ static NSMutableArray *__bsObj_poolSync = nil;
 
 - (id)init {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (self = [super init]) {
         _data = [[NSMutableDictionary alloc] init];
     }
@@ -74,25 +82,35 @@ static NSMutableArray *__bsObj_poolSync = nil;
 
 - (void)dealloc {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     _data = nil;
 }
 
 - (void)k:(NSString *)key v:(NSString *)value {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [_data setObject:[value copy] forKey:key];
 }
 
 - (NSString *)g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return (NSString *)[_data objectForKey:key];
 }
 
 - (void)d {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     [_data removeAllObjects];
 }
 
 - (void)d:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [_data removeObjectForKey:key];
 }
@@ -103,12 +121,16 @@ static NSMutableArray *__bsObj_poolSync = nil;
 
 - (void)k:(NSString *)key v:(NSString *)value {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     @synchronized(_data) {
         [_data setObject:[value copy] forKey:key];
     }
 }
 
 - (NSString *)g:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized(_data) {
         return (NSString*)[_data objectForKey:key];
@@ -117,12 +139,16 @@ static NSMutableArray *__bsObj_poolSync = nil;
 
 - (void)d {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     @synchronized(_data) {
         [_data removeAllObjects];
     }
 }
 
 - (void)d:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     @synchronized(_data)  {
         [_data removeObjectForKey:key];

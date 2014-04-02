@@ -8,34 +8,48 @@
 
 #import "bsRuntime.h"
 
+#import "bsLog.h"
+
 @implementation bsRuntime
 
 + (NSString *)stringFromClass:(Class)clazz {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return NSStringFromClass(clazz);
 }
 
 + (Class)classFromString:(NSString *)className {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return NSClassFromString(className);
 }
 
 + (Class)classFromObject:(id)object {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return [object class];
 }
 
 + (NSString *)classNameFromObject:(id)object {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return NSStringFromClass([object class]);
 }
 
-+ (Class)getPropClassOfObject:(id)object key:(NSString*)key {
++ (Class)getPropClassOfObject:(id)object key:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return [self getPropClassOfClass:[object class] key:key];
 }
 
-+ (Class)getPropClassOfClass:(Class)clazz key:(NSString*)key {
++ (Class)getPropClassOfClass:(Class)clazz key:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     const char *nm = [key UTF8String];
     objc_property_t p0 = class_getProperty(clazz, nm);
@@ -54,10 +68,14 @@
 
 + (Class)getPropClassOfRootObject:(id)object keyPath:(NSString *)keyPath {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [self getPropClassOfRootClass:[object class] keyPath:keyPath];
 }
 
 + (Class)getPropClassOfRootClass:(Class)clazz keyPath:(NSString *)keyPath {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSArray *names = [bsStr split:keyPath seperator:@"." trim:NO];
     if ([names count] == 0) return NULL;
@@ -81,6 +99,8 @@
 }
 
 + (NSArray *)getPropNamesOfClass:(Class)clazz superInquiry:(BOOL)superInquiry {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (clazz == NULL || clazz == [NSObject class]) {
         return nil;
@@ -107,6 +127,8 @@
 
 + (id)getPropValueOfObject:(id)object keyPath:(NSString *)keyPath {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSArray *t0 = [bsStr split:keyPath seperator:@"." trim:NO];
     if ([t0 count] > 0) {
         __block id t00 = object;
@@ -123,6 +145,8 @@
 }
 
 + (void)setPropValueOfObject:(id)object keyPath:(NSString *)keyPath value:(id)value {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSArray *t0 = [bsStr split:keyPath seperator:@"." trim:NO];
     if ([t0 count] > 0) {
@@ -144,10 +168,13 @@
 
 + (BOOL)hasPropAtObject:(id)object keyPath:(NSString *)keyPath {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return [self hasPropAtClass:[object class] keyPath:keyPath];
 }
 
 + (BOOL)hasPropAtClass:(Class)clazz keyPath:(NSString *)keyPath {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     //clazz와 name으로 캐싱필요!
     NSArray *names = [bsStr split:keyPath seperator:@"." trim:NO];

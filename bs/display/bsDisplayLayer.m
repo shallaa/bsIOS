@@ -14,6 +14,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 + (bsDisplayLayer *)center {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     //DCL(Double Checked Locking)
     if (__bsDisplayLayer == nil) {
         @synchronized(__bsDisplayLayer) {
@@ -27,6 +29,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 }
 
 - (id)init {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (self = [super init]) {
         if (__bsDisplayLayer) {
@@ -42,6 +46,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 }
 
 - (void)parentA:(bsDisplay *)parent parentName:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (parent == nil) {
         bsException(NSInvalidArgumentException, @"parent view should be not nil");
@@ -64,10 +70,13 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (void)parentD:(NSString *)parentName {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     [parents_ removeObjectForKey:parentName];
 }
 
 - (bsDisplay *)parentG:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSDictionary *parent = parents_[parentName];
     if (parent == nil) {
@@ -78,17 +87,23 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (void)parentS:(NSString *)parentName params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsDisplay *parent = [self parentG:parentName];
     [parent s:params];
 }
 
 - (void)parentS:(NSString *)parentName params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsDisplay *parent = [self parentG:parentName];
     [parent s:params replace:replace];
 }
 
 - (bsDisplay *)layerG:(NSString *)layerName parentName:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSDictionary *dic = parents_[parentName];
     if (dic == nil) {
@@ -103,6 +118,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (NSArray *)layersG:(NSString *)layerNames parentName:(NSString *)parentName {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSMutableArray *r = [NSMutableArray array];
     NSArray *names = [bsStr col:layerNames];
     [names enumerateObjectsUsingBlock:^(NSString *layerName, NSUInteger idx, BOOL *stop) {
@@ -112,6 +129,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 }
 
 - (bsDisplay *)layerA:(NSString *)layerName hidden:(BOOL)hidden parentName:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSDictionary *dic = parents_[parentName];
     if (dic == nil) {
@@ -133,6 +152,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (NSArray *)layersA:(NSString*)layerNames hidden:(BOOL)hidden parentName:(NSString *)parentName {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSMutableArray *r = [NSMutableArray array];
     NSArray *names = [bsStr col:layerNames];
     [names enumerateObjectsUsingBlock:^(NSString *layerName, NSUInteger idx, BOOL *stop) {
@@ -143,6 +164,8 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 }
 
 - (bsDisplay *)layerD:(NSString *)layerName parentName:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSDictionary *dic = parents_[parentName];
     if (dic == nil) {
@@ -160,6 +183,9 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 }
 
 - (NSArray *)layersD:(NSString *)layerNames parentName:(NSString *)parentName {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSMutableArray *r = [NSMutableArray array];
     NSArray *names = [bsStr col:layerNames];
     [names enumerateObjectsUsingBlock:^(NSString *layerName, NSUInteger idx, BOOL *stop) {
@@ -171,23 +197,35 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
 
 - (void)layerS:(NSString*)layerName parentName:(NSString*)parentName params:(NSString*)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsDisplay *layer = [[bsDisplayLayer center] layerG:layerName parentName:parentName];
-    if (layer == nil) return;
+    if (layer == nil) {
+        return;
+    }
     [layer s:params];
 }
 
 - (void)layerS:(NSString *)layerName parentName:(NSString *)parentName params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsDisplay *layer = [[bsDisplayLayer center] layerG:layerName parentName:parentName];
-    if (layer == nil) return;
+    if (layer == nil) {
+        return;
+    }
     [layer s:params replace:replace];
 }
 
 - (void)layerChildD:(NSString *)layerName parentName:(NSString *)parentName childKeys:(NSString *)childKeys {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsDisplay *layer = [[bsDisplayLayer center] layerG:layerName parentName:parentName];
-    if( layer == nil ) return;
-    if( [childKeys isEqualToString:@"*"] ) {
+    if (layer == nil) {
+        return;
+    }
+    if ([childKeys isEqualToString:@"*"]) {
         NSArray *subviews = layer.subviews;
         [subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             [view removeFromSuperview];
@@ -197,7 +235,7 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
         NSArray *keys = [bsStr col:childKeys];
         [keys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
             UIView *view = [layer childG:key];
-            if( view && view.superview ) {
+            if (view.superview) {
                 [view removeFromSuperview];
             }
         }];

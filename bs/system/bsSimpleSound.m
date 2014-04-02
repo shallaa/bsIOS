@@ -9,6 +9,7 @@
 #import "bsSimpleSound.h"
 
 #import <AudioToolbox/AudioServices.h>
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -30,6 +31,8 @@ static NSMutableDictionary *__bsSimpleSound_dic = nil;
 
 + (BOOL)AWithKey:(NSString *)key fullFileName:(NSString *)fullFileName {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     @synchronized (__bsSimpleSound_dic) {
         if (__bsSimpleSound_dic == nil) {
             __bsSimpleSound_dic = [[NSMutableDictionary alloc] init];
@@ -43,7 +46,7 @@ static NSMutableDictionary *__bsSimpleSound_dic = nil;
         NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:extension];
         OSStatus error = AudioServicesCreateSystemSoundID((__bridge CFURLRef)[[NSURL alloc] initFileURLWithPath:path], &soundID);
         if (error != kAudioServicesNoError) {
-            NSLog(@"Sound not found. fullFileName=%@", fullFileName);
+            bsLog(nil, bsLogLevelError, @"Sound not found. fullFileName=%@", fullFileName);
             return NO;
         }
         num = [[NSNumber alloc] initWithUnsignedLong:soundID];
@@ -55,6 +58,8 @@ static NSMutableDictionary *__bsSimpleSound_dic = nil;
 }
 
 + (BOOL)DWithKey:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (key == nil) return NO;
     if (__bsSimpleSound_dic == nil) return NO;
@@ -82,6 +87,8 @@ static NSMutableDictionary *__bsSimpleSound_dic = nil;
 }
 
 + (BOOL)PWithKey:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (key == nil) return NO;
     if (__bsSimpleSound_dic == nil) return NO;

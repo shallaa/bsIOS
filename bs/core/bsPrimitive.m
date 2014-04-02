@@ -15,7 +15,7 @@
     return nil;
 }
 
--(NSString *)description {
+- (NSString *)description {
     
     return [self str];
 }
@@ -329,7 +329,7 @@
     return [NSNumber numberWithInteger:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsInteger G:_val];
 }
@@ -453,35 +453,35 @@
 
 @implementation bsLong
 
-+(bsLong*)G:(long)val {
++ (bsLong *)G:(long)val {
     
     return [[bsLong alloc] initWithValue:val];
 }
 
--(id)initWithValue:(long)val {
+- (id)initWithValue:(long)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(long)g {
+- (long)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%ld", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithLong:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsLong G:_val];
 }
@@ -491,35 +491,35 @@
 
 @implementation bsULong
 
-+(bsULong*)G:(unsigned long)val {
++ (bsULong *)G:(unsigned long)val {
     
     return [[bsULong alloc] initWithValue:val];
 }
 
--(id)initWithValue:(unsigned long)val {
+- (id)initWithValue:(unsigned long)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(unsigned long)g {
+- (unsigned long)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%lu", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedLong:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsULong G:_val];
 }
@@ -529,35 +529,35 @@
 
 @implementation bsLongLong
 
-+(bsLongLong*)G:(long long)val {
++ (bsLongLong *)G:(long long)val {
     
     return [[bsLongLong alloc] initWithValue:val];
 }
 
--(id)initWithValue:(long long)val {
+- (id)initWithValue:(long long)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(long long)g {
+- (long long)g {
     
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%lld", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithLongLong:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsLongLong G:_val];
 }
@@ -567,34 +567,35 @@
 
 @implementation bsULongLong
 
-+(bsULongLong*)G:(unsigned long long)val {
++ (bsULongLong *)G:(unsigned long long)val {
     
     return [[bsULongLong alloc] initWithValue:val];
 }
 
--(id)initWithValue:(unsigned long long)val {
+- (id)initWithValue:(unsigned long long)val {
     
-    if( self = [super init] ) {
+    if (self = [super init]) {
         _val = val;
     }
     return self;
 }
 
--(unsigned long long)g {
+- (unsigned long long)g {
+    
     return _val;
 }
 
--(NSString*)str {
+- (NSString *)str {
     
     return [NSString stringWithFormat:@"%llu", _val];
 }
 
--(NSNumber*)number {
+- (NSNumber *)number {
     
     return [NSNumber numberWithUnsignedLongLong:_val];
 }
 
--(id)clone {
+- (id)clone {
     
     return [bsULongLong G:_val];
 }

@@ -23,13 +23,15 @@ static NSDictionary* __bsImage_keyValues = nil;
 
 - (void)ready {
     
-    if( imageView_ == nil ) {
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (imageView_ == nil) {
         imageView_ = [[UIImageView alloc] initWithFrame:self.frame];
         [self addSubview:imageView_];
         //[self autolayout:[bsStr templateSrc:kbsDisplayConstraintDefault replace:@[@"imageView_", @"imageViewVertical", @"imageViewHorizontal"]] views:NSDictionaryOfVariableBindings(imageView_)];
     }
-    self.frame = CGRectMake( 0, 0, 100, 100 );
-    if( __bsImage_keyValues == nil ) {
+    self.frame = CGRectMake( 0, 0, 100, 100);
+    if (__bsImage_keyValues == nil) {
         __bsImage_keyValues =
         @{ @"src": @kbsImageSrc, @"cache-type": @kbsImageCacheType,
            @"default-src": @kbsImageDefaultSrc, @"default-color": @kbsImageDefaultColor,
@@ -39,7 +41,7 @@ static NSDictionary* __bsImage_keyValues = nil;
            @"auto-resize": @kbsImageAutoResize, @"cap-insets": @kbsImageCapInset
            };
     }
-    if( queKeyString_ ) {
+    if ( queKeyString_) {
         [bsWorker D:queKeyString_];
         queKeyString_ = nil;
     }
@@ -62,7 +64,7 @@ static NSDictionary* __bsImage_keyValues = nil;
     fadeTime_ = 0;
     loadStatus_ = -1;
     [imageView_ setImage:[bsDisplayUtil image1x1WhiteColor]];
-    if( spinner_ ) {
+    if (spinner_) {
         spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
         [spinner_ stopAnimating];
         [spinner_ setHidden:YES];
@@ -70,12 +72,14 @@ static NSDictionary* __bsImage_keyValues = nil;
     self.userInteractionEnabled = NO;
 }
 
--(void)dealloc {
+- (void)dealloc {
     
-    NSLog(@"bsImage dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
 }
 
--(void)layoutSubviews {
+- (void)layoutSubviews {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [super layoutSubviews];
     CGFloat w,h,t,l,b,r;
@@ -85,17 +89,19 @@ static NSDictionary* __bsImage_keyValues = nil;
     l = padding_.left;
     b = padding_.bottom;
     r = padding_.right;
-    imageView_.frame = CGRectMake( l, t, w-r-l, h-b-t );
-    if( spinner_ && spinner_.superview ) {
+    imageView_.frame = CGRectMake(l, t, w-r-l, h-b-t);
+    if (spinner_ && spinner_.superview) {
         spinner_.center = CGPointMake( (w-r-l) * 0.5 + l, (h-b-t) * 0.5 + t );
     }
 }
 
--(id)__g:(NSString*)key {
+- (id)__g:(NSString*)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSInteger num = [[__bsImage_keyValues objectForKey:key] integerValue];
     id value = nil;
-    switch ( num ) {
+    switch (num) {
         case kbsImageSrc: value = src_; break;
         case kbsImageCacheType: value = cacheType_; break;
         case kbsImageDefaultSrc: value = defaultSrc_; break;
@@ -112,7 +118,9 @@ static NSDictionary* __bsImage_keyValues = nil;
     return value;
 }
 
--(NSArray*)__s:(NSArray*)params {
+- (NSArray *)__s:(NSArray*)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     static int queKey = 0;
     NSMutableArray *remain = [NSMutableArray array];
@@ -120,29 +128,29 @@ static NSDictionary* __bsImage_keyValues = nil;
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsImage_keyValues objectForKey:k] integerValue];
-        switch ( num ) {
+        switch (num) {
             case kbsImageSrc:
                 src_ = v;
                 srcChange_ = YES;
-                if( loadStatus_ > 0 ) { //이전 로딩중인거 있으면 취소시킨다.
+                if (loadStatus_ > 0) { //이전 로딩중인거 있으면 취소시킨다.
                     [bsWorker D:[NSString stringWithFormat:@"bsImageQueKey=%d",loadStatus_]];
                     loadStatus_ = -1; //준비
                 }
                 break;
             case kbsImageCacheType: {
-                if( [v isEqualToString:kbsImageCacheTypeNone] ) cacheType_ = kbsImageCacheTypeNone;
-                else if( [v isEqualToString:kbsImageCacheTypeResize] ) cacheType_ = kbsImageCacheTypeResize;
-                else if( [v isEqualToString:kbsImageCacheTypeOriginal] ) cacheType_ = kbsImageCacheTypeOriginal;
+                if ([v isEqualToString:kbsImageCacheTypeNone]) cacheType_ = kbsImageCacheTypeNone;
+                else if ([v isEqualToString:kbsImageCacheTypeResize]) cacheType_ = kbsImageCacheTypeResize;
+                else if ([v isEqualToString:kbsImageCacheTypeOriginal]) cacheType_ = kbsImageCacheTypeOriginal;
             } break;
             case kbsImageDefaultSrc: defaultSrc_ = v; defaultChange_ = YES; break;
             case kbsImageDefaultColor: defaultColor_ = [bsStr color:v]; defaultChange_ = YES; break;
             case kbsImageFailSrc: failSrc_ = v; failChange_ = YES; break;
             case kbsImageFailColor: failColor_ = [bsStr color:v]; failChange_ = YES; break;
             case kbsImageSpinStyle: {
-                if( [v isEqualToString:kbsImageSpinStyleNone] ) spinStyle_ = kbsImageSpinStyleNone;
-                else if( [v isEqualToString:kbsImageSpinStyleWhite] ) spinStyle_ = kbsImageSpinStyleWhite;
-                else if( [v isEqualToString:kbsImageSpinStyleGray] ) spinStyle_ = kbsImageSpinStyleGray;
-                else if( [v isEqualToString:kbsImageSpinStyleLargeWhite] ) spinStyle_ = kbsImageSpinStyleLargeWhite;
+                if ([v isEqualToString:kbsImageSpinStyleNone]) spinStyle_ = kbsImageSpinStyleNone;
+                else if ([v isEqualToString:kbsImageSpinStyleWhite]) spinStyle_ = kbsImageSpinStyleWhite;
+                else if ([v isEqualToString:kbsImageSpinStyleGray]) spinStyle_ = kbsImageSpinStyleGray;
+                else if ([v isEqualToString:kbsImageSpinStyleLargeWhite]) spinStyle_ = kbsImageSpinStyleLargeWhite;
                 spinStyleChange_ = YES;
             }; break;
             case kbsImageSpinColor: spinColor_ = [bsStr color:v]; spinColorChange_ = YES; break;
@@ -176,47 +184,49 @@ static NSDictionary* __bsImage_keyValues = nil;
     }
     CGFloat imageW = [[self g:@"w"] floatValue] - padding_.left - padding_.right;
     CGFloat imageH = [[self g:@"h"] floatValue] - padding_.left - padding_.right;
-    if( srcChange_ ) {
+    if (srcChange_) {
         srcChange_ = NO;
         bsSize *cacheSize = nil;
-        if( [cacheType_ isEqualToString:kbsImageCacheTypeOriginal] ) {
+        if ([cacheType_ isEqualToString:kbsImageCacheTypeOriginal]) {
             cacheSize = [bsSize G:CGSizeMake( -1, -1 )];
-        } else if( [cacheType_ isEqualToString:kbsImageCacheTypeResize] ) {
+        } else if ([cacheType_ isEqualToString:kbsImageCacheTypeResize]) {
             cacheSize = [bsSize G:CGSizeMake( imageW, imageH )];
         }
-        if( queKeyString_ ) {
+        if (queKeyString_) {
             [bsWorker D:queKeyString_];
             queKeyString_ = nil;
         }
         bsCallbackBlock block = ^(NSString *key, UIImage* image, bsError *error) {
             queKeyString_ = nil;
-            if( key && [self superview] == nil ) return;
+            if (key && [self superview] == nil) {
+                return;
+            }
             //if( cacheSize ) {
             //    [bsSize put:cacheSize];
             //}
-            if( error ) {
+            if (error) {
                 loadStatus_ = -3; //실패
                 failChange_ = YES;
                 [self __showFailImage];
                 return;
             }
-            if( image == nil ) {
+            if (image == nil) {
                 loadStatus_ = -1; //취소된 경우로 준비상태로 전환
                 defaultChange_ = YES;
                 [self __showDefaultImage];
                 return;
             }
             loadStatus_ = -2; //완료
-            if( autoResize_ ) {
+            if (autoResize_) {
                 [self setFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, image.size.width, image.size.height)];
             }
-            if( capInsets_.top == 0 && capInsets_.bottom == 0 && capInsets_.left == 0 && capInsets_.right == 0 ) {
+            if (UIEdgeInsetsEqualToEdgeInsets(capInsets_, UIEdgeInsetsZero)) {
                 [imageView_ setImage:image];
             } else {
                 [imageView_ setImage:[image resizableImageWithCapInsets:capInsets_]];
             }
             [self __showSpinner];
-            if( fadeTime_ > 0 ) {
+            if (fadeTime_ > 0) {
                 imageView_.alpha = 0;
                 [UIView animateWithDuration:fadeTime_
                                       delay:0
@@ -229,11 +239,11 @@ static NSDictionary* __bsImage_keyValues = nil;
                 imageView_.alpha = 1;
             }
         };
-        if( [src_ hasPrefix:@"http://"] || [src_ hasPrefix:@"https://"] || [src_ hasPrefix:@"assets://"] || [src_ hasPrefix:@"asset://"] || [src_ hasPrefix:@"a://"] || [src_ hasPrefix:@"storage://"] || [src_ hasPrefix:@"s://"] ) {
+        if ([src_ hasPrefix:@"http://"] || [src_ hasPrefix:@"https://"] || [src_ hasPrefix:@"assets://"] || [src_ hasPrefix:@"asset://"] || [src_ hasPrefix:@"a://"] || [src_ hasPrefix:@"storage://"] || [src_ hasPrefix:@"s://"]) {
             queKeyString_ = [NSString stringWithFormat:@"bsImageQueKey=%d",queKey++];
             [bsWorker A:[bsImageQueue GWithKey:queKeyString_ src:src_ cacheSize:cacheSize end:block]];
         } else {
-            block( nil, [UIImage imageNamed:src_], nil );
+            block(nil, [UIImage imageNamed:src_], nil);
         }
         
         loadStatus_ = queKey;
@@ -244,7 +254,9 @@ static NSDictionary* __bsImage_keyValues = nil;
     return remain;
 }
 
--(void)__showDefaultImage {
+- (void)__showDefaultImage {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (!defaultChange_) return;
     defaultChange_ = NO;
@@ -258,17 +270,21 @@ static NSDictionary* __bsImage_keyValues = nil;
 
 - (void)__showFailImage {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (!failChange_) return;
     failChange_ = NO;
-    if( loadStatus_ != -3 ) return;
-    if( failSrc_ ) {
+    if (loadStatus_ != -3) return;
+    if (failSrc_) {
         [imageView_ setImage:[UIImage imageNamed:failSrc_]];
-    } else if( failColor_ ) {
+    } else if (failColor_) {
         [imageView_ setImage:[bsDisplayUtil image1x1WithColor:failColor_]];
     }
 }
 
 - (void)__showSpinner {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (!spinStyleChange_ && !spinColorChange_) return;
     if ([spinStyle_ isEqualToString:kbsImageSpinStyleNone] || loadStatus_ < 0) {
@@ -285,10 +301,10 @@ static NSDictionary* __bsImage_keyValues = nil;
         //NSString *layout = [bsStr templateSrc:kbsDisplayConstraintDefault replace:@[@"spinner_", @"spinnerVertical", @"spinnerHorizontal"]];
         //[self autolayout:layout views:NSDictionaryOfVariableBindings(spinner_)];
     }
-    if( [spinStyle_ isEqualToString:kbsImageSpinStyleWhite] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    else if( [spinStyle_ isEqualToString:kbsImageSpinStyleGray] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    else if( [spinStyle_ isEqualToString:kbsImageSpinStyleLargeWhite] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    if( spinColorChange_ ) {
+    if ([spinStyle_ isEqualToString:kbsImageSpinStyleWhite]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    else if ([spinStyle_ isEqualToString:kbsImageSpinStyleGray]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    else if ([spinStyle_ isEqualToString:kbsImageSpinStyleLargeWhite]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    if (spinColorChange_) {
         spinner_.color = spinColor_;
     } else {
         spinColor_ = spinner_.color;

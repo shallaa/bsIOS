@@ -16,11 +16,13 @@ static NSDictionary* __bsLabel_keyValues = nil;
 
 - (void)ready {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if( label_ == nil ) {
         label_ = [[UILabel alloc] initWithFrame:self.frame];
         [self addSubview:label_];
     }
-    if( __bsLabel_keyValues == nil ) {
+    if (__bsLabel_keyValues == nil) {
         __bsLabel_keyValues =
         @{ @"text": @kbsLabelText, @"text-color": @kbsLabelTextColor, @"auto-resize": @kbsLabelAutoResize,
            @"text-shadow-color": @kbsLabelTextShadowColor, @"text-shadow-offset": @kbsLabelTextShadowOffset,
@@ -54,10 +56,12 @@ static NSDictionary* __bsLabel_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsLabel dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
 }
 
 - (void)layoutSubviews {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [super layoutSubviews];
     CGFloat w,h,t,l,b,r;
@@ -72,9 +76,11 @@ static NSDictionary* __bsLabel_keyValues = nil;
 
 - (id)__g:(NSString*)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger num = [[__bsLabel_keyValues objectForKey:key] integerValue];
     id value = nil;
-    switch ( num ) {
+    switch (num) {
         case kbsLabelText: value = label_.text; break;
         case kbsLabelTextColor: value = label_.textColor; break;
         case kbsLabelAutoResize: value = @(autoResize_); break;
@@ -107,6 +113,8 @@ static NSDictionary* __bsLabel_keyValues = nil;
 
 - (NSArray *)__s:(NSArray *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSString *text = nil;
     NSInteger f0 = 0;
     CGFloat fontSize = 0;
@@ -116,12 +124,12 @@ static NSDictionary* __bsLabel_keyValues = nil;
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsLabel_keyValues objectForKey:k] integerValue];
-        switch ( num ) {
+        switch (num) {
             case kbsLabelText: sizeChangeReq = YES; text = v; break;
             case kbsLabelTextColor: label_.textColor = [bsStr color:v]; break;
             case kbsLabelAutoResize: {
                 autoResize_ = [bsStr BOOLEAN:v];
-                if( autoResize_ ) {
+                if (autoResize_) {
                     sizeChangeReq = YES;
                 }
             } break;
@@ -134,9 +142,9 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 label_.shadowOffset = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
             } break;
             case kbsLabelFontName: {
-                if( [v isEqualToString:@"system-bold"] || [v isEqualToString:@"bold"] ) { f0 = 1; fontName_ = @"system-bold"; }
-                else if( [v isEqualToString:@"system-italic"] || [v isEqualToString:@"italic"] ) { f0 = 2; fontName_ = @"system-italic"; }
-                else if( [v isEqualToString:@"system"] ) { f0 = 3; fontName_=@"system"; }
+                if ([v isEqualToString:@"system-bold"] || [v isEqualToString:@"bold"]) { f0 = 1; fontName_ = @"system-bold"; }
+                else if ([v isEqualToString:@"system-italic"] || [v isEqualToString:@"italic"]) { f0 = 2; fontName_ = @"system-italic"; }
+                else if ([v isEqualToString:@"system"]) { f0 = 3; fontName_=@"system"; }
                 else {
                     f0 = 4;
                     fontName_ = v; //http://iphonedevsdk.com/forum/iphone-sdk-development/6000-list-uifonts-available.html
@@ -159,19 +167,19 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 [self setNeedsLayout];
             } break;
             case kbsLabelAlign: {
-                if( [v isEqualToString:@"left"] ) label_.textAlignment = NSTextAlignmentLeft;
-                else if( [v isEqualToString:@"center"] ) label_.textAlignment = NSTextAlignmentCenter;
-                else if( [v isEqualToString:@"right"] ) label_.textAlignment = NSTextAlignmentRight;
+                if ([v isEqualToString:@"left"]) label_.textAlignment = NSTextAlignmentLeft;
+                else if ([v isEqualToString:@"center"]) label_.textAlignment = NSTextAlignmentCenter;
+                else if ([v isEqualToString:@"right"]) label_.textAlignment = NSTextAlignmentRight;
             } break;
             case kbsLabelHighlightEnable: label_.highlighted = [bsStr BOOLEAN:v]; break;
             case kbsLabelHighlightColor: label_.highlighted = YES; label_.highlightedTextColor = [bsStr color:v]; break;
             case kbsLabelLineBreak: {
-                if( [v isEqualToString:@"clip"]) label_.lineBreakMode = NSLineBreakByClipping;
-                else if( [v isEqualToString:@"wordwrap"] || [v isEqualToString:@"word-wrap"]) label_.lineBreakMode = NSLineBreakByWordWrapping;
-                else if( [v isEqualToString:@"charwrap"] || [v isEqualToString:@"char-wrap"]) label_.lineBreakMode = NSLineBreakByCharWrapping;
-                else if( [v isEqualToString:@"head"]) label_.lineBreakMode = NSLineBreakByTruncatingHead;
-                else if( [v isEqualToString:@"middle"]) label_.lineBreakMode = NSLineBreakByTruncatingMiddle;
-                else if( [v isEqualToString:@"tail"]) label_.lineBreakMode = NSLineBreakByTruncatingTail;
+                if ([v isEqualToString:@"clip"]) label_.lineBreakMode = NSLineBreakByClipping;
+                else if ([v isEqualToString:@"wordwrap"] || [v isEqualToString:@"word-wrap"]) label_.lineBreakMode = NSLineBreakByWordWrapping;
+                else if ([v isEqualToString:@"charwrap"] || [v isEqualToString:@"char-wrap"]) label_.lineBreakMode = NSLineBreakByCharWrapping;
+                else if ([v isEqualToString:@"head"]) label_.lineBreakMode = NSLineBreakByTruncatingHead;
+                else if ([v isEqualToString:@"middle"]) label_.lineBreakMode = NSLineBreakByTruncatingMiddle;
+                else if ([v isEqualToString:@"tail"]) label_.lineBreakMode = NSLineBreakByTruncatingTail;
                 sizeChangeReq = YES;
             } break;
             case kbsLabelLines: label_.numberOfLines = [bsStr INTEGER:v]; break;
@@ -182,7 +190,7 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 if ([c count] != 2) {
                     bsException(NSInvalidArgumentException, @"max-size value %@ is invalid. It should be a value of the form maxWidth|maxHeight", v);
                 }
-                maxSize_ = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
+                maxSize_ = CGSizeMake([c[0] floatValue], [c[1] floatValue]);
             } break;
             case kbsLabelMinSize: {
                 minSizeSetting_ = YES;
@@ -191,15 +199,14 @@ static NSDictionary* __bsLabel_keyValues = nil;
                 if ([c count] != 2) {
                     bsException(NSInvalidArgumentException, @"min-size value %@ is invalid. It should be a value of the form minWidth|minHeight", v);
                 }
-                minSize_ = CGSizeMake( [c[0] floatValue], [c[1] floatValue] );
+                minSize_ = CGSizeMake([c[0] floatValue], [c[1] floatValue]);
             } break;
             default: [remain addObject:k]; [remain addObject:v]; break;
         }
         //label_.lineBreakMode = NSLineBreakByWordWrapping;
     }
-    if( f0 > 0 || fontSize > 0 ) {
-        UIFont *font;
-        if( f0 == 0 ) {
+    if (f0 > 0 || fontSize > 0) {
+        if (f0 == 0) {
             if( [fontName_ hasPrefix:@"system"] ) {
                 if( [fontName_ isEqualToString:@"system-bold"]) f0 = 1;
                 else if( [fontName_ isEqualToString:@"system-italic"]) f0 = 2;
@@ -210,6 +217,7 @@ static NSDictionary* __bsLabel_keyValues = nil;
         } else {
             if( fontSize == 0 ) fontSize = label_.font.pointSize;
         }
+        UIFont *font;
         switch ( f0 ) {
             case 1: font = [UIFont boldSystemFontOfSize:fontSize]; break;
             case 2: font = [UIFont italicSystemFontOfSize:fontSize]; break;
@@ -228,20 +236,20 @@ static NSDictionary* __bsLabel_keyValues = nil;
             //UIFont *font = label_.font;
             CGFloat minW, minH, maxW, maxH, w, h;
             CGSize size;
-            if( maxSizeSetting_ ) {
+            if ( maxSizeSetting_) {
                 maxW = maxSize_.width - padding_.left - padding_.right;
                 maxH = maxSize_.height - padding_.top - padding_.bottom;
-                if( maxW < 0 ) maxW = 0;
-                if( maxH < 0 ) maxH = 0;
+                if (maxW < 0) maxW = 0;
+                if (maxH < 0) maxH = 0;
             } else {
                 maxW = CGFLOAT_MAX;
                 maxH = CGFLOAT_MAX;
             }
-            if( minSizeSetting_ ) {
+            if (minSizeSetting_) {
                 minW = minSize_.width - padding_.left - padding_.right;
                 minH = minSize_.height - padding_.top - padding_.bottom;
-                if( minW < 0 ) minW = 0;
-                if( minH < 0 ) minH = 0;
+                if (minW < 0) minW = 0;
+                if (minH < 0) minH = 0;
             } else {
                 minW = 0;
                 minH = 0;
@@ -249,7 +257,7 @@ static NSDictionary* __bsLabel_keyValues = nil;
             if (minW > maxW || minH > maxH) {
                 bsException(NSInvalidArgumentException, @"min-size greater than max-size.");
             }
-            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
             paragraphStyle.lineBreakMode = label_.lineBreakMode;
             paragraphStyle.alignment = label_.textAlignment;
             NSDictionary *attributes = @{NSFontAttributeName: label_.font, NSParagraphStyleAttributeName: paragraphStyle};
@@ -260,11 +268,11 @@ static NSDictionary* __bsLabel_keyValues = nil;
             //size = [label_.text sizeWithFont:font constrainedToSize:CGSizeMake(maxW, maxH) lineBreakMode:label_.lineBreakMode];
             w = size.width;
             h = size.height;
-            if( w < minW ) w = minW;
-            if( h < minH ) h = minH;
-            self.frame = CGRectMake( self.frame.origin.x, self.frame.origin.y, w + padding_.left + padding_.right, h + padding_.top + padding_.bottom );
+            if (w < minW) w = minW;
+            if (h < minH) h = minH;
+            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, w + padding_.left + padding_.right, h + padding_.top + padding_.bottom);
         } else {
-            self.frame = CGRectMake( self.frame.origin.x, self.frame.origin.y, labelSize.width + padding_.left + padding_.right, labelSize.height + padding_.top + padding_.bottom );
+            self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, labelSize.width + padding_.left + padding_.right, labelSize.height + padding_.top + padding_.bottom);
         }
     }
     return remain;

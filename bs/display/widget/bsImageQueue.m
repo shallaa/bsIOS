@@ -12,6 +12,7 @@
 #import "bsError.h"
 #import "bsGeometry.h"
 #import "bsIO.h"
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -19,12 +20,16 @@
 
 + (bsImageQueue *)GWithKey:(NSString *)key src:(NSString *)src cacheSize:(bsSize *)cacheSize end:(bsCallbackBlock)end {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsImageQueue *queue = (bsImageQueue *)[bsQueue GWithClassName:@"bsImageQueue" key:key end:[bsCallback GWithBlock:end]];
     [queue __setWithSrc:src cacheSize:cacheSize];
     return queue;
 }
 
 - (void)__setWithSrc:(NSString *)src cacheSize:(bsSize *)cacheSize {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (src == nil) {
         bsException(NSInvalidArgumentException, @"src argument should be not null");
@@ -44,12 +49,16 @@
 
 - (void)clear {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     src_ = nil;
     cacheSize_ = nil;
     [super clear];
 }
 
 - (id)run:(bsError **)error {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     id result = nil;
     *error = nil;
@@ -85,7 +94,7 @@
                 if (image) {
                     image = [self p_resizedImageWithImage:image size:cacheSize_];
                     if (![self p_saveImage:image name:cacheName]) {
-                        NSLog(@"Failed to cache resized image. src=%@ width=%f height=%f", src_, image.size.width, image.size.height);
+                        bsLog(nil, bsLogLevelError, @"Failed to cache resized image. src=%@ width=%f height=%f", src_, image.size.width, image.size.height);
                     }
                 } else {
                     *error = [bsError popWithMsg:@"Faied to load cached image data." data:src_ func:__FUNCTION__ line:__LINE__];
@@ -114,14 +123,14 @@
             
             // Cache original image
             if (![bsIO cacheS:originName data:d]) {
-                NSLog( @"Failed to cache original image. src=%@", src_);
+                bsLog(nil, bsLogLevelError, @"Failed to cache original image. src=%@", src_);
             }
             
             // Save resized image
             if (resize) {
                 image = [self p_resizedImageWithImage:image size:cacheSize_];
                 if (![self p_saveImage:image name:cacheName]) {
-                    NSLog(@"Failed to cache resized image. src=%@ width=%f height=%f", src_, image.size.width, image.size.height);
+                    bsLog(nil, bsLogLevelError, @"Failed to cache resized image. src=%@ width=%f height=%f", src_, image.size.width, image.size.height);
                 }
             }
         }
@@ -140,6 +149,8 @@
  @returns Image data.
  */
 - (id)p_loadImageFromDataSource:(NSString *)src {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if ([src hasPrefix:@"http://"] || [src hasPrefix:@"https://"]) {
         return [NSData dataWithContentsOfURL:[NSURL URLWithString:src_]];
@@ -164,6 +175,8 @@
  @exception Throws NSInvalidArgumentException if specified image is nil.
  */
 - (UIImage *)p_resizedImageWithImage:(UIImage *)image size:(bsSize *)size {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (!image) {
         bsException(NSInvalidArgumentException, @"image should not be nil.");
@@ -194,9 +207,11 @@
  */
 - (BOOL)p_saveImage:(UIImage *)image name:(NSString *)name {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSData *data = UIImagePNGRepresentation(image);
     if (!data) {
-        NSLog(@"Failed to convert format from image to data.");
+        bsLog(nil, bsLogLevelError, @"Failed to convert format from image to data.");
         return NO;
     }
     return [bsIO cacheS:name data:data];

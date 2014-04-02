@@ -8,6 +8,7 @@
 
 #import "bsParam.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 
 static NSMutableDictionary *__bsParam_dic = nil;
@@ -15,6 +16,8 @@ static NSMutableDictionary *__bsParam_dic = nil;
 @implementation bsParam
 
 + (NSString *)G:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (__bsParam_dic == nil) {
         bsException(NSInternalInconsistencyException, @"key(=%@) is undefined", key);
@@ -29,6 +32,8 @@ static NSMutableDictionary *__bsParam_dic = nil;
 }
 
 + (void)A:(NSString *)key params:(NSString *)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (key == nil || params == nil) {
         bsException(NSInvalidArgumentException, @"key or params is null" );

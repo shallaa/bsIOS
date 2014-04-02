@@ -9,6 +9,7 @@
 #import "bsIni.h"
 
 #import "bsIO.h"
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -18,17 +19,23 @@ static NSMutableDictionary *__bsIni_ini = nil;
 
 + (id)alloc {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsException(NSInternalInconsistencyException, @"Static class 'bsIni' cannot be instantiated!");
     return nil;
 }
 
 + (id)allocWithZone:(NSZone *)zone {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsException(NSInternalInconsistencyException, @"Static class 'bsIni' cannot be instantiated!");
     return nil;
 }
 
 + (void)onCreate {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (__bsIni_ini) {
         bsException(NSInvalidArgumentException, @"Wrong call");
@@ -48,11 +55,15 @@ static NSMutableDictionary *__bsIni_ini = nil;
 
 + (NSString *)ini:(NSString *)item {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     // TODO: nil을 반환해도 상관없는가?
     return [__bsIni_ini objectForKey:item];
 }
 
 + (BOOL)iniBool:(NSString *)item {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     item = [bsIni ini:item];
     return item != nil && [bsStr BOOLEAN:item];

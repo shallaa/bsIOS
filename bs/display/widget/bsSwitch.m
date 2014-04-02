@@ -16,6 +16,8 @@ static NSDictionary *__bsSwitch_keyValues = nil;
 
 - (void)ready {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (switch_ == nil) {
         switch_ = [[UISwitch alloc] init];
         [self addSubview:switch_];
@@ -33,11 +35,13 @@ static NSDictionary *__bsSwitch_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsSwitch dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     objc_removeAssociatedObjects( self );
 }
 
 - (id)__g:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSInteger num = [[__bsSwitch_keyValues objectForKey:key] integerValue];
     id value = nil;
@@ -54,6 +58,8 @@ static NSDictionary *__bsSwitch_keyValues = nil;
 }
 
 - (NSArray *)__s:(NSArray *)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSMutableArray *remain = [NSMutableArray array];
     BOOL onChange = NO;
@@ -83,6 +89,8 @@ static NSDictionary *__bsSwitch_keyValues = nil;
 
 - (void)blockOn:(bsSwitchOnBlock)block {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (!addedOn_) {
         addedOn_ = YES;
         [switch_ addTarget:self action:@selector(__valueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -91,6 +99,8 @@ static NSDictionary *__bsSwitch_keyValues = nil;
 }
 
 - (void)__valueChanged:(id)sender {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     bsSwitchOnBlock block = objc_getAssociatedObject(self, &blockKey_);
     if (block) block(self, switch_.on);

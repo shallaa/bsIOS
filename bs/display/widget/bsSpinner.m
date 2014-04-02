@@ -21,6 +21,8 @@ static NSDictionary *__bsSpinner_keyValues = nil;
 
 - (void)ready {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (spinner_ == nil) {
         spinner_ = [[UIActivityIndicatorView alloc] init];
         [self addSubview:spinner_];
@@ -37,15 +39,19 @@ static NSDictionary *__bsSpinner_keyValues = nil;
 
 - (void)layoutSubviews {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     [super layoutSubviews];
     spinner_.frame = self.bounds;
 }
 
 - (id)__g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger num = [[__bsSpinner_keyValues objectForKey:key] integerValue];
     id value = nil;
-    switch ( num ) {
+    switch (num) {
         case kbsSpinnerStyle: value = spinStyle_; break;
         case kbsSpinnerColor: value = spinColor_; break;
     }
@@ -54,34 +60,36 @@ static NSDictionary *__bsSpinner_keyValues = nil;
 
 - (NSArray *)__s:(NSArray *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSMutableArray *remain = [NSMutableArray array];
     BOOL styleChange = NO;
     BOOL colorChange = NO;
-    for( NSInteger i = 0, j = [params count]; i < j; ) {
+    for (NSInteger i = 0, j = [params count]; i < j; ) {
         NSString *k = (NSString*)params[i++];
         NSString *v = (NSString*)params[i++];
         NSInteger num = [[__bsSpinner_keyValues objectForKey:k] integerValue];
-        switch ( num ) {
+        switch (num) {
             case kbsSpinnerStyle: {
-                if( [v isEqualToString:kbsSpinnerStyleNone] ) spinStyle_ = kbsSpinnerStyleNone;
-                else if( [v isEqualToString:kbsSpinnerStyleLargeWhite] ) spinStyle_ = kbsSpinnerStyleLargeWhite;
-                else if( [v isEqualToString:kbsSpinnerStyleWhite] ) spinStyle_ = kbsSpinnerStyleWhite;
-                else if( [v isEqualToString:kbsSpinnerStyleGray] ) spinStyle_ = kbsSpinnerStyleGray;
+                if ([v isEqualToString:kbsSpinnerStyleNone]) spinStyle_ = kbsSpinnerStyleNone;
+                else if ([v isEqualToString:kbsSpinnerStyleLargeWhite]) spinStyle_ = kbsSpinnerStyleLargeWhite;
+                else if ([v isEqualToString:kbsSpinnerStyleWhite]) spinStyle_ = kbsSpinnerStyleWhite;
+                else if ([v isEqualToString:kbsSpinnerStyleGray]) spinStyle_ = kbsSpinnerStyleGray;
                 styleChange = YES;
             } break;
             case kbsSpinnerColor: spinColor_ = [bsStr color:v]; colorChange = YES; break;
             default: [remain addObject:k]; [remain addObject:v]; break;
         }
     }
-    if( styleChange || colorChange )  {
-        if( [spinStyle_ isEqualToString:kbsSpinnerStyleNone] ) {
+    if (styleChange || colorChange)  {
+        if ([spinStyle_ isEqualToString:kbsSpinnerStyleNone]) {
             [spinner_ stopAnimating];
             [spinner_ setHidden:YES];
         } else {
-            if( [spinStyle_ isEqualToString:kbsImageSpinStyleWhite] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-            else if( [spinStyle_ isEqualToString:kbsImageSpinStyleGray] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-            else if( [spinStyle_ isEqualToString:kbsImageSpinStyleLargeWhite] ) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-            if( colorChange ) {
+            if ([spinStyle_ isEqualToString:kbsImageSpinStyleWhite]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+            else if ([spinStyle_ isEqualToString:kbsImageSpinStyleGray]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+            else if ([spinStyle_ isEqualToString:kbsImageSpinStyleLargeWhite]) spinner_.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+            if (colorChange) {
                 spinner_.color = spinColor_;
             } else {
                 spinColor_ = spinner_.color;

@@ -8,8 +8,9 @@
 
 #import "bsWorker.h"
 
-#import "bsQueue.h"
+#import "bsLog.h"
 #import "bsMacro.h"
+#import "bsQueue.h"
 
 static dispatch_queue_t __bsWorker_dequeue = NULL;
 static dispatch_semaphore_t __bsWorker_dsema = NULL;
@@ -18,6 +19,8 @@ static NSMutableArray *__bsWorker_ques = nil;
 @implementation bsWorker
 
 + (void)A:(bsQueue *)queue {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (queue == nil) {
         bsException(NSInvalidArgumentException, @"queue argument should be not null");
@@ -58,6 +61,8 @@ static NSMutableArray *__bsWorker_ques = nil;
 }
 
 + (void)D:(NSString *)queKey {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (__bsWorker_ques == nil) {
         return;

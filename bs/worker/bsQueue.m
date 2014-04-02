@@ -10,6 +10,7 @@
 
 #import "bsCallback.h"
 #import "bsError.h"
+#import "bsLog.h"
 #import "bsMacro.h"
 
 static dispatch_queue_t syncQueue;
@@ -25,6 +26,8 @@ static NSMutableDictionary *__bsQue_pool = nil;
 @synthesize callbackMainThread = callbackMainThread_;
 
 + (bsQueue *)GWithClassName:(NSString *)className key:(NSString *)key end:(bsCallback *)end {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     bsQueue *result = nil;
     @synchronized (__bsQue_pool) {
@@ -57,6 +60,8 @@ static NSMutableDictionary *__bsQue_pool = nil;
 
 - (void)__setWithKey:(NSString *)key end:(bsCallback *)end {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     key_ = key;
     end_ = end;
     callbackMainThread_ = YES;
@@ -65,15 +70,21 @@ static NSMutableDictionary *__bsQue_pool = nil;
 
 - (void)dealloc {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     [self clear];
 }
 
 - (id)run:(bsError **)error {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return nil;
 }
 
 - (void)callback:(id)data error:(bsError *)error {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (end_) {
         [end_ callbackWithKey:key_ data:data error:error];
@@ -81,6 +92,8 @@ static NSMutableDictionary *__bsQue_pool = nil;
 }
 
 - (void)clear {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     self.cancel = NO;
     key_ = nil;

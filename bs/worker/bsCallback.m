@@ -9,20 +9,27 @@
 #import "bsCallback.h"
 
 #import "bsError.h"
+#import "bsLog.h"
 
 @implementation bsCallback
 
 + (bsCallback *)GWithBlock:(bsCallbackBlock)callbackBlock {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     return [[bsCallback alloc] initWithBlock:callbackBlock];
 }
 
 + (bsCallback *)GWithTarget:(id)target selector:(SEL)selector {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     return [[bsCallback alloc] initWithTarget:target selector:selector];
 }
 
 - (id)initWithBlock:(bsCallbackBlock)callbackBlock {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (self = [super init]) {
         block_ = callbackBlock;
@@ -31,6 +38,8 @@
 }
 
 - (id)initWithTarget:(id)target selector:(SEL)selector {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (self = [super init]) {
         _target = target;
@@ -41,12 +50,16 @@
 
 - (void)dealloc {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     _target = nil;
     _selector = nil;
     block_ = nil;
 }
 
 - (void)callbackWithKey:(NSString *)key data:(id)data error:(bsError *)error {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if ([_target respondsToSelector:_selector]) {
         if ([_target isKindOfClass:[UIView class]] && ![NSThread isMainThread]) {

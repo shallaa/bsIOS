@@ -18,6 +18,9 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 + (bsDisplay *)G:(NSString *)name params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    bsLog(nil, bsLogLevelDebug, @"name:%@, params:%@", name, params);
+    
     static NSUInteger key = 0;
     NSString *className = [name stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:[[name substringToIndex:1] capitalizedString]];
     className = [NSString stringWithFormat:@"bs%@", className];
@@ -42,6 +45,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 + (bsDisplay *)G:(NSString *)name params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (params == nil) params = @"";
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
     return [bsDisplay G:name params:params];
@@ -49,6 +54,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 //Template로부터 객체생성
 + (bsDisplay *)GT:(NSString *)key params:(NSString*)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (__bsDisplay_templates[key] == nil) {
         bsException(NSInvalidArgumentException, @"key(=%@) is undefined", key);
@@ -61,7 +68,11 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 + (bsDisplay *)GT:(NSString *)key params:(NSString *)params replace:(id)replace {
     
-    if (params == nil) params = @"";
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (params == nil) {
+        params = @"";
+    }
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
     return [bsDisplay GT:key params:params];
 }
@@ -69,7 +80,11 @@ static NSMutableDictionary *__bsDisplay_styles;
 //Style로부터 객체생성
 + (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
     
-    if (params == nil) params = @"";
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (params == nil) {
+        params = @"";
+    }
     if (styleNames && __bsDisplay_styles) {
         NSArray *s = [bsStr col:styleNames];
         __block NSString *p = params;
@@ -86,13 +101,19 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 + (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
     
-    if (params == nil) params = @"";
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (params == nil) {
+        params = @"";
+    }
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
     return [bsDisplay G:name styleNames:styleNames params:params];
 }
 
 //Template 추가
 + (void)AT:(NSString *)key name:(NSString *)name params:(NSString *)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (params == nil) {
         bsException(NSInvalidArgumentException, @"params should be not null");
@@ -121,6 +142,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 //Style 추가
 + (void)AS:(NSString *)styleName params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (styleName == nil || params == nil) {
         bsException(NSInvalidArgumentException, @"styleName or params is null");
     }
@@ -141,6 +164,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (id)init {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (self = [super init]) {
         [self ready];
     }
@@ -148,6 +173,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 }
 
 - (void)ready {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     //layoutConstraints_ = [[NSMutableDictionary alloc] init];
     if (__bsDisplay_keyValues == nil) {
@@ -180,6 +207,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (id)g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSInteger num = [[__bsDisplay_keyValues objectForKey:key] integerValue];
     id value = nil;
     switch (num) {
@@ -211,6 +240,8 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSDictionary *)gDic:(NSString *)keys {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     NSArray *keyList = [bsStr col:keys];
     NSMutableDictionary *r = [[NSMutableDictionary alloc] init];
     for (NSInteger i = 0, j = [keyList count]; i < j; i++ ) {
@@ -225,10 +256,14 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (id)__g:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return @{};
 }
 
 - (void)s:(NSString *)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    bsLog(nil, bsLogLevelDebug, @"params:%@", params);
     
     if (params == nil) return;
     NSArray *p = [bsStr col:params];
@@ -243,9 +278,12 @@ static NSMutableDictionary *__bsDisplay_styles;
     //BOOL centerChagne = NO;
     //CGPoint c = self.center;
     CGRect f = self.frame;
-    for (NSInteger i = 0, j = [p count]; i < j; ) {
+    for (NSInteger i = 0, j = [p count]; i < j;) {
+        
         NSString *k = [(NSString *)p[i++] lowercaseString];
         NSString *v = (NSString *)p[i++];
+        bsLog(nil, bsLogLevelDebug, @"k:%@, v:%@", k, v);
+        
         NSInteger num = [[__bsDisplay_keyValues objectForKey:k] integerValue];
         switch (num) {
             case kbsDisplayKey: key_ = v; break;
@@ -303,12 +341,14 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (void)s:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
     [self s:params];
 }
 
 - (NSArray *)__s:(NSArray *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     return params;
 }
 
@@ -341,6 +381,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)create:(NSString *)name params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay G:name params:params];
     [self addSubview:o];
     return o.key;
@@ -348,6 +389,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay G:name params:params replace:replace];
     [self addSubview:o];
     return o.key;
@@ -355,6 +397,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)createT:(NSString *)key params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay GT:key params:params];
     [self addSubview:o];
     return o.key;
@@ -362,6 +405,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay GT:key params:params replace:replace];
     [self addSubview:o];
     return o.key;
@@ -369,6 +413,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params];
     [self addSubview:o];
     return o.key;
@@ -376,6 +421,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params replace:replace];
     [self addSubview:o];
     return o.key;
@@ -383,6 +429,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (bsDisplay *)childG:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     __block bsDisplay *c = nil;
     [self.subviews enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[bsDisplay class]] && [((bsDisplay *)obj).key isEqualToString:key]) {
@@ -395,11 +442,13 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (void)childA:(bsDisplay *)child {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     [self addSubview:child];
 }
 
 - (void)childD:(NSString *)key {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     if ([key isEqualToString:@"*"]) {
         NSArray *childs = self.subviews;
         [childs enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
@@ -415,6 +464,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (void)childS:(NSString *)key params:(NSString *)params {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *child = [self childG:key];
     if (child) {
         [child s:params];
@@ -423,6 +473,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 - (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsDisplay *child = [self childG:key];
     if (child) {
         [child s:params replace:replace];
@@ -437,6 +488,8 @@ static NSMutableDictionary *__bsDisplay_styles;
  */
 
 - (void)dealloc {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
 }
 
 @end

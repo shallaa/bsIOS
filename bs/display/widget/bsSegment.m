@@ -17,6 +17,8 @@ static NSDictionary* __bsSegment_keyValues = nil;
 
 - (void)ready {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     if (segment_ == nil) {
         segment_ = [[UISegmentedControl alloc] init] ;
         //segment_.segmentedControlStyle = UISegmentedControlStylePlain;
@@ -34,17 +36,21 @@ static NSDictionary* __bsSegment_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsSegment dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     objc_removeAssociatedObjects(self);
 }
 
 - (void)layoutSubviews {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     [super layoutSubviews];
     segment_.frame = self.bounds;
 }
 
 - (id)__g:(NSString *)key {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSInteger num = [[__bsSegment_keyValues objectForKey:key] integerValue];
     id value = nil;
@@ -65,6 +71,8 @@ static NSDictionary* __bsSegment_keyValues = nil;
 }
 
 - (NSArray *)__s:(NSArray *)params {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSMutableArray *remain = [NSMutableArray array];
     NSArray *titles = nil;
@@ -99,6 +107,8 @@ static NSDictionary* __bsSegment_keyValues = nil;
 
 - (void)__valueChanged:(UISegmentedControl *)seg {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsSegmentValueChangedBlock block = objc_getAssociatedObject(self, &blockKey_);
     if (block) {
         block(self, seg.selectedSegmentIndex);
@@ -106,6 +116,8 @@ static NSDictionary* __bsSegment_keyValues = nil;
 }
 
 - (void)blockValueChanged:(bsSegmentValueChangedBlock)block {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     //if( objc_getAssociatedObject(self, &blockKey_) ) bsException(NSInvalidArgumentException, @"두 번 정의할 수 없습니다.");
     objc_setAssociatedObject(self, &blockKey_, block, OBJC_ASSOCIATION_RETAIN);

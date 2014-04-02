@@ -18,12 +18,14 @@ static NSDictionary *__bsTableGroup_keyValues = nil;
 
 - (void)ready {
     
-    if( table_ == nil ) {
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (table_ == nil) {
         table_ = [[UITableView alloc] initWithFrame:self.frame style:UITableViewStyleGrouped];
         [self addSubview:table_];
         //[self autolayout:[bsStr templateSrc:kbsDisplayConstraintDefault replace:@[@"table_", @"buttonVertical", @"buttonHorizontal"]] views:NSDictionaryOfVariableBindings(table_)];
     }
-    if( __bsTableGroup_keyValues == nil ) {
+    if (__bsTableGroup_keyValues == nil) {
         __bsTableGroup_keyValues =
         @{ @"table-style": @kbsTableStyle, @"separator": @kbsTableSeparator, @"separator-color": @kbsTableSeparatorColor,
            @"row-height": @kbsTableRowHeight

@@ -8,6 +8,7 @@
 
 #import "bsDisplayUtil.h"
 
+#import "bsLog.h"
 #import "bsMacro.h"
 #import "bsStr.h"
 
@@ -17,6 +18,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 @implementation bsDisplayUtil
 
 + (NSString *)paramsTemplate:(NSString*)paramsTemplate replace:(id)replace {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     NSArray *t;
     if (replace == nil) {
@@ -43,6 +46,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (void)borderWithView:(UIView *)view cornerRadius:(CGFloat)cornerRadius {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     CALayer *layer = view.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = cornerRadius;
@@ -51,6 +56,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 }
 
 + (void)borderWithView:(UIView *)view cornerRadius:(CGFloat)cornerRadius borderWidth:(CGFloat)borderWidth borderColor:(CGColorRef)borderColor {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     CALayer *layer = view.layer;
     layer.masksToBounds = YES;
@@ -62,6 +69,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (void)shadowWithView:(UIView *)view cornerRadius:(CGFloat)radius opacity:(CGFloat)opacity color:(CGColorRef)color {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     CALayer *layer = view.layer;
     layer.masksToBounds = NO;
     layer.shadowRadius = radius;
@@ -72,6 +81,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 }
 
 + (void)shadowWithView:(UIView *)view cornerRadius:(CGFloat)radius opacity:(CGFloat)opacity color:(CGColorRef)color offset:(CGSize)offset path:(CGPathRef)path {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     CALayer *layer = view.layer;
     layer.masksToBounds = NO;
@@ -87,6 +98,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (void)clearLayerWithView:(UIView *)view {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     CALayer *layer = view.layer;
     layer.masksToBounds = YES;
     //layer.shouldRasterize = NO;
@@ -101,6 +114,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 }
 
 + (UIImage *)image1x1WithColor:(id)color {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     UIColor *c;
     if ([color isKindOfClass:[UIColor class]]) {
@@ -122,6 +137,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (UIImage *)imageWithW:(CGFloat)w h:(CGFloat)h color:(id)color {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     UIColor *c;
     if ([color isKindOfClass:[UIColor class]]) {
         c = (UIColor *)color;
@@ -142,6 +159,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (UIImage *)image1x1WhiteColor {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         __bsImage_1x1_white = [bsDisplayUtil image1x1WithColor:[UIColor whiteColor]];
@@ -150,6 +169,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 }
 
 + (UIImage *)image1x1ClearColor {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -160,6 +181,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (UIImage *)imageWithView:(UIView *)view {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     UIGraphicsBeginImageContext(view.bounds.size);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
@@ -169,6 +192,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 
 + (UIImage *)resizedImage:(UIImage *)inImage inRect:(CGRect)thumbRect {
     
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
 	// Creates a bitmap-based graphics context and makes it the current context.
 	UIGraphicsBeginImageContext(thumbRect.size);
 	[inImage drawInRect:thumbRect];
@@ -176,6 +201,8 @@ static UIImage *__bsImage_1x1_clear = nil;
 }
 
 + (UIImage *)crop:(UIImage *)image frame:(CGRect)frame {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
 	CGImageRef imageRef = CGImageCreateWithImageInRect(image.CGImage, frame);
 	UIImage *cropedImage = [UIImage imageWithCGImage:imageRef];

@@ -90,7 +90,7 @@ static NSDictionary *__bsText_keyValues = nil;
 
 - (void)dealloc {
     
-    NSLog(@"bsText dealloc");
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     objc_removeAssociatedObjects( self );
 }
 
@@ -274,9 +274,11 @@ static NSDictionary *__bsText_keyValues = nil;
                 f0 = 4;
             }
         } else {
-            if( fontSize == 0 ) fontSize = text_.font.pointSize;
+            if (fontSize == 0) {
+                fontSize = text_.font.pointSize;
+            }
         }
-        switch ( f0 ) {
+        switch (f0) {
             case 1: font = [UIFont boldSystemFontOfSize:fontSize]; break;
             case 2: font = [UIFont italicSystemFontOfSize:fontSize]; break;
             case 3: font = [UIFont systemFontOfSize:fontSize]; break;
@@ -291,81 +293,148 @@ static NSDictionary *__bsText_keyValues = nil;
 
 - (void)blockEditWillBegin:(bsTextWillBeginEditBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyWillBeginEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockEditDidBegin:(bsTextDidBeginEditBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidBeginEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
--(void)blockEditWillEnd:(bsTextWillEndEditBlock)block {
+- (void)blockEditWillEnd:(bsTextWillEndEditBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyWillEndEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockEditDidEnd:(bsTextDidEndEditBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidEndEdit_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockChangeChar:(bsTextChangeCharBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyChangeChar_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockDidChange:(bsTextDidChangeBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidChange_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (void)blockDidChangeSelection:(bsTextDidChangeSelectionBlock)block {
     
-    if( text_.delegate == nil ) text_.delegate = self;
+    if (text_.delegate == nil) {
+        text_.delegate = self;
+    }
     objc_setAssociatedObject(self, &blockKeyDidChangeSelection_, block, OBJC_ASSOCIATION_RETAIN);
 }
 
 #pragma mark - delegate
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     BOOL allowEdit = YES;
-    bsTextWillBeginEditBlock block = objc_getAssociatedObject( self, &blockKeyWillBeginEdit_ );
-    if( block ) block(self, &allowEdit );
+    bsTextWillBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyWillBeginEdit_);
+    if (block) {
+        block(self, &allowEdit);
+    }
     return allowEdit;
 }
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    bsTextDidBeginEditBlock block = objc_getAssociatedObject( self, &blockKeyDidBeginEdit_ );
-    if( block ) block( self );
+    
+    bsTextDidBeginEditBlock block = objc_getAssociatedObject(self, &blockKeyDidBeginEdit_);
+    if (block) {
+        block(self);
+    }
 }
+
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     BOOL stopEdit = YES;
-    bsTextWillEndEditBlock block = objc_getAssociatedObject( self, &blockKeyWillEndEdit_ );
-    if( block ) block( self, &stopEdit );
+    bsTextWillEndEditBlock block = objc_getAssociatedObject(self, &blockKeyWillEndEdit_);
+    if (block) {
+        block(self, &stopEdit);
+    }
     return stopEdit;
 }
+
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    bsTextDidEndEditBlock block = objc_getAssociatedObject( self, &blockKeyDidEndEdit_ );
-    if( block ) block( self );
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    bsTextDidEndEditBlock block = objc_getAssociatedObject(self, &blockKeyDidEndEdit_);
+    if (block) {
+        block(self);
+    }
 }
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     BOOL allowChange = YES;
-    bsTextChangeCharBlock block = objc_getAssociatedObject( self, &blockKeyChangeChar_ );
-    if( block ) block( self, range, text, &allowChange );
+    bsTextChangeCharBlock block = objc_getAssociatedObject(self, &blockKeyChangeChar_);
+    if (block) {
+        block(self, range, text, &allowChange);
+    }
     return allowChange;
 }
+
 - (void)textViewDidChange:(UITextView *)textView {
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
     bsTextDidChangeBlock block = objc_getAssociatedObject( self, &blockKeyDidChange_);
-    if( block ) block( self );
+    if(block) {
+        block(self);
+    }
 }
+
 - (void)textViewDidChangeSelection:(UITextView *)textView {
-    bsTextDidChangeSelectionBlock block = objc_getAssociatedObject( self, &blockKeyDidChangeSelection_);
-    if( block ) block( self );
+    
+    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
+    
+    bsTextDidChangeSelectionBlock block = objc_getAssociatedObject(self, &blockKeyDidChangeSelection_);
+    if(block) {
+        block(self);
+    }
 }
+
 #pragma mark - override
 - (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
 - (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
