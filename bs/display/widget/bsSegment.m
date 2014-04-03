@@ -128,16 +128,15 @@ static NSDictionary* __bsSegment_keyValues = nil;
 }
 
 #pragma mark - override
-- (NSString *)create:(NSString *)name params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
-- (bsDisplay *)childG:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
 - (void)childA:(bsDisplay *)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
-- (void)childD:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
-- (void)childS:(NSString *)key params:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)removeSubviewWithName:(NSString *)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
 
 @end

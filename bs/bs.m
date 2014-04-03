@@ -281,14 +281,14 @@ static bs *__bs_SELF = nil;
 + (NSString *)ipAddr { return [bsHttp ipAddr]; }
 
 #pragma mark - display
-+ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params { return [bsDisplay G:name params:params]; }
-+ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params replace:(id)replace { return [bsDisplay G:name params:params replace:replace]; }
-+ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params { return [bsDisplay GT:key params:params]; }
-+ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params replace:(id)replace { return [bsDisplay GT:key params:params replace:replace]; }
-+ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params { return [bsDisplay G:name styleNames:styleNames params:params]; }
-+ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { return [bsDisplay G:name styleNames:styleNames params:params replace:replace]; }
-+ (void)displayAT:(NSString *)key name:(NSString *)name params:(NSString *)params { [bsDisplay AT:key name:name params:params]; }
-+ (void)displayAS:(NSString *)styleName params:(NSString *)params { [bsDisplay AS:styleName params:params]; }
++ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params { return [bsDisplay generateViewWithName:name parameters:params]; }
++ (bsDisplay *)displayG:(NSString *)name params:(NSString *)params replace:(id)replace { return [bsDisplay generateViewWithName:name parameters:params replace:replace]; }
++ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params { return [bsDisplay generateViewWithTemplate:key parameters:params]; }
++ (bsDisplay *)displayGT:(NSString *)key params:(NSString *)params replace:(id)replace { return [bsDisplay generateViewWithTemplate:key parameters:params replace:replace]; }
++ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString*)params { return [bsDisplay generateViewWithName:name styles:styleNames parameters:params]; }
++ (bsDisplay *)displayG:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace { return [bsDisplay generateViewWithName:name styles:styleNames parameters:params replace:replace]; }
++ (void)displayAT:(NSString *)key name:(NSString *)name params:(NSString *)params { [bsDisplay addTemplateWithKey:key name:name parameters:params]; }
++ (void)displayAS:(NSString *)styleName params:(NSString *)params { [bsDisplay addStyleWithName:styleName parameters:params]; }
 
 #pragma mark - alert
 + (void)alert:(NSString *)params block:(bsAlertBlock)block { [bsAlert alert:params block:block]; }

@@ -82,49 +82,49 @@ static NSDictionary *__bsTableGroup_keyValues = nil;
 
 #pragma mark - child
 
-- (NSString *)create:(NSString *)name params:(NSString *)params {
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params {
     
-    bsDisplay *o = [bsDisplay G:name params:params];
+    bsDisplay *o = [bsDisplay generateViewWithName:name parameters:params];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace {
     
-    bsDisplay *o = [bsDisplay G:name params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithName:name parameters:params replace:replace];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString *)key params:(NSString *)params {
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params {
     
-    bsDisplay *o = [bsDisplay GT:key params:params];
+    bsDisplay *o = [bsDisplay generateViewWithTemplate:key parameters:params];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params replace:(id)replace {
     
-    bsDisplay *o = [bsDisplay GT:key params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithTemplate:key parameters:params replace:replace];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params {
     
-    bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params];
+    bsDisplay *o = [bsDisplay generateViewWithName:name styles:styleNames parameters:params];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace {
     
-    bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithName:name styles:styleNames parameters:params replace:replace];
     [table_ addSubview:o];
     return o.key;
 }
 
-- (bsDisplay *)childG:(NSString *)key {
+- (bsDisplay *)subviewWithName:(NSString *)key {
     
     __block bsDisplay *c = nil;
     [table_.subviews enumerateObjectsUsingBlock:^(UIView* obj, NSUInteger idx, BOOL *stop) {
@@ -136,12 +136,12 @@ static NSDictionary *__bsTableGroup_keyValues = nil;
     return c;
 }
 
-- (void)childA:(bsDisplay *)child {
+- (void)addSubview:(UIView *)view {
     
-    [table_ addSubview:child];
+    [table_ addSubview:view];
 }
 
-- (void)childD:(NSString *)key {
+- (void)removeSubviewWithName:(NSString *)key {
     
     if ([key isEqualToString:@"*"]) {
         NSArray *childs = table_.subviews;
@@ -149,22 +149,22 @@ static NSDictionary *__bsTableGroup_keyValues = nil;
             [obj removeFromSuperview];
         }];
     } else {
-        bsDisplay *child = [self childG:key];
+        bsDisplay *child = [self subviewWithName:key];
         if (child) [child removeFromSuperview];
     }
 }
 
-- (void)childS:(NSString *)key params:(NSString *)params {
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params {
     
-    bsDisplay *child = [self childG:key];
+    bsDisplay *child = [self subviewWithName:key];
     if (child) {
         [child s:params];
     }
 }
 
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace {
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params replace:(id)replace {
     
-    bsDisplay *child = [self childG:key];
+    bsDisplay *child = [self subviewWithName:key];
     if (child) {
         [child s:params replace:replace];
     }
@@ -179,7 +179,6 @@ static NSDictionary *__bsTableGroup_keyValues = nil;
  -(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
  -(NSString*)create:(NSString*)name styleNames:(NSString*)styleNames params:(NSString*)params replace:(id)replace { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
  -(bsDisplay*)childG:(NSString*)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); return nil; }
- -(void)childA:(bsDisplay*)child { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
  -(void)childD:(NSString*)key { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
  -(void)childS:(NSString*)key params:(NSString*)params { bsException(NSInternalInconsistencyException, @"Do not call this method!"); }
  -(void)childS:(NSString*)key params:(NSString*)params replace:(id)replace{ bsException(NSInternalInconsistencyException, @"Do not call this method!"); }

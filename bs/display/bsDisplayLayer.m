@@ -141,7 +141,7 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
     if (layer) {
         bsException(NSInvalidArgumentException, @"already has layer(=%@) in parent(=%@)", layerName, parentName);
     }
-    layer = [bsDisplay G:@"display" params:@"key,@@0,x,0,y,0,w,@@1,h,@@2,hidden,@@3,bg,#0000" replace:@[layerName, @0, @0, @(hidden)]];
+    layer = [bsDisplay generateViewWithName:@"display" parameters:@"key,@@0,x,0,y,0,w,@@1,h,@@2,hidden,@@3,bg,#0000" replace:@[layerName, @0, @0, @(hidden)]];
     layer.clipsToBounds = NO;
     [parent addSubview:layer];
     //NSLog(@"%@",parent.subviews);
@@ -234,7 +234,7 @@ static bsDisplayLayer *__bsDisplayLayer = nil;
     } else {
         NSArray *keys = [bsStr col:childKeys];
         [keys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-            UIView *view = [layer childG:key];
+            UIView *view = [layer subviewWithName:key];
             if (view.superview) {
                 [view removeFromSuperview];
             }

@@ -11,6 +11,7 @@
 #import <objc/runtime.h>
 #import "BSDemoModel.h"
 #import "bs.h"
+#import "NSNumber+ProjectBS.h"
 
 typedef void (^BSDemoViewControllerPresentView)(NSString *oldView, NSString *newView);
 
@@ -52,8 +53,10 @@ typedef void (^BSDemoViewControllerPresentView)(NSString *oldView, NSString *new
     
     [bs displayAS:@"defaultSwitch" params:@"tint-on-color,179|195|27"];
     
-    [[bs root] create:@"image" params:@"k,imgBack,src,Default-568h@2x.png,auto-resize,true"]; //깜박임 방지
+    [[bs root] addSubviewWithName:@"image" parameters:@"k,imgBack,src,Default-568h@2x.png,auto-resize,true"]; //깜박임 방지
     [bs layerParentA:[bs root] parentName:@"root"];
+    [[bs root] addSubviewWithName:@"button" parameters:@"k,sampleButton,bg,130|130|130,x,20,y,0,w,88,h,44"];
+    [[bs root] addSubviewWithName:@"switch" parameters:@"k,sampleSwitch,x,20,y,88,w,88,h,44"];
     
     BSDemoViewControllerPresentView presentViewBlock = ^(NSString *prevViewName, NSString *viewName) {
         
@@ -97,7 +100,7 @@ typedef void (^BSDemoViewControllerPresentView)(NSString *oldView, NSString *new
     [bsBinding bind:_model keyPathes:[bsStr col:@"layerA"] block:^(NSString *uniqueID, bsBindingChange *change) {
         if (imgBackDirty) {
             imgBackDirty = NO;
-            [[bs root] childD:@"imgBack"];
+            [[bs root] removeSubviewWithName:@"imgBack"];
         }
         presentViewBlock(change.valueOld, change.valueNew);
     }];

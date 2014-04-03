@@ -16,7 +16,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 @synthesize key = key_;
 
-+ (bsDisplay *)G:(NSString *)name params:(NSString *)params {
++ (bsDisplay *)generateViewWithName:(NSString *)name parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     bsLog(nil, bsLogLevelDebug, @"name:%@, params:%@", name, params);
@@ -43,17 +43,17 @@ static NSMutableDictionary *__bsDisplay_styles;
     return r;
 }
 
-+ (bsDisplay *)G:(NSString *)name params:(NSString *)params replace:(id)replace {
++ (bsDisplay *)generateViewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
     if (params == nil) params = @"";
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
-    return [bsDisplay G:name params:params];
+    return [bsDisplay generateViewWithName:name parameters:params];
 }
 
 //Template로부터 객체생성
-+ (bsDisplay *)GT:(NSString *)key params:(NSString*)params {
++ (bsDisplay *)generateViewWithTemplate:(NSString *)key parameters:(NSString*)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -62,11 +62,11 @@ static NSMutableDictionary *__bsDisplay_styles;
     }
     NSDictionary *dic = __bsDisplay_templates[key];
     params = [NSString stringWithFormat:@"%@,%@", dic[@"params"], params];
-    bsDisplay *r = [bsDisplay G:dic[@"name"] params:params];
+    bsDisplay *r = [bsDisplay generateViewWithName:dic[@"name"] parameters:params];
     return r;
 }
 
-+ (bsDisplay *)GT:(NSString *)key params:(NSString *)params replace:(id)replace {
++ (bsDisplay *)generateViewWithTemplate:(NSString *)key parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -74,11 +74,11 @@ static NSMutableDictionary *__bsDisplay_styles;
         params = @"";
     }
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
-    return [bsDisplay GT:key params:params];
+    return [bsDisplay generateViewWithTemplate:key parameters:params];
 }
 
 //Style로부터 객체생성
-+ (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
++ (bsDisplay *)generateViewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -95,11 +95,11 @@ static NSMutableDictionary *__bsDisplay_styles;
         }];
         params= p;
     }
-    bsDisplay *r = [bsDisplay G:name params:params];
+    bsDisplay *r = [bsDisplay generateViewWithName:name parameters:params];
     return r;
 }
 
-+ (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
++ (bsDisplay *)generateViewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -107,11 +107,11 @@ static NSMutableDictionary *__bsDisplay_styles;
         params = @"";
     }
     params = [bsDisplayUtil paramsTemplate:params replace:replace];
-    return [bsDisplay G:name styleNames:styleNames params:params];
+    return [bsDisplay generateViewWithName:name styles:styleNames parameters:params];
 }
 
 //Template 추가
-+ (void)AT:(NSString *)key name:(NSString *)name params:(NSString *)params {
++ (void)addTemplateWithKey:(NSString *)key name:(NSString *)name parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -140,7 +140,7 @@ static NSMutableDictionary *__bsDisplay_styles;
 }
 
 //Style 추가
-+ (void)AS:(NSString *)styleName params:(NSString *)params {
++ (void)addStyleWithName:(NSString *)styleName parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     
@@ -379,55 +379,55 @@ static NSMutableDictionary *__bsDisplay_styles;
 
 #pragma mark - child
 
-- (NSString *)create:(NSString *)name params:(NSString *)params {
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay G:name params:params];
+    bsDisplay *o = [bsDisplay generateViewWithName:name parameters:params];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay G:name params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithName:name parameters:params replace:replace];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString *)key params:(NSString *)params {
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay GT:key params:params];
+    bsDisplay *o = [bsDisplay generateViewWithTemplate:key parameters:params];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay GT:key params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithTemplate:key parameters:params replace:replace];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params {
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params];
+    bsDisplay *o = [bsDisplay generateViewWithName:name styles:styleNames parameters:params];
     [self addSubview:o];
     return o.key;
 }
 
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace {
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *o = [bsDisplay G:name styleNames:styleNames params:params replace:replace];
+    bsDisplay *o = [bsDisplay generateViewWithName:name styles:styleNames parameters:params replace:replace];
     [self addSubview:o];
     return o.key;
 }
 
-- (bsDisplay *)childG:(NSString *)key {
+- (bsDisplay *)subviewWithName:(NSString *)key {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     __block bsDisplay *c = nil;
@@ -440,13 +440,7 @@ static NSMutableDictionary *__bsDisplay_styles;
     return c;
 }
 
-- (void)childA:(bsDisplay *)child {
-    
-    bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    [self addSubview:child];
-}
-
-- (void)childD:(NSString *)key {
+- (void)removeSubviewWithName:(NSString *)key {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
     if ([key isEqualToString:@"*"]) {
@@ -455,26 +449,26 @@ static NSMutableDictionary *__bsDisplay_styles;
             [obj removeFromSuperview];
         }];
     } else {
-        bsDisplay *child = [self childG:key];
+        bsDisplay *child = [self subviewWithName:key];
         if (child) {
             [child removeFromSuperview];
         }
     }
 }
 
-- (void)childS:(NSString *)key params:(NSString *)params {
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *child = [self childG:key];
+    bsDisplay *child = [self subviewWithName:key];
     if (child) {
         [child s:params];
     }
 }
 
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace {
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params replace:(id)replace {
     
     bsLog(nil, bsLogLevelTrace, @"%s", __PRETTY_FUNCTION__);
-    bsDisplay *child = [self childG:key];
+    bsDisplay *child = [self subviewWithName:key];
     if (child) {
         [child s:params replace:replace];
     }

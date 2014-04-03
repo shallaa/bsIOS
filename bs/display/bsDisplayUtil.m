@@ -31,7 +31,7 @@ static UIImage *__bsImage_1x1_clear = nil;
         NSMutableArray *r = [[NSMutableArray alloc] init];
         [replace enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([obj isKindOfClass:[NSString class]]) {
-                [r addObject:[(NSString*)obj stringByReplacingOccurrencesOfString:@"," withString:@"\\,"]];
+                [r addObject:[(NSString *)obj stringByReplacingOccurrencesOfString:@"," withString:@"\\,"]];
             } else {
                 [r addObject:[bsStr str:obj]];
             }

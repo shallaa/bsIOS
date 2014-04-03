@@ -46,18 +46,18 @@
 
 @property (nonatomic, readonly) NSString *key;
 
-+ (bsDisplay *)G:(NSString *)name params:(NSString *)params;
-+ (bsDisplay *)G:(NSString *)name params:(NSString *)params replace:(id)replace;
++ (bsDisplay *)generateViewWithName:(NSString *)name parameters:(NSString *)params;
++ (bsDisplay *)generateViewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace;
 // Create object from template
-+ (bsDisplay *)GT:(NSString *)key params:(NSString*)params;
-+ (bsDisplay*)GT:(NSString*)key params:(NSString*)params replace:(id)replace;
++ (bsDisplay *)generateViewWithTemplate:(NSString *)key parameters:(NSString*)params;
++ (bsDisplay*)generateViewWithTemplate:(NSString*)key parameters:(NSString*)params replace:(id)replace;
 // Create object from style
-+ (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params;
-+ (bsDisplay *)G:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace;
++ (bsDisplay *)generateViewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params;
++ (bsDisplay *)generateViewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace;
 // Add template
-+ (void)AT:(NSString *)key name:(NSString *)name params:(NSString *)params;
++ (void)addTemplateWithKey:(NSString *)key name:(NSString *)name parameters:(NSString *)params;
 // Add style
-+ (void)AS:(NSString*)styleName params:(NSString *)params;
++ (void)addStyleWithName:(NSString*)styleName parameters:(NSString *)params;
 - (void)ready;
 - (id)g:(NSString *)key;
 - (NSDictionary *)gDic:(NSString*)keys;
@@ -70,16 +70,15 @@
 //- (void)autolayout:(NSString *)formats views:(NSDictionary *)views options:(NSLayoutFormatOptions)opts;
 
 #pragma mark - child
-- (NSString *)create:(NSString *)name params:(NSString *)params;
-- (NSString *)create:(NSString *)name params:(NSString *)params replace:(id)replace;
-- (NSString *)createT:(NSString *)key params:(NSString *)params;
-- (NSString *)createT:(NSString *)key params:(NSString *)params replace:(id)replace;
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params;
-- (NSString *)create:(NSString *)name styleNames:(NSString *)styleNames params:(NSString *)params replace:(id)replace;
-- (bsDisplay *)childG:(NSString *)key;
-- (void)childA:(bsDisplay *)child;
-- (void)childD:(NSString *)key;
-- (void)childS:(NSString *)key params:(NSString *)params;
-- (void)childS:(NSString *)key params:(NSString *)params replace:(id)replace;
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params;
+- (NSString *)addSubviewWithName:(NSString *)name parameters:(NSString *)params replace:(id)replace;
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params;
+- (NSString *)addSubviewWithTemplateKey:(NSString *)key parameters:(NSString *)params replace:(id)replace;
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params;
+- (NSString *)addSubviewWithName:(NSString *)name styles:(NSString *)styleNames parameters:(NSString *)params replace:(id)replace;
+- (bsDisplay *)subviewWithName:(NSString *)key;
+- (void)removeSubviewWithName:(NSString *)key;
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params;
+- (void)applyStylesToSubviewWithName:(NSString *)key parameters:(NSString *)params replace:(id)replace;
 
 @end

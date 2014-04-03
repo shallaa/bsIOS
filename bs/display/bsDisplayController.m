@@ -42,7 +42,7 @@ static bsDisplayController *__bsDisplayController_singleton = nil;
     if (__bsDisplayController_singleton) {
         bsException(NSInternalInconsistencyException, @"bsDisplayController can not create directly.");
     }
-    self.view = [bsDisplay G:@"display" params:@"key,root,x,0,y,0,bg,#000"];
+    self.view = [bsDisplay generateViewWithName:@"display" parameters:@"key,root,x,0,y,0,bg,#000"];
     __bsDisplayController_singleton = self;
 }
 
