@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
-#import "bsPrimitive.h"
 #import "bsStr.h"
 /*
 #pragma mark - bsObjectNode
@@ -27,7 +26,7 @@ static NSMutableDictionary *__bsObjectNodeCache;
 -(BOOL)isArray { return self.clazz ? (self.clazz == [NSMutableArray class] || self.clazz == [NSArray class]) : NO; }
 -(BOOL)isDic { return self.clazz ? (self.clazz == [NSMutableDictionary class] || self.clazz == [NSDictionary class]) : NO; }
 -(BOOL)isString { return self.clazz ? (self.clazz == [NSString class] || self.clazz == [NSMutableString class]) : NO; }
--(BOOL)isPrimitive { return self.clazz ? (class_getSuperclass( self.clazz ) == [bsPrimitive class]) : NO; }
+-(BOOL)isPrimitive { return self.clazz ? (class_getSuperclass( self.clazz ) == [NSNumber class]) : NO; }
 -(BOOL)isObject { return self.clazz ? YES : NO; }
 +(void)__initCache {
     @synchronized( __bsObjectNodeCache ) {

@@ -29,7 +29,6 @@
 		BF02FFA51842419E0016952A /* UIApplication+WindowOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = BF02FF641842419E0016952A /* UIApplication+WindowOverlay.m */; };
 		BF02FFA8184253310016952A /* assets in Resources */ = {isa = PBXBuildFile; fileRef = BF02FFA7184253310016952A /* assets */; };
 		BF07808B18D601CA00154FD6 /* bsHttpQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = BF07808A18D601CA00154FD6 /* bsHttpQueue.m */; };
-		BF07808E18D6030200154FD6 /* bsPrimitive.m in Sources */ = {isa = PBXBuildFile; fileRef = BF07808D18D6030200154FD6 /* bsPrimitive.m */; };
 		BF07809118D608EA00154FD6 /* bsRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = BF07809018D608EA00154FD6 /* bsRuntime.m */; };
 		BF07809418D60A5200154FD6 /* bsDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = BF07809318D60A5200154FD6 /* bsDisplay.m */; };
 		BF07809718D60EC600154FD6 /* bsDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF07809618D60EC600154FD6 /* bsDisplayController.m */; };
@@ -50,6 +49,7 @@
 		BFB62E5818EC6372005A5085 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB62E5618EC6372005A5085 /* Default.png */; };
 		BFB62E5918EC6372005A5085 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB62E5718EC6372005A5085 /* Default@2x.png */; };
 		BFB62E5B18EC63ED005A5085 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB62E5A18EC63ED005A5085 /* Default-568h@2x.png */; };
+		BFB62E5E18ECF0C5005A5085 /* NSNumber+ProjectBS.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB62E5D18ECF0C5005A5085 /* NSNumber+ProjectBS.m */; };
 		BFBA555B18D21020004245DE /* bs.m in Sources */ = {isa = PBXBuildFile; fileRef = BFBA555A18D21020004245DE /* bs.m */; };
 		BFBA555E18D2733A004245DE /* bsSimpleSound.m in Sources */ = {isa = PBXBuildFile; fileRef = BFBA555D18D2733A004245DE /* bsSimpleSound.m */; };
 		BFBA556118D379EB004245DE /* bsNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BFBA556018D379EB004245DE /* bsNotification.m */; };
@@ -127,7 +127,6 @@
 		BF02FF6B1842419E0016952A /* bsNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsNotification.h; sourceTree = "<group>"; };
 		BF02FF6C1842419E0016952A /* bsObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsObj.h; sourceTree = "<group>"; };
 		BF02FF6D1842419E0016952A /* bsParam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsParam.h; sourceTree = "<group>"; };
-		BF02FF6E1842419E0016952A /* bsPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsPrimitive.h; sourceTree = "<group>"; };
 		BF02FF6F1842419E0016952A /* bsRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsRuntime.h; sourceTree = "<group>"; };
 		BF02FF701842419E0016952A /* bsStr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsStr.h; sourceTree = "<group>"; };
 		BF02FF721842419E0016952A /* bsDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsDisplay.h; sourceTree = "<group>"; };
@@ -169,7 +168,6 @@
 		BF02FF9A1842419E0016952A /* bsWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsWorker.h; sourceTree = "<group>"; };
 		BF02FFA7184253310016952A /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
 		BF07808A18D601CA00154FD6 /* bsHttpQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsHttpQueue.m; sourceTree = "<group>"; };
-		BF07808D18D6030200154FD6 /* bsPrimitive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsPrimitive.m; sourceTree = "<group>"; };
 		BF07809018D608EA00154FD6 /* bsRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsRuntime.m; sourceTree = "<group>"; };
 		BF07809318D60A5200154FD6 /* bsDisplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsDisplay.m; sourceTree = "<group>"; };
 		BF07809618D60EC600154FD6 /* bsDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsDisplayController.m; sourceTree = "<group>"; };
@@ -194,6 +192,8 @@
 		BFB62E5618EC6372005A5085 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BFB62E5718EC6372005A5085 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BFB62E5A18EC63ED005A5085 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BFB62E5C18ECF0C5005A5085 /* NSNumber+ProjectBS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+ProjectBS.h"; sourceTree = "<group>"; };
+		BFB62E5D18ECF0C5005A5085 /* NSNumber+ProjectBS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+ProjectBS.m"; sourceTree = "<group>"; };
 		BFBA555A18D21020004245DE /* bs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bs.m; sourceTree = "<group>"; };
 		BFBA555D18D2733A004245DE /* bsSimpleSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsSimpleSound.m; sourceTree = "<group>"; };
 		BFBA556018D379EB004245DE /* bsNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bsNotification.m; sourceTree = "<group>"; };
@@ -357,6 +357,8 @@
 				BF02FF621842419E0016952A /* NSString+MD5.m */,
 				BF02FF631842419E0016952A /* UIApplication+WindowOverlay.h */,
 				BF02FF641842419E0016952A /* UIApplication+WindowOverlay.m */,
+				BFB62E5C18ECF0C5005A5085 /* NSNumber+ProjectBS.h */,
+				BFB62E5D18ECF0C5005A5085 /* NSNumber+ProjectBS.m */,
 			);
 			path = category;
 			sourceTree = "<group>";
@@ -380,8 +382,6 @@
 				BFBA556918D438BE004245DE /* bsObj.m */,
 				BF02FF6D1842419E0016952A /* bsParam.h */,
 				BFBA556C18D43AF5004245DE /* bsParam.m */,
-				BF02FF6E1842419E0016952A /* bsPrimitive.h */,
-				BF07808D18D6030200154FD6 /* bsPrimitive.m */,
 				BF02FF6F1842419E0016952A /* bsRuntime.h */,
 				BF07809018D608EA00154FD6 /* bsRuntime.m */,
 				BF02FF701842419E0016952A /* bsStr.h */,
@@ -629,11 +629,11 @@
 				BFBA558B18D59871004245DE /* bsWorker.m in Sources */,
 				BF02FFA01842419E0016952A /* NSData+MD5.m in Sources */,
 				BFBA556118D379EB004245DE /* bsNotification.m in Sources */,
-				BF07808E18D6030200154FD6 /* bsPrimitive.m in Sources */,
 				BF02FF9D1842419E0016952A /* NSData+AES128.m in Sources */,
 				BF07809118D608EA00154FD6 /* bsRuntime.m in Sources */,
 				BFBA555E18D2733A004245DE /* bsSimpleSound.m in Sources */,
 				BFBA557018D44796004245DE /* bsGeometry.m in Sources */,
+				BFB62E5E18ECF0C5005A5085 /* NSNumber+ProjectBS.m in Sources */,
 				BFF1EA1818D9F00A00FB9872 /* bsTablePlain.m in Sources */,
 				BF5C037D18E785F20067CDB5 /* BSDemoAppDelegate.m in Sources */,
 				BFBA558E18D59A84004245DE /* bsHttp.m in Sources */,

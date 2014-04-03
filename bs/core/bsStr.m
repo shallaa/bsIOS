@@ -10,8 +10,8 @@
 
 #import "bsLog.h"
 #import "bsMacro.h"
-#import "bsPrimitive.h"
 #include <arpa/inet.h> // IP address check
+#import "NSNumber+ProjectBS.h"
 
 static NSArray *__bsStr_template = nil;
 
@@ -57,8 +57,8 @@ static NSArray *__bsStr_template = nil;
         }];
         [s deleteCharactersInRange:NSMakeRange([s length] - 1, 1)];
         return [NSString stringWithString:s];
-    } else if ([val isKindOfClass:[bsPrimitive class]]) {
-        return [val str];
+    } else if ([val isKindOfClass:[NSNumber class]]) {
+        return [val bs_description];
     } else if ([val isKindOfClass:[UIColor class]]) {
         CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
         UIColor *color = (UIColor *)val;

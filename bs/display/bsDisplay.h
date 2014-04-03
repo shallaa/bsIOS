@@ -2,7 +2,6 @@
 #import <objc/runtime.h>
 #import "bsDisplayUtil.h"
 #import "bsStr.h"
-#import "bsPrimitive.h"
 #import "bsGeometry.h"
 #import "bsParam.h"
 #import "bsMacro.h"

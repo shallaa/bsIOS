@@ -17,7 +17,6 @@
 #import "bsIni.h"
 #import "bsObj.h"
 #import "bsGeometry.h"
-#import "bsPrimitive.h"
 #import "bsStr.h"
 #import "bsError.h"
 #import "bsMacro.h"
@@ -66,6 +65,8 @@
 #import "bsCallback.h"
 #import "bsQueue.h"
 #import "bsWorker.h"
+
+#import "NSNumber+ProjectBS.h"
 
 @interface bs : UIApplication <UIApplicationDelegate>  {
     
